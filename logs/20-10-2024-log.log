@@ -1,1 +1,61 @@
 {"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-20T09:21:16.926Z"}
+{"level":"info","message":"GET URL REQ => http://d527-2405-201-e01c-c09e-5dab-5a3f-3752-96e.ngrok-free.app/api/v1/director/userTypeLabel","timestamp":"2024-10-20T09:40:33.208Z"}
+{"level":"info","message":"GET URL REQ => http://d527-2405-201-e01c-c09e-5dab-5a3f-3752-96e.ngrok-free.app/api/v1/director/userTypeLabel","timestamp":"2024-10-20T09:42:53.453Z"}
+{"level":"info","message":"Router----- line 17","timestamp":"2024-10-20T09:45:09.581Z"}
+{"level":"info","message":"GET URL REQ => http://d527-2405-201-e01c-c09e-5dab-5a3f-3752-96e.ngrok-free.app/api/v1/users/login","timestamp":"2024-10-20T09:45:09.583Z"}
+{"level":"info","message":"Router----- line 17","timestamp":"2024-10-20T09:46:24.501Z"}
+{"level":"info","message":"GET URL REQ => http://d527-2405-201-e01c-c09e-5dab-5a3f-3752-96e.ngrok-free.app/api/v1/users/login","timestamp":"2024-10-20T09:46:24.502Z"}
+{"level":"info","message":"GET URL REQ => http://d527-2405-201-e01c-c09e-5dab-5a3f-3752-96e.ngrok-free.app/api/v1/staff/dashBoard","timestamp":"2024-10-20T09:48:05.211Z"}
+{"level":"error","message":"Error in Loading THe DashBoard Data: Cannot read properties of undefined (reading 'refUtId')","stack":"TypeError: Cannot read properties of undefined (reading 'refUtId')\n    at StaffRepository.<anonymous> (C:\\Users\\VIJAY L\\Desktop\\ublis_backend-main\\src\\api\\staff\\staff-repository.ts:34:21)\n    at Generator.next (<anonymous>)\n    at fulfilled (C:\\Users\\VIJAY L\\Desktop\\ublis_backend-main\\src\\api\\staff\\staff-repository.ts:5:58)\n    at processTicksAndRejections (node:internal/process/task_queues:95:5)","timestamp":"2024-10-20T09:48:05.434Z"}
+{"level":"info","message":"GET URL REQ => http://d527-2405-201-e01c-c09e-5dab-5a3f-3752-96e.ngrok-free.app/api/v1/staff/userManagementPage","timestamp":"2024-10-20T09:48:54.108Z"}
+{"level":"info","message":"GET URL REQ => http://d527-2405-201-e01c-c09e-5dab-5a3f-3752-96e.ngrok-free.app/api/v1/staff/userManagementPage","timestamp":"2024-10-20T09:49:16.273Z"}
+{"level":"info","message":"GET URL REQ => http://d527-2405-201-e01c-c09e-5dab-5a3f-3752-96e.ngrok-free.app/api/v1/staff/studentApproval","timestamp":"2024-10-20T09:49:47.089Z"}
+{"level":"info","message":"Router----- line 17","timestamp":"2024-10-20T09:56:09.981Z"}
+{"level":"info","message":"GET URL REQ => http://d527-2405-201-e01c-c09e-5dab-5a3f-3752-96e.ngrok-free.app/api/v1/users/login","timestamp":"2024-10-20T09:56:09.983Z"}
+{"level":"info","message":"Router----- line 17","timestamp":"2024-10-20T09:56:49.272Z"}
+{"level":"info","message":"GET URL REQ => http://d527-2405-201-e01c-c09e-5dab-5a3f-3752-96e.ngrok-free.app/api/v1/users/login","timestamp":"2024-10-20T09:56:49.274Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-20T09:57:13.512Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-20T09:57:43.089Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-20T09:58:27.734Z"}
+{"level":"info","message":"GET URL REQ => http://d527-2405-201-e01c-c09e-5dab-5a3f-3752-96e.ngrok-free.app/api/v1/staff/dashBoard","timestamp":"2024-10-20T09:59:14.959Z"}
+{"level":"info","message":"GET URL REQ => http://d527-2405-201-e01c-c09e-5dab-5a3f-3752-96e.ngrok-free.app/api/v1/staff/userManagementPage","timestamp":"2024-10-20T10:00:13.327Z"}
+{"level":"info","message":"GET URL REQ => http://d527-2405-201-e01c-c09e-5dab-5a3f-3752-96e.ngrok-free.app/api/v1/staff/userManagementPage","timestamp":"2024-10-20T10:05:06.096Z"}
+{"level":"info","message":"GET URL REQ => http://d527-2405-201-e01c-c09e-5dab-5a3f-3752-96e.ngrok-free.app/api/v1/staff/userManagementPage","timestamp":"2024-10-20T10:05:40.451Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-20T10:07:09.944Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-20T14:43:13.026Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-20T14:50:12.201Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-20T14:50:17.089Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-20T14:50:21.542Z"}
+{"level":"info","message":"GET URL REQ => http://localhost:6201/api/v1/director/addEmployee","timestamp":"2024-10-20T14:50:30.256Z"}
+{"level":"error","message":"Error in Storing Data: Cannot read properties of undefined (reading 'success')","stack":"TypeError: Cannot read properties of undefined (reading 'success')\n    at Director.<anonymous> (C:\\Users\\VIJAY L\\Desktop\\ublis_backend-main\\src\\api\\controller.ts:628:18)\n    at Generator.next (<anonymous>)\n    at fulfilled (C:\\Users\\VIJAY L\\Desktop\\ublis_backend-main\\src\\api\\controller.ts:5:58)","timestamp":"2024-10-20T14:50:30.587Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-20T14:52:56.996Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-20T14:53:06.104Z"}
+{"level":"info","message":"GET URL REQ => http://localhost:6201/api/v1/director/addEmployee","timestamp":"2024-10-20T14:53:10.100Z"}
+{"level":"error","message":"Error in Storing Data: Cannot read properties of undefined (reading 'success')","stack":"TypeError: Cannot read properties of undefined (reading 'success')\n    at Director.<anonymous> (C:\\Users\\VIJAY L\\Desktop\\ublis_backend-main\\src\\api\\controller.ts:628:18)\n    at Generator.next (<anonymous>)\n    at fulfilled (C:\\Users\\VIJAY L\\Desktop\\ublis_backend-main\\src\\api\\controller.ts:5:58)","timestamp":"2024-10-20T14:53:10.180Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-20T14:53:25.021Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-20T14:54:59.260Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-20T14:55:19.057Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-20T14:55:29.617Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-20T14:55:48.801Z"}
+{"level":"info","message":"GET URL REQ => http://localhost:6201/api/v1/director/addEmployee","timestamp":"2024-10-20T14:55:50.295Z"}
+{"level":"error","message":"Error in Storing Data: Cannot read properties of undefined (reading 'success')","stack":"TypeError: Cannot read properties of undefined (reading 'success')\n    at Director.<anonymous> (C:\\Users\\VIJAY L\\Desktop\\ublis_backend-main\\src\\api\\controller.ts:628:18)\n    at Generator.next (<anonymous>)\n    at fulfilled (C:\\Users\\VIJAY L\\Desktop\\ublis_backend-main\\src\\api\\controller.ts:5:58)","timestamp":"2024-10-20T14:55:50.440Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-20T14:57:25.058Z"}
+{"level":"info","message":"GET URL REQ => http://localhost:6201/api/v1/director/addEmployee","timestamp":"2024-10-20T14:57:25.354Z"}
+{"level":"error","message":"Error in Storing Data: Cannot read properties of undefined (reading 'success')","stack":"TypeError: Cannot read properties of undefined (reading 'success')\n    at Director.<anonymous> (C:\\Users\\VIJAY L\\Desktop\\ublis_backend-main\\src\\api\\controller.ts:628:18)\n    at Generator.next (<anonymous>)\n    at fulfilled (C:\\Users\\VIJAY L\\Desktop\\ublis_backend-main\\src\\api\\controller.ts:5:58)","timestamp":"2024-10-20T14:57:25.444Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-20T16:13:56.089Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-20T16:14:04.213Z"}
+{"level":"info","message":"GET URL REQ => http://localhost:6201/api/v1/director/addEmployee","timestamp":"2024-10-20T16:14:05.080Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-20T16:16:36.119Z"}
+{"level":"info","message":"GET URL REQ => http://localhost:6201/api/v1/director/addEmployee","timestamp":"2024-10-20T16:16:37.402Z"}
+{"level":"info","message":"GET URL REQ => http://localhost:6201/api/v1/director/addEmployee","timestamp":"2024-10-20T16:16:51.548Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-20T16:18:42.130Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-20T16:21:35.387Z"}
+{"level":"info","message":"GET URL REQ => http://localhost:6201/api/v1/director/addEmployee","timestamp":"2024-10-20T16:21:43.380Z"}
+{"level":"info","message":"GET URL REQ => http://localhost:6201/api/v1/director/addEmployee","timestamp":"2024-10-20T16:21:57.782Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-20T16:22:49.325Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-20T16:23:10.146Z"}
+{"level":"info","message":"GET URL REQ => http://localhost:6201/api/v1/director/addEmployee","timestamp":"2024-10-20T16:23:10.464Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-20T16:26:48.333Z"}
+{"level":"info","message":"GET URL REQ => http://localhost:6201/api/v1/director/addEmployee","timestamp":"2024-10-20T16:26:50.685Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-20T16:28:22.204Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-20T16:28:34.395Z"}

@@ -114,18 +114,14 @@ export class DirectorRepository {
     userData: any,
     decodedToken: number
   ): Promise<any> {
-    // const staffId = decodedToken;
-    // const Id = userData.refStId;
     try {
       const userCountResult = await executeQuery(getCustomerCount);
-      const userCount = parseInt(userCountResult[0].count, 10); // Extract and convert count to a number
+      const userCount = parseInt(userCountResult[0].count, 10);
 
-      let newCustomerId;
-      if (userCount >= 0) {
-        newCustomerId = `UBYS${(10000 + userCount + 1).toString()}`; // Generate the ID
-      }
+      let newCustomerId = `UBYS${(10000 + userCount + 1).toString()}`;
       console.log("newCustomerId", newCustomerId);
       console.log(userData);
+
       const params = [
         userData.refFName,
         userData.refLName,
@@ -135,38 +131,32 @@ export class DirectorRepository {
         userData.refPanCard,
         userData.refAadharCard,
       ];
-      console.log("params", params);
 
       const userResult = await executeQuery(insertUserQuery, params);
-      console.log("userResult", userResult);
-
       const newUser = userResult[0];
-      console.log("newUser", newUser);
 
-      const password = `${userData.refFName.toUpperCase()}$${new Date(
-        userData.refDob
-      ).getFullYear()}`;
+      const dobYear = userData.refDob.split("-")[2];
+
+      const password = `${userData.refFName.toUpperCase()}$${dobYear}`;
       console.log("password", password);
-      // const hashedPassword = await bcrypt.hash(userData.temp_su_password, 10);
-      // console.log("hashedPassword", hashedPassword);
+
+      const hashedPassword = await bcrypt.hash(password, 10);
+      console.log("hashedPassword", hashedPassword);
 
       const domainParams = [
-        newUser.refStId, // refStId from users table
-        newUser.refSCustId, // refCustId from users table
-        newUser.refSCustId, // refcust Username
-        password, // refCustPassword
-        // hashedPassword, // refCustHashedPassword
+        newUser.refStId,
+        newUser.refSCustId,
+        newUser.refSCustId,
+        password,
+        hashedPassword,
       ];
-      console.log("domainParams", domainParams);
 
       const domainResult = await executeQuery(
         insertUserDomainQuery,
         domainParams
       );
-      console.log("domainResult", domainResult);
-
       const communicationParams = [
-        newUser.refStId, // refStId from users table
+        newUser.refStId,
         userData.refPhone,
         userData.refEmail,
       ];
@@ -175,7 +165,6 @@ export class DirectorRepository {
         insertUserCommunicationQuery,
         communicationParams
       );
-      console.log("insertUserCommunicationQuery", communicationResult);
 
       if (
         userResult.length > 0 &&
@@ -184,19 +173,15 @@ export class DirectorRepository {
       ) {
         const history = [
           1,
-          new Date().toLocaleString(), // Using local date and time
+          new Date().toLocaleString(),
           newUser.refStId,
           "Director",
         ];
-
         const updateHistory = await executeQuery(updateHistoryQuery, history);
 
-        // Check if the history update was successful
         if (updateHistory && updateHistory.length > 0) {
-          const tokenData = {
-            id: 30,
-          };
-          return encrypt(
+          const tokenData = { id: 30 };
+          const encryptedResponse = encrypt(
             {
               success: true,
               message: "New Employee Data Is Stored Successfully",
@@ -204,29 +189,25 @@ export class DirectorRepository {
             },
             false
           );
+          return encryptedResponse;
         } else {
           return encrypt(
-            {
-              success: false,
-              message: "Failed to update history",
-            },
+            { success: false, message: "Failed to update history" },
             true
           );
-          // return { success: false, message: "Failed to update history" };
         }
       } else {
-        return encrypt(
-          {
-            success: false,
-            message: "Signup failed",
-          },
-          true
-        );
-        // return { success: false, message: "Signup failed" };
+        return encrypt({ success: false, message: "Signup failed" }, true);
       }
-      return true;
-    } catch (error) {}
+    } catch (error) {
+      console.error("Error in Storing Data:", error);
+      return encrypt(
+        { success: false, message: "An error occurred while storing data" },
+        true
+      );
+    }
   }
+
   public async addEmployeeDataV1(userData: any): Promise<any> {
     try {
       // Check if file exists in the userData payload

@@ -22,11 +22,13 @@ import { generateToken, decodeToken } from "../../helper/token";
 
 export class StaffRepository {
   public async staffDashBoardV1(
-    userData: any,
-    decodedToken: number
+    userData: any
+    // decodedToken: number
   ): Promise<any> {
     try {
-      const refStId = decodedToken;
+      
+      // const refStId = decodedToken;
+      const refStId = 3;
       const userType = await executeQuery(getUserType, [refStId]);
       const refUserType = userType[0];
       let refDashBoardData = {};

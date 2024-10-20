@@ -333,13 +333,13 @@ export class FrontDesk {
     request: any,
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
-    const decodedToken = request.plugins.token.id;
+    // const decodedToken = request.plugins.token.id;
     try {
       logger.info(`GET URL REQ => ${request.url.href}`);
       const domainCode = request.headers.domain_code || "";
       const entity = await this.resolver.staffDashBoardV1(
-        request.payload,
-        decodedToken
+        request.payload
+        // decodedToken
       );
 
       if (entity.success) {

@@ -23,7 +23,9 @@ ORDER BY "transTime"`;
 
 export const getUserTypeLabel = `SELECT * FROM public."refUserType" WHERE "refUtId" IN (4,7,8,10)`;
 
-export const getCustomerCount = `SELECT COUNT(*) FROM public.users`;
+export const getCustomerCount = `SELECT COUNT(*) 
+FROM public.users
+WHERE "refSCustId" LIKE 'UBYS%';`;
 
 export const insertUserQuery = `
   INSERT INTO public.users (
@@ -34,8 +36,8 @@ export const insertUserQuery = `
 `;
 export const insertUserDomainQuery = `
   INSERT INTO public."refUsersDomain" (
-    "refStId", "refCustId","refUserName", "refCustPassword"
-  ) VALUES ($1, $2, $3, $4)
+    "refStId", "refCustId","refUserName", "refCustPassword","refCustHashedPassword"
+  ) VALUES ($1, $2, $3, $4,$5)
   RETURNING *;
 `;
 

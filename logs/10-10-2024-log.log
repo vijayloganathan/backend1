@@ -1,0 +1,845 @@
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T01:18:32.160Z"}
+{"level":"info","message":"GET URL REQ => http://localhost:6200/api/v1/staff/studentApproval","timestamp":"2024-10-10T01:18:34.660Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T01:18:55.650Z"}
+{"level":"info","message":"GET URL REQ => http://localhost:6200/api/v1/staff/studentApproval","timestamp":"2024-10-10T01:18:55.842Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T01:19:17.822Z"}
+{"level":"info","message":"GET URL REQ => http://localhost:6200/api/v1/staff/studentApproval","timestamp":"2024-10-10T01:19:30.743Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T01:19:45.006Z"}
+{"level":"info","message":"GET URL REQ => http://localhost:6200/api/v1/staff/studentApproval","timestamp":"2024-10-10T01:19:46.846Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T01:22:35.896Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T01:23:36.651Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T01:24:07.017Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T01:24:58.748Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T01:25:08.791Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T01:25:20.023Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T01:25:40.207Z"}
+{"level":"info","message":"GET URL REQ => http://localhost:6200/api/v1/staff/studentApproval","timestamp":"2024-10-10T01:26:13.649Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T01:26:26.263Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T01:26:40.021Z"}
+{"level":"info","message":"GET URL REQ => http://localhost:6200/api/v1/staff/studentApproval","timestamp":"2024-10-10T01:26:41.431Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T01:26:53.222Z"}
+{"level":"info","message":"GET URL REQ => http://localhost:6200/api/v1/staff/studentApproval","timestamp":"2024-10-10T01:26:53.792Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T01:27:28.080Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T01:27:38.233Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T01:28:41.082Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T01:29:43.283Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T01:41:58.483Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T01:42:23.319Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T01:42:59.903Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T01:43:18.702Z"}
+{"level":"info","message":"Router - sign up page","timestamp":"2024-10-10T01:56:20.054Z"}
+{"level":"info","message":"Router----- line 17","timestamp":"2024-10-10T01:57:21.860Z"}
+{"level":"info","message":"GET URL REQ => http://localhost:6200/api/v1/users/login","timestamp":"2024-10-10T01:57:21.867Z"}
+{"level":"info","message":"Router----- line 17","timestamp":"2024-10-10T01:57:32.136Z"}
+{"level":"info","message":"GET URL REQ => http://localhost:6200/api/v1/users/login","timestamp":"2024-10-10T01:57:32.138Z"}
+{"level":"info","message":"Router----- line 17","timestamp":"2024-10-10T01:57:42.542Z"}
+{"level":"info","message":"GET URL REQ => http://localhost:6200/api/v1/users/login","timestamp":"2024-10-10T01:57:42.544Z"}
+{"level":"info","message":"Router----- line 17","timestamp":"2024-10-10T01:58:11.583Z"}
+{"level":"info","message":"GET URL REQ => http://localhost:6200/api/v1/users/login","timestamp":"2024-10-10T01:58:11.586Z"}
+{"level":"info","message":"Router----- line 17","timestamp":"2024-10-10T01:58:53.392Z"}
+{"level":"info","message":"GET URL REQ => http://localhost:6200/api/v1/users/login","timestamp":"2024-10-10T01:58:53.395Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T01:59:51.139Z"}
+{"level":"info","message":"Router----- line 17","timestamp":"2024-10-10T01:59:55.043Z"}
+{"level":"info","message":"GET URL REQ => http://localhost:6200/api/v1/users/login","timestamp":"2024-10-10T01:59:55.047Z"}
+{"level":"info","message":"Router----- line 17","timestamp":"2024-10-10T01:59:57.808Z"}
+{"level":"info","message":"GET URL REQ => http://localhost:6200/api/v1/users/login","timestamp":"2024-10-10T01:59:57.809Z"}
+{"level":"info","message":"Router----- line 17","timestamp":"2024-10-10T02:00:10.339Z"}
+{"level":"info","message":"GET URL REQ => http://localhost:6200/api/v1/users/login","timestamp":"2024-10-10T02:00:10.342Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T02:04:16.862Z"}
+{"level":"info","message":"Router----- line 17","timestamp":"2024-10-10T02:04:22.838Z"}
+{"level":"info","message":"GET URL REQ => http://localhost:6200/api/v1/users/login","timestamp":"2024-10-10T02:04:22.841Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T02:07:55.281Z"}
+{"level":"info","message":"Router----- line 17","timestamp":"2024-10-10T02:08:00.812Z"}
+{"level":"info","message":"GET URL REQ => http://localhost:6200/api/v1/users/login","timestamp":"2024-10-10T02:08:00.814Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T02:08:24.298Z"}
+{"level":"info","message":"Router----- line 17","timestamp":"2024-10-10T02:08:24.537Z"}
+{"level":"info","message":"GET URL REQ => http://localhost:6200/api/v1/users/login","timestamp":"2024-10-10T02:08:24.538Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T02:08:39.185Z"}
+{"level":"info","message":"Router----- line 17","timestamp":"2024-10-10T02:08:39.273Z"}
+{"level":"info","message":"GET URL REQ => http://localhost:6200/api/v1/users/login","timestamp":"2024-10-10T02:08:39.274Z"}
+{"level":"info","message":"Router----- line 17","timestamp":"2024-10-10T02:08:59.482Z"}
+{"level":"info","message":"GET URL REQ => http://localhost:6200/api/v1/users/login","timestamp":"2024-10-10T02:08:59.486Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T02:09:25.124Z"}
+{"level":"info","message":"Router----- line 17","timestamp":"2024-10-10T02:09:25.375Z"}
+{"level":"info","message":"GET URL REQ => http://localhost:6200/api/v1/users/login","timestamp":"2024-10-10T02:09:25.377Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T02:09:54.492Z"}
+{"level":"info","message":"Router----- line 17","timestamp":"2024-10-10T02:10:04.124Z"}
+{"level":"info","message":"GET URL REQ => http://localhost:6200/api/v1/users/login","timestamp":"2024-10-10T02:10:04.126Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T02:10:27.044Z"}
+{"level":"info","message":"Router----- line 17","timestamp":"2024-10-10T02:10:27.206Z"}
+{"level":"info","message":"GET URL REQ => http://localhost:6200/api/v1/users/login","timestamp":"2024-10-10T02:10:27.207Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T04:07:51.427Z"}
+{"level":"info","message":"Router----- line 17","timestamp":"2024-10-10T04:09:52.505Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/users/login","timestamp":"2024-10-10T04:09:52.506Z"}
+{"level":"info","message":"Router----- line 17","timestamp":"2024-10-10T04:10:03.933Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/users/login","timestamp":"2024-10-10T04:10:03.934Z"}
+{"level":"info","message":"Router----- line 17","timestamp":"2024-10-10T04:10:07.689Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/users/login","timestamp":"2024-10-10T04:10:07.691Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData?refStId=22","timestamp":"2024-10-10T04:11:42.857Z"}
+{"level":"error","message":"Error in userLogin: Profile data not found for refStId: 22","stack":"Error: Profile data not found for refStId: 22\n    at ProfileRepository.<anonymous> (C:\\Users\\VIJAY L\\Desktop\\backend\\src\\api\\profile\\profile-repository.ts:229:15)\n    at Generator.next (<anonymous>)\n    at fulfilled (C:\\Users\\VIJAY L\\Desktop\\backend\\src\\api\\profile\\profile-repository.ts:5:58)\n    at processTicksAndRejections (node:internal/process/task_queues:95:5)","timestamp":"2024-10-10T04:11:42.928Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData?refStId=22","timestamp":"2024-10-10T04:11:42.935Z"}
+{"level":"error","message":"Error in userLogin: Profile data not found for refStId: 22","stack":"Error: Profile data not found for refStId: 22\n    at ProfileRepository.<anonymous> (C:\\Users\\VIJAY L\\Desktop\\backend\\src\\api\\profile\\profile-repository.ts:229:15)\n    at Generator.next (<anonymous>)\n    at fulfilled (C:\\Users\\VIJAY L\\Desktop\\backend\\src\\api\\profile\\profile-repository.ts:5:58)\n    at processTicksAndRejections (node:internal/process/task_queues:95:5)","timestamp":"2024-10-10T04:11:42.977Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData?refStId=22","timestamp":"2024-10-10T04:12:22.684Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData?refStId=22","timestamp":"2024-10-10T04:12:22.729Z"}
+{"level":"error","message":"Error in userLogin: Profile data not found for refStId: 22","stack":"Error: Profile data not found for refStId: 22\n    at ProfileRepository.<anonymous> (C:\\Users\\VIJAY L\\Desktop\\backend\\src\\api\\profile\\profile-repository.ts:229:15)\n    at Generator.next (<anonymous>)\n    at fulfilled (C:\\Users\\VIJAY L\\Desktop\\backend\\src\\api\\profile\\profile-repository.ts:5:58)\n    at processTicksAndRejections (node:internal/process/task_queues:95:5)","timestamp":"2024-10-10T04:12:22.746Z"}
+{"level":"error","message":"Error in userLogin: Profile data not found for refStId: 22","stack":"Error: Profile data not found for refStId: 22\n    at ProfileRepository.<anonymous> (C:\\Users\\VIJAY L\\Desktop\\backend\\src\\api\\profile\\profile-repository.ts:229:15)\n    at Generator.next (<anonymous>)\n    at fulfilled (C:\\Users\\VIJAY L\\Desktop\\backend\\src\\api\\profile\\profile-repository.ts:5:58)\n    at processTicksAndRejections (node:internal/process/task_queues:95:5)","timestamp":"2024-10-10T04:12:22.780Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData?refStId=22","timestamp":"2024-10-10T04:12:37.083Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData?refStId=22","timestamp":"2024-10-10T04:12:37.095Z"}
+{"level":"error","message":"Error in userLogin: Profile data not found for refStId: 22","stack":"Error: Profile data not found for refStId: 22\n    at ProfileRepository.<anonymous> (C:\\Users\\VIJAY L\\Desktop\\backend\\src\\api\\profile\\profile-repository.ts:229:15)\n    at Generator.next (<anonymous>)\n    at fulfilled (C:\\Users\\VIJAY L\\Desktop\\backend\\src\\api\\profile\\profile-repository.ts:5:58)\n    at processTicksAndRejections (node:internal/process/task_queues:95:5)","timestamp":"2024-10-10T04:12:37.137Z"}
+{"level":"error","message":"Error in userLogin: Profile data not found for refStId: 22","stack":"Error: Profile data not found for refStId: 22\n    at ProfileRepository.<anonymous> (C:\\Users\\VIJAY L\\Desktop\\backend\\src\\api\\profile\\profile-repository.ts:229:15)\n    at Generator.next (<anonymous>)\n    at fulfilled (C:\\Users\\VIJAY L\\Desktop\\backend\\src\\api\\profile\\profile-repository.ts:5:58)\n    at processTicksAndRejections (node:internal/process/task_queues:95:5)","timestamp":"2024-10-10T04:12:37.143Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData?refStId=22","timestamp":"2024-10-10T04:13:43.321Z"}
+{"level":"error","message":"Error in userLogin: Profile data not found for refStId: 22","stack":"Error: Profile data not found for refStId: 22\n    at ProfileRepository.<anonymous> (C:\\Users\\VIJAY L\\Desktop\\backend\\src\\api\\profile\\profile-repository.ts:229:15)\n    at Generator.next (<anonymous>)\n    at fulfilled (C:\\Users\\VIJAY L\\Desktop\\backend\\src\\api\\profile\\profile-repository.ts:5:58)\n    at processTicksAndRejections (node:internal/process/task_queues:95:5)","timestamp":"2024-10-10T04:13:43.509Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData?refStId=22","timestamp":"2024-10-10T04:13:43.636Z"}
+{"level":"error","message":"Error in userLogin: Profile data not found for refStId: 22","stack":"Error: Profile data not found for refStId: 22\n    at ProfileRepository.<anonymous> (C:\\Users\\VIJAY L\\Desktop\\backend\\src\\api\\profile\\profile-repository.ts:229:15)\n    at Generator.next (<anonymous>)\n    at fulfilled (C:\\Users\\VIJAY L\\Desktop\\backend\\src\\api\\profile\\profile-repository.ts:5:58)\n    at processTicksAndRejections (node:internal/process/task_queues:95:5)","timestamp":"2024-10-10T04:13:43.706Z"}
+{"level":"info","message":"Router----- line 17","timestamp":"2024-10-10T04:14:06.164Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/users/login","timestamp":"2024-10-10T04:14:06.165Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T04:18:12.622Z"}
+{"level":"info","message":"Router----- line 17","timestamp":"2024-10-10T04:18:13.856Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/users/login","timestamp":"2024-10-10T04:18:13.857Z"}
+{"level":"info","message":"Router----- line 17","timestamp":"2024-10-10T04:19:42.327Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/users/login","timestamp":"2024-10-10T04:19:42.328Z"}
+{"level":"info","message":"Router----- line 17","timestamp":"2024-10-10T04:19:59.146Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/users/login","timestamp":"2024-10-10T04:19:59.148Z"}
+{"level":"info","message":"Router----- line 17","timestamp":"2024-10-10T04:20:02.011Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/users/login","timestamp":"2024-10-10T04:20:02.012Z"}
+{"level":"info","message":"Router----- line 17","timestamp":"2024-10-10T04:20:19.936Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/users/login","timestamp":"2024-10-10T04:20:19.937Z"}
+{"level":"info","message":"Router----- line 17","timestamp":"2024-10-10T04:20:58.686Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/users/login","timestamp":"2024-10-10T04:20:58.688Z"}
+{"level":"info","message":"Router----- line 17","timestamp":"2024-10-10T04:21:57.021Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/users/login","timestamp":"2024-10-10T04:21:57.023Z"}
+{"level":"info","message":"Router----- line 17","timestamp":"2024-10-10T04:22:16.158Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/users/login","timestamp":"2024-10-10T04:22:16.159Z"}
+{"level":"info","message":"Router----- line 17","timestamp":"2024-10-10T04:22:33.671Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/users/login","timestamp":"2024-10-10T04:22:33.672Z"}
+{"level":"info","message":"Router----- line 17","timestamp":"2024-10-10T04:22:44.632Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/users/login","timestamp":"2024-10-10T04:22:44.634Z"}
+{"level":"info","message":"Router----- line 17","timestamp":"2024-10-10T04:23:11.214Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/users/login","timestamp":"2024-10-10T04:23:11.215Z"}
+{"level":"info","message":"Router----- line 17","timestamp":"2024-10-10T04:23:23.696Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/users/login","timestamp":"2024-10-10T04:23:23.697Z"}
+{"level":"info","message":"Router----- line 17","timestamp":"2024-10-10T04:23:34.467Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/users/login","timestamp":"2024-10-10T04:23:34.468Z"}
+{"level":"info","message":"Router----- line 17","timestamp":"2024-10-10T04:23:35.074Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/users/login","timestamp":"2024-10-10T04:23:35.075Z"}
+{"level":"info","message":"Router----- line 17","timestamp":"2024-10-10T04:23:51.419Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/users/login","timestamp":"2024-10-10T04:23:51.421Z"}
+{"level":"info","message":"Router----- line 17","timestamp":"2024-10-10T04:23:52.010Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/users/login","timestamp":"2024-10-10T04:23:52.011Z"}
+{"level":"info","message":"Router----- line 17","timestamp":"2024-10-10T04:24:07.210Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/users/login","timestamp":"2024-10-10T04:24:07.211Z"}
+{"level":"info","message":"Router----- line 17","timestamp":"2024-10-10T04:24:31.194Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/users/login","timestamp":"2024-10-10T04:24:31.196Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T04:25:10.554Z"}
+{"level":"info","message":"Router----- line 17","timestamp":"2024-10-10T04:25:11.183Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/users/login","timestamp":"2024-10-10T04:25:11.185Z"}
+{"level":"info","message":"Router----- line 17","timestamp":"2024-10-10T04:25:57.216Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/users/login","timestamp":"2024-10-10T04:25:57.217Z"}
+{"level":"info","message":"Router----- line 17","timestamp":"2024-10-10T04:26:18.616Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/users/login","timestamp":"2024-10-10T04:26:18.617Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData?refStId=22","timestamp":"2024-10-10T04:27:23.358Z"}
+{"level":"error","message":"Error in userLogin: Profile data not found for refStId: 22","stack":"Error: Profile data not found for refStId: 22\n    at ProfileRepository.<anonymous> (C:\\Users\\VIJAY L\\Desktop\\backend\\src\\api\\profile\\profile-repository.ts:229:15)\n    at Generator.next (<anonymous>)\n    at fulfilled (C:\\Users\\VIJAY L\\Desktop\\backend\\src\\api\\profile\\profile-repository.ts:5:58)\n    at processTicksAndRejections (node:internal/process/task_queues:95:5)","timestamp":"2024-10-10T04:27:23.409Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData?refStId=22","timestamp":"2024-10-10T04:27:23.557Z"}
+{"level":"error","message":"Error in userLogin: Profile data not found for refStId: 22","stack":"Error: Profile data not found for refStId: 22\n    at ProfileRepository.<anonymous> (C:\\Users\\VIJAY L\\Desktop\\backend\\src\\api\\profile\\profile-repository.ts:229:15)\n    at Generator.next (<anonymous>)\n    at fulfilled (C:\\Users\\VIJAY L\\Desktop\\backend\\src\\api\\profile\\profile-repository.ts:5:58)\n    at processTicksAndRejections (node:internal/process/task_queues:95:5)","timestamp":"2024-10-10T04:27:23.619Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData?refStId=22","timestamp":"2024-10-10T04:27:47.499Z"}
+{"level":"error","message":"Error in userLogin: Profile data not found for refStId: 22","stack":"Error: Profile data not found for refStId: 22\n    at ProfileRepository.<anonymous> (C:\\Users\\VIJAY L\\Desktop\\backend\\src\\api\\profile\\profile-repository.ts:229:15)\n    at Generator.next (<anonymous>)\n    at fulfilled (C:\\Users\\VIJAY L\\Desktop\\backend\\src\\api\\profile\\profile-repository.ts:5:58)\n    at processTicksAndRejections (node:internal/process/task_queues:95:5)","timestamp":"2024-10-10T04:27:47.548Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData?refStId=22","timestamp":"2024-10-10T04:27:49.163Z"}
+{"level":"error","message":"Error in userLogin: Profile data not found for refStId: 22","stack":"Error: Profile data not found for refStId: 22\n    at ProfileRepository.<anonymous> (C:\\Users\\VIJAY L\\Desktop\\backend\\src\\api\\profile\\profile-repository.ts:229:15)\n    at Generator.next (<anonymous>)\n    at fulfilled (C:\\Users\\VIJAY L\\Desktop\\backend\\src\\api\\profile\\profile-repository.ts:5:58)\n    at processTicksAndRejections (node:internal/process/task_queues:95:5)","timestamp":"2024-10-10T04:27:49.222Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData?refStId=22","timestamp":"2024-10-10T04:27:54.079Z"}
+{"level":"error","message":"Error in userLogin: Profile data not found for refStId: 22","stack":"Error: Profile data not found for refStId: 22\n    at ProfileRepository.<anonymous> (C:\\Users\\VIJAY L\\Desktop\\backend\\src\\api\\profile\\profile-repository.ts:229:15)\n    at Generator.next (<anonymous>)\n    at fulfilled (C:\\Users\\VIJAY L\\Desktop\\backend\\src\\api\\profile\\profile-repository.ts:5:58)\n    at processTicksAndRejections (node:internal/process/task_queues:95:5)","timestamp":"2024-10-10T04:27:54.126Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData?refStId=22","timestamp":"2024-10-10T04:27:54.155Z"}
+{"level":"error","message":"Error in userLogin: Profile data not found for refStId: 22","stack":"Error: Profile data not found for refStId: 22\n    at ProfileRepository.<anonymous> (C:\\Users\\VIJAY L\\Desktop\\backend\\src\\api\\profile\\profile-repository.ts:229:15)\n    at Generator.next (<anonymous>)\n    at fulfilled (C:\\Users\\VIJAY L\\Desktop\\backend\\src\\api\\profile\\profile-repository.ts:5:58)\n    at processTicksAndRejections (node:internal/process/task_queues:95:5)","timestamp":"2024-10-10T04:27:54.321Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData?refStId=22","timestamp":"2024-10-10T04:28:04.434Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData?refStId=22","timestamp":"2024-10-10T04:28:04.439Z"}
+{"level":"error","message":"Error in userLogin: Profile data not found for refStId: 22","stack":"Error: Profile data not found for refStId: 22\n    at ProfileRepository.<anonymous> (C:\\Users\\VIJAY L\\Desktop\\backend\\src\\api\\profile\\profile-repository.ts:229:15)\n    at Generator.next (<anonymous>)\n    at fulfilled (C:\\Users\\VIJAY L\\Desktop\\backend\\src\\api\\profile\\profile-repository.ts:5:58)\n    at processTicksAndRejections (node:internal/process/task_queues:95:5)","timestamp":"2024-10-10T04:28:04.488Z"}
+{"level":"error","message":"Error in userLogin: Profile data not found for refStId: 22","stack":"Error: Profile data not found for refStId: 22\n    at ProfileRepository.<anonymous> (C:\\Users\\VIJAY L\\Desktop\\backend\\src\\api\\profile\\profile-repository.ts:229:15)\n    at Generator.next (<anonymous>)\n    at fulfilled (C:\\Users\\VIJAY L\\Desktop\\backend\\src\\api\\profile\\profile-repository.ts:5:58)\n    at processTicksAndRejections (node:internal/process/task_queues:95:5)","timestamp":"2024-10-10T04:28:04.492Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData?refStId=22","timestamp":"2024-10-10T04:28:10.531Z"}
+{"level":"error","message":"Error in userLogin: Profile data not found for refStId: 22","stack":"Error: Profile data not found for refStId: 22\n    at ProfileRepository.<anonymous> (C:\\Users\\VIJAY L\\Desktop\\backend\\src\\api\\profile\\profile-repository.ts:229:15)\n    at Generator.next (<anonymous>)\n    at fulfilled (C:\\Users\\VIJAY L\\Desktop\\backend\\src\\api\\profile\\profile-repository.ts:5:58)\n    at processTicksAndRejections (node:internal/process/task_queues:95:5)","timestamp":"2024-10-10T04:28:10.583Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData?refStId=22","timestamp":"2024-10-10T04:28:19.508Z"}
+{"level":"error","message":"Error in userLogin: Profile data not found for refStId: 22","stack":"Error: Profile data not found for refStId: 22\n    at ProfileRepository.<anonymous> (C:\\Users\\VIJAY L\\Desktop\\backend\\src\\api\\profile\\profile-repository.ts:229:15)\n    at Generator.next (<anonymous>)\n    at fulfilled (C:\\Users\\VIJAY L\\Desktop\\backend\\src\\api\\profile\\profile-repository.ts:5:58)\n    at processTicksAndRejections (node:internal/process/task_queues:95:5)","timestamp":"2024-10-10T04:28:19.560Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData?refStId=22","timestamp":"2024-10-10T04:28:31.474Z"}
+{"level":"error","message":"Error in userLogin: Profile data not found for refStId: 22","stack":"Error: Profile data not found for refStId: 22\n    at ProfileRepository.<anonymous> (C:\\Users\\VIJAY L\\Desktop\\backend\\src\\api\\profile\\profile-repository.ts:229:15)\n    at Generator.next (<anonymous>)\n    at fulfilled (C:\\Users\\VIJAY L\\Desktop\\backend\\src\\api\\profile\\profile-repository.ts:5:58)\n    at processTicksAndRejections (node:internal/process/task_queues:95:5)","timestamp":"2024-10-10T04:28:31.536Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData?refStId=22","timestamp":"2024-10-10T04:28:34.161Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData?refStId=22","timestamp":"2024-10-10T04:28:34.211Z"}
+{"level":"error","message":"Error in userLogin: Profile data not found for refStId: 22","stack":"Error: Profile data not found for refStId: 22\n    at ProfileRepository.<anonymous> (C:\\Users\\VIJAY L\\Desktop\\backend\\src\\api\\profile\\profile-repository.ts:229:15)\n    at Generator.next (<anonymous>)\n    at fulfilled (C:\\Users\\VIJAY L\\Desktop\\backend\\src\\api\\profile\\profile-repository.ts:5:58)\n    at processTicksAndRejections (node:internal/process/task_queues:95:5)","timestamp":"2024-10-10T04:28:34.217Z"}
+{"level":"error","message":"Error in userLogin: Profile data not found for refStId: 22","stack":"Error: Profile data not found for refStId: 22\n    at ProfileRepository.<anonymous> (C:\\Users\\VIJAY L\\Desktop\\backend\\src\\api\\profile\\profile-repository.ts:229:15)\n    at Generator.next (<anonymous>)\n    at fulfilled (C:\\Users\\VIJAY L\\Desktop\\backend\\src\\api\\profile\\profile-repository.ts:5:58)\n    at processTicksAndRejections (node:internal/process/task_queues:95:5)","timestamp":"2024-10-10T04:28:34.249Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T04:28:42.383Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData?refStId=22","timestamp":"2024-10-10T04:28:43.920Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData?refStId=22","timestamp":"2024-10-10T04:28:43.943Z"}
+{"level":"error","message":"Error in userLogin: Profile data not found for refStId: 22","stack":"Error: Profile data not found for refStId: 22\n    at ProfileRepository.<anonymous> (C:\\Users\\VIJAY L\\Desktop\\backend\\src\\api\\profile\\profile-repository.ts:229:15)\n    at Generator.next (<anonymous>)\n    at fulfilled (C:\\Users\\VIJAY L\\Desktop\\backend\\src\\api\\profile\\profile-repository.ts:5:58)\n    at processTicksAndRejections (node:internal/process/task_queues:95:5)","timestamp":"2024-10-10T04:28:43.989Z"}
+{"level":"error","message":"Error in userLogin: Profile data not found for refStId: 22","stack":"Error: Profile data not found for refStId: 22\n    at ProfileRepository.<anonymous> (C:\\Users\\VIJAY L\\Desktop\\backend\\src\\api\\profile\\profile-repository.ts:229:15)\n    at Generator.next (<anonymous>)\n    at fulfilled (C:\\Users\\VIJAY L\\Desktop\\backend\\src\\api\\profile\\profile-repository.ts:5:58)\n    at processTicksAndRejections (node:internal/process/task_queues:95:5)","timestamp":"2024-10-10T04:28:44.005Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T04:28:57.496Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T04:29:00.503Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T04:29:00.540Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData?refStId=22","timestamp":"2024-10-10T04:29:06.501Z"}
+{"level":"error","message":"Error in userLogin: Profile data not found for refStId: 22","stack":"Error: Profile data not found for refStId: 22\n    at ProfileRepository.<anonymous> (C:\\Users\\VIJAY L\\Desktop\\backend\\src\\api\\profile\\profile-repository.ts:229:15)\n    at Generator.next (<anonymous>)\n    at fulfilled (C:\\Users\\VIJAY L\\Desktop\\backend\\src\\api\\profile\\profile-repository.ts:5:58)\n    at processTicksAndRejections (node:internal/process/task_queues:95:5)","timestamp":"2024-10-10T04:29:06.560Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T04:29:11.509Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T04:30:12.826Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T04:30:42.481Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T04:30:45.916Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T04:30:45.940Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T04:31:04.512Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T04:31:29.506Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T04:31:32.760Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T04:31:39.449Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T04:31:44.880Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T04:31:47.715Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T04:31:47.751Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T04:38:52.183Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T04:38:52.205Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T04:43:14.899Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T04:43:15.836Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T05:55:49.195Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T05:55:49.237Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T05:55:49.247Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T05:55:49.254Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T05:57:19.522Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T05:57:26.512Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T05:57:29.639Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T05:57:39.918Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T05:58:37.514Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T05:58:37.683Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T05:59:06.673Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T06:00:55.539Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T06:01:01.537Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T06:01:02.246Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T06:01:04.880Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T06:01:04.924Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T06:02:52.063Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T06:03:24.224Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T06:06:05.461Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T06:06:14.047Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T06:06:21.889Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T06:06:25.237Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T06:06:44.604Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T06:06:51.206Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T06:07:04.864Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T06:07:10.535Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T06:07:28.032Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T06:07:32.522Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T06:07:32.534Z"}
+{"level":"info","message":"Router----- line 17","timestamp":"2024-10-10T06:08:00.252Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/users/login","timestamp":"2024-10-10T06:08:00.253Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T06:08:06.769Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T06:08:07.002Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T06:11:24.031Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T06:11:52.003Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T06:11:52.035Z"}
+{"level":"info","message":"Router----- line 17","timestamp":"2024-10-10T06:13:01.166Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/users/login","timestamp":"2024-10-10T06:13:01.169Z"}
+{"level":"info","message":"Router - sign up page","timestamp":"2024-10-10T06:14:52.541Z"}
+{"level":"info","message":"Router - sign up page","timestamp":"2024-10-10T06:16:33.865Z"}
+{"level":"info","message":"Router - sign up page","timestamp":"2024-10-10T06:16:40.019Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T06:18:28.976Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T06:18:35.301Z"}
+{"level":"info","message":"Router----- line 17","timestamp":"2024-10-10T06:19:41.447Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/users/login","timestamp":"2024-10-10T06:19:41.449Z"}
+{"level":"info","message":"Router----- line 17","timestamp":"2024-10-10T06:28:09.582Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/users/login","timestamp":"2024-10-10T06:28:09.584Z"}
+{"level":"info","message":"Router----- line 17","timestamp":"2024-10-10T06:28:15.643Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/users/login","timestamp":"2024-10-10T06:28:15.644Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T06:31:43.886Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T06:32:15.065Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T06:32:23.494Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T06:32:28.654Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T06:32:33.040Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T06:33:26.060Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T06:33:47.830Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T06:34:04.884Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T06:35:23.129Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T06:35:34.959Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T06:36:11.153Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T06:36:24.894Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T06:36:33.664Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T06:37:24.087Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T06:37:31.662Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T06:37:37.492Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T06:38:10.477Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T06:38:22.270Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T06:38:42.927Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T06:38:45.651Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T06:38:51.472Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T06:38:54.393Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T06:40:55.595Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T06:41:05.137Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T06:45:03.864Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T06:50:58.089Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T06:52:08.026Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T07:00:44.133Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T07:01:19.476Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T07:01:19.498Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T07:01:21.650Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T07:01:22.033Z"}
+{"level":"info","message":"Router----- line 17","timestamp":"2024-10-10T07:01:39.355Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/users/login","timestamp":"2024-10-10T07:01:39.357Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T07:01:45.427Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T07:01:45.443Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T07:02:03.947Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T07:02:04.002Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T07:10:01.345Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T07:10:08.069Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T07:10:13.113Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T07:10:15.944Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T07:10:22.837Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T07:11:25.207Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T07:11:29.734Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T07:11:29.766Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T07:12:59.048Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T07:13:04.155Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T07:13:04.452Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T07:14:02.569Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T07:14:13.602Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T07:14:19.642Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T07:14:19.684Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T07:15:29.855Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T07:21:15.645Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T07:33:08.695Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T07:33:13.822Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T07:34:12.485Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T07:34:47.156Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T07:35:34.162Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T07:35:34.476Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T07:37:42.039Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T07:38:21.419Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T07:38:31.048Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T07:38:31.057Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T07:38:51.544Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T07:38:54.664Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T07:39:00.529Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T07:39:06.486Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T07:39:06.509Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T07:39:19.028Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T07:39:19.173Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T07:39:45.640Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T07:39:46.181Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T07:39:46.191Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T07:39:49.748Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T07:39:49.761Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T07:40:27.508Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T07:40:35.783Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T07:40:35.821Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T07:41:00.622Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T07:41:10.228Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T07:41:42.646Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T07:49:59.305Z"}
+{"level":"info","message":"Router----- line 17","timestamp":"2024-10-10T07:51:39.467Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/users/login","timestamp":"2024-10-10T07:51:39.471Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T07:51:50.834Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T07:51:50.863Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T07:52:35.815Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T07:52:42.727Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T07:52:42.986Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T07:53:08.620Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T07:53:12.960Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T07:53:13.020Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T07:53:25.659Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T07:53:29.819Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T07:53:34.889Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T07:55:23.674Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T07:57:00.892Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T08:58:42.767Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T08:58:47.458Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T08:58:47.475Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T08:59:17.482Z"}
+{"level":"info","message":"Router----- line 17","timestamp":"2024-10-10T08:59:17.698Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/users/login","timestamp":"2024-10-10T08:59:17.700Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T08:59:23.976Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T08:59:24.023Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T09:01:31.901Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T09:01:40.955Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T09:01:51.531Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T09:01:57.822Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T09:02:02.774Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T09:02:09.606Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T09:02:09.931Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T09:02:09.942Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T09:02:22.727Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T09:02:26.461Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T09:02:26.477Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T09:02:31.902Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T09:02:31.928Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T09:45:33.444Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T09:47:45.299Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T09:47:50.423Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T09:47:58.816Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T09:48:07.368Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T09:48:07.372Z"}
+{"level":"info","message":"Router----- line 17","timestamp":"2024-10-10T09:48:25.369Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/users/login","timestamp":"2024-10-10T09:48:25.372Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T09:48:31.381Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T09:48:31.422Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T09:48:43.144Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T09:48:43.166Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T09:49:32.584Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T09:49:32.606Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T09:49:41.103Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T09:49:41.138Z"}
+{"level":"info","message":"Router----- line 17","timestamp":"2024-10-10T09:49:53.442Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/users/login","timestamp":"2024-10-10T09:49:53.444Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T09:50:01.474Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T09:50:01.497Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T09:50:41.851Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T09:50:45.326Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T09:50:49.698Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T09:51:00.610Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T09:51:03.796Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T09:51:10.860Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T09:51:12.531Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T09:51:12.542Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T09:52:17.643Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T09:52:20.893Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T09:52:25.308Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T09:52:30.554Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T09:52:41.016Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T09:52:46.662Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T09:52:53.690Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T09:52:53.820Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T09:54:50.204Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T09:55:09.845Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T09:55:14.054Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T09:55:20.520Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T09:55:24.475Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T09:55:28.675Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T10:09:44.254Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T10:09:44.262Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T10:13:01.831Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T10:17:20.496Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T10:17:30.836Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T10:18:13.605Z"}
+{"level":"info","message":"Router----- line 17","timestamp":"2024-10-10T10:18:15.308Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/users/login","timestamp":"2024-10-10T10:18:15.310Z"}
+{"level":"info","message":"Router----- line 17","timestamp":"2024-10-10T10:18:15.333Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/users/login","timestamp":"2024-10-10T10:18:15.334Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T10:18:21.565Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T10:18:21.675Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T10:19:25.178Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T10:19:58.563Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T10:20:09.076Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T10:20:09.876Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T10:21:41.808Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T10:26:48.847Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T10:26:58.451Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T10:27:08.745Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T10:27:08.755Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T10:27:54.297Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T10:28:29.899Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T10:30:00.485Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T10:30:58.656Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T10:31:04.280Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T10:31:35.529Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T10:31:48.999Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T10:32:00.832Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T10:32:14.349Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T10:32:22.447Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T10:32:22.458Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T10:32:31.264Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T10:32:31.333Z"}
+{"level":"info","message":"Router----- line 17","timestamp":"2024-10-10T10:32:43.448Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/users/login","timestamp":"2024-10-10T10:32:43.450Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T10:32:49.319Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T10:32:49.355Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T10:32:57.472Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T10:32:57.482Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T10:33:36.754Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T10:34:34.659Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T10:34:39.087Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T10:34:45.459Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T10:34:50.908Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T10:34:54.057Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T10:35:02.224Z"}
+{"level":"info","message":"Router----- line 17","timestamp":"2024-10-10T10:36:40.909Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/users/login","timestamp":"2024-10-10T10:36:40.911Z"}
+{"level":"info","message":"Router----- line 17","timestamp":"2024-10-10T10:37:50.942Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/users/login","timestamp":"2024-10-10T10:37:50.943Z"}
+{"level":"info","message":"Router----- line 17","timestamp":"2024-10-10T10:37:50.949Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/users/login","timestamp":"2024-10-10T10:37:50.951Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T10:38:08.385Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T10:38:08.476Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T10:40:35.597Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T10:40:35.627Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T10:42:35.675Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T10:42:44.313Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T10:42:44.355Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T10:43:02.569Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T10:43:08.818Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T10:43:14.822Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T10:43:45.271Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T10:43:50.728Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T10:43:55.626Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T10:44:18.334Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T10:44:31.909Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T10:44:35.962Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T10:44:35.997Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T10:45:17.917Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T10:45:23.829Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T10:45:42.111Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T10:46:02.018Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T10:46:06.194Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T10:46:06.239Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T10:46:21.795Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T10:46:55.432Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T10:47:22.318Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T10:47:22.344Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T10:47:54.180Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T10:48:15.252Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T10:48:20.500Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T10:48:20.588Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T10:49:09.606Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T10:49:26.316Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T10:49:30.813Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T10:49:30.850Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T10:49:50.315Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T10:50:30.177Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T10:50:34.932Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T10:50:38.922Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T10:50:38.962Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T10:52:02.229Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T10:52:10.020Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T10:52:23.924Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T10:52:24.019Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T10:53:27.578Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T10:54:04.695Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T10:54:04.728Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T10:55:17.903Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T10:56:07.241Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T10:56:26.223Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T10:58:06.229Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T10:58:39.910Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T10:59:00.884Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T10:59:10.187Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T10:59:39.208Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T10:59:51.071Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T11:00:20.926Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T11:00:29.572Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T11:01:19.870Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T11:01:25.175Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T11:01:35.991Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T11:01:52.647Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T11:01:56.087Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T11:02:10.969Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T11:02:17.892Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T11:02:35.405Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T11:02:42.299Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T11:02:50.354Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T11:02:57.521Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T11:03:03.066Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T11:03:21.248Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T11:03:29.653Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T11:03:42.118Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T11:03:58.050Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T11:04:41.430Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T11:04:45.914Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T11:04:57.811Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T11:05:00.900Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T11:05:06.010Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T11:05:25.551Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T11:05:26.305Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T11:05:54.963Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T11:06:00.028Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T11:06:00.055Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T11:07:00.315Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T11:07:06.729Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T11:07:06.774Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T11:07:35.953Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T11:08:21.255Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T11:09:49.040Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T11:10:15.753Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T11:10:30.276Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T11:10:44.166Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T11:10:44.198Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T11:11:00.120Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T11:13:27.329Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T11:13:52.699Z"}
+{"level":"error","message":"Error in userLogin: Cannot read properties of undefined (reading 'userId')","stack":"TypeError: Cannot read properties of undefined (reading 'userId')\n    at ProfileResolver.<anonymous> (C:\\Users\\VIJAY L\\Desktop\\backend\\src\\api\\resolver.ts:66:33)\n    at Generator.next (<anonymous>)\n    at C:\\Users\\VIJAY L\\Desktop\\backend\\src\\api\\resolver.ts:8:71\n    at new Promise (<anonymous>)\n    at __awaiter (C:\\Users\\VIJAY L\\Desktop\\backend\\src\\api\\resolver.ts:4:12)\n    at ProfileResolver.userRegisterPageDataV1 (C:\\Users\\VIJAY L\\Desktop\\backend\\src\\api\\resolver.ts:58:16)\n    at UserProfileController.<anonymous> (C:\\Users\\VIJAY L\\Desktop\\backend\\src\\api\\controller.ts:236:42)\n    at Generator.next (<anonymous>)\n    at C:\\Users\\VIJAY L\\Desktop\\backend\\src\\api\\controller.ts:8:71\n    at new Promise (<anonymous>)","timestamp":"2024-10-10T11:13:52.726Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T11:13:52.767Z"}
+{"level":"error","message":"Error in userLogin: Cannot read properties of undefined (reading 'userId')","stack":"TypeError: Cannot read properties of undefined (reading 'userId')\n    at ProfileResolver.<anonymous> (C:\\Users\\VIJAY L\\Desktop\\backend\\src\\api\\resolver.ts:66:33)\n    at Generator.next (<anonymous>)\n    at C:\\Users\\VIJAY L\\Desktop\\backend\\src\\api\\resolver.ts:8:71\n    at new Promise (<anonymous>)\n    at __awaiter (C:\\Users\\VIJAY L\\Desktop\\backend\\src\\api\\resolver.ts:4:12)\n    at ProfileResolver.userRegisterPageDataV1 (C:\\Users\\VIJAY L\\Desktop\\backend\\src\\api\\resolver.ts:58:16)\n    at UserProfileController.<anonymous> (C:\\Users\\VIJAY L\\Desktop\\backend\\src\\api\\controller.ts:236:42)\n    at Generator.next (<anonymous>)\n    at C:\\Users\\VIJAY L\\Desktop\\backend\\src\\api\\controller.ts:8:71\n    at new Promise (<anonymous>)","timestamp":"2024-10-10T11:13:52.769Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T11:14:41.439Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T11:14:46.017Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T11:14:57.224Z"}
+{"level":"info","message":"Router----- line 17","timestamp":"2024-10-10T11:15:10.612Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/users/login","timestamp":"2024-10-10T11:15:10.613Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T11:15:21.587Z"}
+{"level":"error","message":"Error in userLogin: Cannot read properties of undefined (reading 'userId')","stack":"TypeError: Cannot read properties of undefined (reading 'userId')\n    at ProfileResolver.<anonymous> (C:\\Users\\VIJAY L\\Desktop\\backend\\src\\api\\resolver.ts:66:33)\n    at Generator.next (<anonymous>)\n    at C:\\Users\\VIJAY L\\Desktop\\backend\\src\\api\\resolver.ts:8:71\n    at new Promise (<anonymous>)\n    at __awaiter (C:\\Users\\VIJAY L\\Desktop\\backend\\src\\api\\resolver.ts:4:12)\n    at ProfileResolver.userRegisterPageDataV1 (C:\\Users\\VIJAY L\\Desktop\\backend\\src\\api\\resolver.ts:58:16)\n    at UserProfileController.<anonymous> (C:\\Users\\VIJAY L\\Desktop\\backend\\src\\api\\controller.ts:237:42)\n    at Generator.next (<anonymous>)\n    at C:\\Users\\VIJAY L\\Desktop\\backend\\src\\api\\controller.ts:8:71\n    at new Promise (<anonymous>)","timestamp":"2024-10-10T11:15:21.602Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T11:15:21.617Z"}
+{"level":"error","message":"Error in userLogin: Cannot read properties of undefined (reading 'userId')","stack":"TypeError: Cannot read properties of undefined (reading 'userId')\n    at ProfileResolver.<anonymous> (C:\\Users\\VIJAY L\\Desktop\\backend\\src\\api\\resolver.ts:66:33)\n    at Generator.next (<anonymous>)\n    at C:\\Users\\VIJAY L\\Desktop\\backend\\src\\api\\resolver.ts:8:71\n    at new Promise (<anonymous>)\n    at __awaiter (C:\\Users\\VIJAY L\\Desktop\\backend\\src\\api\\resolver.ts:4:12)\n    at ProfileResolver.userRegisterPageDataV1 (C:\\Users\\VIJAY L\\Desktop\\backend\\src\\api\\resolver.ts:58:16)\n    at UserProfileController.<anonymous> (C:\\Users\\VIJAY L\\Desktop\\backend\\src\\api\\controller.ts:237:42)\n    at Generator.next (<anonymous>)\n    at C:\\Users\\VIJAY L\\Desktop\\backend\\src\\api\\controller.ts:8:71\n    at new Promise (<anonymous>)","timestamp":"2024-10-10T11:15:21.619Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T11:15:50.718Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T11:24:24.456Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T11:24:33.869Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T11:24:33.886Z"}
+{"level":"error","message":"Error in userLogin: Cannot read properties of undefined (reading 'success')","stack":"TypeError: Cannot read properties of undefined (reading 'success')\n    at UserProfileController.<anonymous> (C:\\Users\\VIJAY L\\Desktop\\backend\\src\\api\\controller.ts:242:18)\n    at Generator.next (<anonymous>)\n    at fulfilled (C:\\Users\\VIJAY L\\Desktop\\backend\\src\\api\\controller.ts:5:58)\n    at processTicksAndRejections (node:internal/process/task_queues:95:5)","timestamp":"2024-10-10T11:24:34.060Z"}
+{"level":"error","message":"Error in userLogin: Cannot read properties of undefined (reading 'success')","stack":"TypeError: Cannot read properties of undefined (reading 'success')\n    at UserProfileController.<anonymous> (C:\\Users\\VIJAY L\\Desktop\\backend\\src\\api\\controller.ts:242:18)\n    at Generator.next (<anonymous>)\n    at fulfilled (C:\\Users\\VIJAY L\\Desktop\\backend\\src\\api\\controller.ts:5:58)\n    at processTicksAndRejections (node:internal/process/task_queues:95:5)","timestamp":"2024-10-10T11:24:34.078Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T11:25:29.142Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T11:25:49.867Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T11:25:49.887Z"}
+{"level":"error","message":"Error in userLogin: Cannot read properties of undefined (reading 'success')","stack":"TypeError: Cannot read properties of undefined (reading 'success')\n    at UserProfileController.<anonymous> (C:\\Users\\VIJAY L\\Desktop\\backend\\src\\api\\controller.ts:242:18)\n    at Generator.next (<anonymous>)\n    at fulfilled (C:\\Users\\VIJAY L\\Desktop\\backend\\src\\api\\controller.ts:5:58)\n    at processTicksAndRejections (node:internal/process/task_queues:95:5)","timestamp":"2024-10-10T11:25:49.960Z"}
+{"level":"error","message":"Error in userLogin: Cannot read properties of undefined (reading 'success')","stack":"TypeError: Cannot read properties of undefined (reading 'success')\n    at UserProfileController.<anonymous> (C:\\Users\\VIJAY L\\Desktop\\backend\\src\\api\\controller.ts:242:18)\n    at Generator.next (<anonymous>)\n    at fulfilled (C:\\Users\\VIJAY L\\Desktop\\backend\\src\\api\\controller.ts:5:58)\n    at processTicksAndRejections (node:internal/process/task_queues:95:5)","timestamp":"2024-10-10T11:25:49.973Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T11:26:14.074Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T11:26:21.012Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T11:27:21.554Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T11:27:41.782Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T11:27:57.140Z"}
+{"level":"error","message":"Error in userLogin: Cannot read properties of undefined (reading 'success')","stack":"TypeError: Cannot read properties of undefined (reading 'success')\n    at UserProfileController.<anonymous> (C:\\Users\\VIJAY L\\Desktop\\backend\\src\\api\\controller.ts:242:18)\n    at Generator.next (<anonymous>)\n    at fulfilled (C:\\Users\\VIJAY L\\Desktop\\backend\\src\\api\\controller.ts:5:58)\n    at processTicksAndRejections (node:internal/process/task_queues:95:5)","timestamp":"2024-10-10T11:27:57.327Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T11:27:58.509Z"}
+{"level":"error","message":"Error in userLogin: Cannot read properties of undefined (reading 'success')","stack":"TypeError: Cannot read properties of undefined (reading 'success')\n    at UserProfileController.<anonymous> (C:\\Users\\VIJAY L\\Desktop\\backend\\src\\api\\controller.ts:242:18)\n    at Generator.next (<anonymous>)\n    at fulfilled (C:\\Users\\VIJAY L\\Desktop\\backend\\src\\api\\controller.ts:5:58)\n    at processTicksAndRejections (node:internal/process/task_queues:95:5)","timestamp":"2024-10-10T11:27:58.567Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T11:28:01.712Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T11:28:01.719Z"}
+{"level":"error","message":"Error in userLogin: Cannot read properties of undefined (reading 'success')","stack":"TypeError: Cannot read properties of undefined (reading 'success')\n    at UserProfileController.<anonymous> (C:\\Users\\VIJAY L\\Desktop\\backend\\src\\api\\controller.ts:242:18)\n    at Generator.next (<anonymous>)\n    at fulfilled (C:\\Users\\VIJAY L\\Desktop\\backend\\src\\api\\controller.ts:5:58)\n    at processTicksAndRejections (node:internal/process/task_queues:95:5)","timestamp":"2024-10-10T11:28:01.762Z"}
+{"level":"error","message":"Error in userLogin: Cannot read properties of undefined (reading 'success')","stack":"TypeError: Cannot read properties of undefined (reading 'success')\n    at UserProfileController.<anonymous> (C:\\Users\\VIJAY L\\Desktop\\backend\\src\\api\\controller.ts:242:18)\n    at Generator.next (<anonymous>)\n    at fulfilled (C:\\Users\\VIJAY L\\Desktop\\backend\\src\\api\\controller.ts:5:58)\n    at processTicksAndRejections (node:internal/process/task_queues:95:5)","timestamp":"2024-10-10T11:28:01.771Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T11:28:03.702Z"}
+{"level":"error","message":"Error in userLogin: Cannot read properties of undefined (reading 'success')","stack":"TypeError: Cannot read properties of undefined (reading 'success')\n    at UserProfileController.<anonymous> (C:\\Users\\VIJAY L\\Desktop\\backend\\src\\api\\controller.ts:242:18)\n    at Generator.next (<anonymous>)\n    at fulfilled (C:\\Users\\VIJAY L\\Desktop\\backend\\src\\api\\controller.ts:5:58)\n    at processTicksAndRejections (node:internal/process/task_queues:95:5)","timestamp":"2024-10-10T11:28:03.895Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T11:28:04.007Z"}
+{"level":"error","message":"Error in userLogin: Cannot read properties of undefined (reading 'success')","stack":"TypeError: Cannot read properties of undefined (reading 'success')\n    at UserProfileController.<anonymous> (C:\\Users\\VIJAY L\\Desktop\\backend\\src\\api\\controller.ts:242:18)\n    at Generator.next (<anonymous>)\n    at fulfilled (C:\\Users\\VIJAY L\\Desktop\\backend\\src\\api\\controller.ts:5:58)\n    at processTicksAndRejections (node:internal/process/task_queues:95:5)","timestamp":"2024-10-10T11:28:04.062Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T11:28:20.705Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T11:28:27.858Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T11:28:32.215Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T11:28:43.418Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T11:28:43.431Z"}
+{"level":"error","message":"Error in userLogin: Cannot read properties of undefined (reading 'success')","stack":"TypeError: Cannot read properties of undefined (reading 'success')\n    at UserProfileController.<anonymous> (C:\\Users\\VIJAY L\\Desktop\\backend\\src\\api\\controller.ts:242:18)\n    at Generator.next (<anonymous>)\n    at fulfilled (C:\\Users\\VIJAY L\\Desktop\\backend\\src\\api\\controller.ts:5:58)\n    at processTicksAndRejections (node:internal/process/task_queues:95:5)","timestamp":"2024-10-10T11:28:43.488Z"}
+{"level":"error","message":"Error in userLogin: Cannot read properties of undefined (reading 'success')","stack":"TypeError: Cannot read properties of undefined (reading 'success')\n    at UserProfileController.<anonymous> (C:\\Users\\VIJAY L\\Desktop\\backend\\src\\api\\controller.ts:242:18)\n    at Generator.next (<anonymous>)\n    at fulfilled (C:\\Users\\VIJAY L\\Desktop\\backend\\src\\api\\controller.ts:5:58)\n    at processTicksAndRejections (node:internal/process/task_queues:95:5)","timestamp":"2024-10-10T11:28:43.584Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T11:29:46.999Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T11:29:53.133Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T11:29:55.720Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T11:30:02.056Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T11:30:07.572Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T11:30:07.585Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T11:32:01.345Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T11:32:06.832Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T11:32:07.007Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T11:33:04.031Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T11:33:10.590Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T11:33:10.604Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T11:34:01.363Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T11:34:32.035Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T11:34:32.050Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T11:34:39.821Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T11:34:40.452Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T11:35:23.197Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T11:35:25.912Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T11:35:28.027Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T11:35:31.343Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T11:35:31.522Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T11:35:35.643Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T11:35:39.064Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T11:35:39.742Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T11:35:41.312Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T11:35:45.251Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T11:35:46.548Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T11:35:47.599Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T11:37:18.670Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T11:37:21.202Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T11:37:21.580Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T11:37:22.142Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T11:37:22.615Z"}
+{"level":"info","message":"Router----- line 17","timestamp":"2024-10-10T11:37:27.601Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/users/login","timestamp":"2024-10-10T11:37:27.602Z"}
+{"level":"info","message":"Router----- line 17","timestamp":"2024-10-10T11:37:27.631Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/users/login","timestamp":"2024-10-10T11:37:27.632Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T11:39:58.675Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T11:40:01.823Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T11:41:15.726Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T11:41:44.074Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T11:41:56.115Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T11:41:56.457Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T11:42:19.767Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T11:42:19.950Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T11:42:21.752Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T11:42:22.304Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T11:42:25.801Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T11:42:26.300Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T11:42:47.777Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T11:42:48.744Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T11:42:51.757Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T11:42:53.085Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T11:42:56.285Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T11:42:57.344Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T11:42:59.337Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T11:43:01.380Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T11:43:02.442Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T11:43:02.455Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T11:45:20.794Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T11:45:21.508Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T11:49:14.895Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T11:49:14.911Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T11:49:31.993Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T11:49:32.003Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T11:49:43.569Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T11:51:11.474Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T11:51:17.071Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T11:51:33.636Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T11:51:34.407Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T11:52:06.385Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T11:52:34.628Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T11:52:42.526Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T11:52:50.491Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T11:53:09.315Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T11:53:17.373Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T11:53:21.854Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T11:53:30.231Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T11:53:39.758Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T11:53:46.671Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T11:55:43.877Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T11:55:44.926Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T11:55:53.443Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T11:56:02.323Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T11:56:12.083Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T11:56:12.164Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T11:56:50.240Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T11:56:50.820Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T11:56:52.092Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T11:57:20.323Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T11:57:20.740Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T11:57:40.930Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T11:57:40.935Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T11:57:59.874Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T11:58:00.151Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T11:58:01.745Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T11:58:02.175Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T11:58:06.751Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T11:58:08.404Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T11:58:12.483Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T11:58:12.762Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T11:58:17.006Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T11:58:17.642Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T12:00:04.968Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T12:00:05.509Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T12:00:06.871Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T12:00:08.034Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T12:00:15.179Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T12:00:15.764Z"}
+{"level":"info","message":"Router-----store Register Form Data","timestamp":"2024-10-10T12:00:28.710Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/RegisterData","timestamp":"2024-10-10T12:00:28.711Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T12:01:19.751Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T12:01:44.046Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T12:02:03.912Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T12:02:34.887Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T12:02:36.499Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T12:02:36.511Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T12:02:55.714Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T12:02:59.316Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T12:03:09.899Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T12:03:36.635Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T12:03:41.512Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T12:03:41.526Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T12:03:50.860Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T12:04:00.521Z"}
+{"level":"info","message":"Router-----store Register Form Data","timestamp":"2024-10-10T12:04:07.525Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/RegisterData","timestamp":"2024-10-10T12:04:07.525Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T12:04:11.216Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T12:04:11.289Z"}
+{"level":"info","message":"Router-----store Register Form Data","timestamp":"2024-10-10T12:04:29.055Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/RegisterData","timestamp":"2024-10-10T12:04:29.057Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T12:04:41.098Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T12:04:41.243Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T12:05:49.463Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T12:05:56.081Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T12:06:05.335Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T12:06:12.851Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T12:06:21.765Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T12:06:30.226Z"}
+{"level":"info","message":"Router-----store Register Form Data","timestamp":"2024-10-10T12:08:01.028Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/RegisterData","timestamp":"2024-10-10T12:08:01.030Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T12:08:52.119Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T12:09:01.188Z"}
+{"level":"info","message":"Router-----store Register Form Data","timestamp":"2024-10-10T12:09:33.961Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/RegisterData","timestamp":"2024-10-10T12:09:33.964Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T12:10:37.065Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T12:11:24.355Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T12:11:40.647Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T12:11:51.869Z"}
+{"level":"info","message":"Router-----store Register Form Data","timestamp":"2024-10-10T12:11:58.487Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/RegisterData","timestamp":"2024-10-10T12:11:58.488Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T12:13:04.830Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T12:13:08.980Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T12:13:13.417Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T12:13:18.655Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T12:13:22.980Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T12:13:31.962Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T12:13:38.626Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T12:13:41.278Z"}
+{"level":"info","message":"Router-----store Register Form Data","timestamp":"2024-10-10T12:14:12.610Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/RegisterData","timestamp":"2024-10-10T12:14:12.611Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T12:23:48.653Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T12:24:03.648Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T12:24:08.090Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T12:24:14.304Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T12:24:20.996Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T12:24:45.846Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T12:24:54.967Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T12:25:11.204Z"}
+{"level":"info","message":"Router-----store Register Form Data","timestamp":"2024-10-10T12:29:27.711Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/RegisterData","timestamp":"2024-10-10T12:29:27.712Z"}
+{"level":"info","message":"Router-----store Register Form Data","timestamp":"2024-10-10T12:29:58.152Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/RegisterData","timestamp":"2024-10-10T12:29:58.153Z"}
+{"level":"info","message":"Router----- line 17","timestamp":"2024-10-10T12:30:24.270Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/users/login","timestamp":"2024-10-10T12:30:24.272Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T12:30:34.859Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T12:30:35.158Z"}
+{"level":"info","message":"Router-----store Register Form Data","timestamp":"2024-10-10T12:31:58.284Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/RegisterData","timestamp":"2024-10-10T12:31:58.285Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T12:32:51.972Z"}
+{"level":"info","message":"Router-----store Register Form Data","timestamp":"2024-10-10T12:33:09.387Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/RegisterData","timestamp":"2024-10-10T12:33:09.389Z"}
+{"level":"info","message":"Router-----store Register Form Data","timestamp":"2024-10-10T12:33:38.301Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/RegisterData","timestamp":"2024-10-10T12:33:38.302Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T12:34:37.133Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T12:34:37.144Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T12:35:29.558Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T12:35:29.572Z"}
+{"level":"info","message":"Router----- line 17","timestamp":"2024-10-10T12:35:41.250Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/users/login","timestamp":"2024-10-10T12:35:41.251Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T12:35:46.443Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T12:35:46.711Z"}
+{"level":"info","message":"Router-----store Register Form Data","timestamp":"2024-10-10T12:35:53.658Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/RegisterData","timestamp":"2024-10-10T12:35:53.659Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T12:36:27.692Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T12:36:27.849Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T12:37:01.915Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T12:37:03.177Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T12:37:03.819Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T12:37:23.845Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T12:37:23.941Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T12:37:24.113Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T12:37:26.975Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T12:37:27.099Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T12:37:40.560Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T12:37:40.563Z"}
+{"level":"info","message":"Router-----store Register Form Data","timestamp":"2024-10-10T12:38:55.336Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/RegisterData","timestamp":"2024-10-10T12:38:55.337Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T12:39:23.806Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T12:39:23.841Z"}
+{"level":"info","message":"Router - sign up page","timestamp":"2024-10-10T12:40:23.324Z"}
+{"level":"info","message":"Router----- line 17","timestamp":"2024-10-10T12:40:30.845Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/users/login","timestamp":"2024-10-10T12:40:30.846Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T12:40:36.119Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T12:40:36.533Z"}
+{"level":"info","message":"Router-----store Register Form Data","timestamp":"2024-10-10T12:41:51.116Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/RegisterData","timestamp":"2024-10-10T12:41:51.117Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T12:42:04.606Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T12:42:05.566Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T12:42:06.637Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T12:42:07.002Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T12:42:08.019Z"}
+{"level":"info","message":"Router-----store Register Form Data","timestamp":"2024-10-10T12:42:08.492Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/RegisterData","timestamp":"2024-10-10T12:42:08.493Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T12:42:26.704Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T12:42:26.798Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T12:42:27.722Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T12:44:04.581Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T12:44:04.803Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T12:44:14.682Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T12:44:15.062Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T12:44:18.847Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T12:44:21.082Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T12:44:37.093Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T12:44:37.098Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T12:44:37.382Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T12:44:48.220Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T12:44:49.035Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T12:45:01.880Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T12:45:02.257Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T12:45:26.939Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T12:45:27.973Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T12:45:28.575Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T12:45:31.069Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6200/api/v1/profile/passRegisterData","timestamp":"2024-10-10T12:45:31.088Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-10T12:57:15.780Z"}

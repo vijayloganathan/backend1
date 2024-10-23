@@ -1,5 +1,5 @@
 export const fetchClientData = `
-SELECT DISTINCT ON (u."refSCustId") 
+SELECT DISTINCT ON (u."refSCustId")
     u."refStId",
     u."refSCustId",
     u."refStFName",
@@ -8,27 +8,68 @@ SELECT DISTINCT ON (u."refSCustId")
     t."transTypeId",
     uc."refCtMobile",
     uc."refCtEmail",
-    u."refStLName"
-    
-FROM 
+    u."refStLName",
+    us."resStatusId",
+    us."refFollowUpId",
+    us."refComments"
+FROM
     "users" u
-JOIN 
-    public."refUserCommunication" uc 
-ON 
-    CAST(u."refStId" AS INTEGER) = uc."refStId"
-JOIN 
-    public."refUserTxnHistory" t 
-ON 
-    CAST(u."refStId" AS INTEGER) = t."refStId"
-WHERE 
+FULL JOIN
+    public."refUserCommunication" uc ON CAST(u."refStId" AS INTEGER) = uc."refStId"
+FULL JOIN
+    public."refUserTxnHistory" t ON CAST(u."refStId" AS INTEGER) = t."refStId"
+FULL JOIN
+    public."refuserstatus" us ON CAST(u."refStId" AS INTEGER) = us."refStId"  -- Corrected here
+WHERE
     u."refUtId" = $1
     AND t."transTypeId" = $2
-ORDER BY 
-    u."refSCustId", 
-    t."transTime";  
-
+ORDER BY
+    u."refSCustId",
+    t."transTime";
 `;
-//we want to set the transTypeId as 3 to get the correct the data for the above query.
+
+// export const fetchClientData = `
+// SELECT DISTINCT ON (u."refSCustId")
+//     u."refStId",
+//     u."refSCustId",
+//     u."refStFName",
+//     u."refUtId",
+//     t."transTime",
+//     t."transTypeId",
+//     uc."refCtMobile",
+//     uc."refCtEmail",
+//     u."refStLName"
+// FROM
+//     "users" u
+// JOIN
+//     public."refUserCommunication" uc
+// ON
+//     CAST(u."refStId" AS INTEGER) = uc."refStId"
+// JOIN
+//     public."refUserTxnHistory" t
+// ON
+//     CAST(u."refStId" AS INTEGER) = t."refStId"
+// WHERE
+//     u."refUtId" IN ($1)
+//     AND t."transTypeId" IN ($2)
+// ORDER BY
+//     u."refSCustId",
+//     t."transTime";
+// `;
+
+export const fetchClientData1 = `
+SELECT DISTINCT ON ("refSCustId") *
+FROM public.users u
+FULL JOIN public."refUserCommunication" uc
+  ON CAST(u."refStId" AS INTEGER) = uc."refStId"
+FULL JOIN public."refUserAddress" ad
+  ON CAST(u."refStId" AS INTEGER) = ad."refStId"
+FULL JOIN public."refUserTxnHistory" th
+  ON CAST(u."refStId" AS INTEGER) = th."refStId"
+WHERE "refUtId" IN (3, 6)  
+  AND "reftherapist" IS NOT NULL
+ORDER BY "refSCustId";
+`;
 
 export const fetchlabel = `
  SELECT *
@@ -105,7 +146,7 @@ export const getRegisterCount = `WITH user_data AS (
     FROM public.users u
     JOIN public."refUserTxnHistory" th
     ON CAST(u."refStId" AS INTEGER) = th."refStId"
-    WHERE u."refUtId" = 2
+    WHERE u."refUtId" = 3
 )
 SELECT 
     COUNT(CASE WHEN u."transTime"::date = CURRENT_DATE THEN 1 END) AS count_today,
@@ -119,27 +160,69 @@ export const getUserType = 'SELECT "refUtId" FROM  users WHERE "refStId"=$1;';
 
 export const getStaffRestriction = `SELECT "columnName" FROM public."refRestrictions" WHERE "refUtId"=$1`;
 
-export const getUserCount = `SELECT 
+export const getUserCount = `WITH total_count AS (
+    SELECT COUNT(*) AS total
+    FROM public."users"
+    WHERE "refUtId" IN (1, 2, 3, 5, 6)
+)
+SELECT 
     rut."refUserType" AS user_type_label,
-    COUNT(u."refUtId") AS count
+    COUNT(u."refUtId") AS count,
+    ROUND(COUNT(u."refUtId")::DECIMAL / total.total * 100, 2) AS percentage
 FROM 
     public."users" u
 JOIN 
     public."refUserType" rut ON u."refUtId" = rut."refUtId"
+JOIN 
+    total_count total ON true
 WHERE 
     u."refUtId" IN (1, 2, 3, 5, 6)
 GROUP BY 
-    rut."refUserType";
+    rut."refUserType", total.total;
+
 `;
 
-export const getStaffCount=`SELECT 
+export const getStaffCount = `WITH total_count AS (
+    SELECT COUNT(*) AS total
+    FROM public."users"
+    WHERE "refUtId" IN (4,8,10)
+)
+SELECT 
     rut."refUserType" AS user_type_label,
-    COUNT(u."refUtId") AS count 
+    COUNT(u."refUtId") AS count,
+    ROUND(COUNT(u."refUtId")::DECIMAL / total.total * 100, 2) AS percentage
 FROM 
     public."users" u
 JOIN 
     public."refUserType" rut ON u."refUtId" = rut."refUtId"
+JOIN 
+    total_count total ON true
 WHERE 
-    u."refUtId" IN (4, 8)
+    u."refUtId" IN (4,8,10)
 GROUP BY 
-    rut."refUserType";`
+    rut."refUserType", total.total;`;
+
+export const therapistUserData = `WITH user_data AS (
+    SELECT DISTINCT ON (u."refSCustId") 
+        u.*, th."transTime"
+    FROM public.users u
+    JOIN public."refUserTxnHistory" th
+    ON CAST(u."refStId" AS INTEGER) = th."refStId"
+    WHERE u."refUtId" = 2
+)
+SELECT 
+    COUNT(CASE WHEN u."transTime"::date = CURRENT_DATE THEN 1 END) AS count_today,
+    COUNT(CASE WHEN u."transTime"::date != CURRENT_DATE THEN 1 END) AS count_other_days
+FROM user_data u;`;
+
+export const getRecentFormData = `SELECT * 
+FROM public.users u
+JOIN (
+    SELECT DISTINCT ON (th."refStId") *
+    FROM public."refUserTxnHistory" th
+    WHERE th."transTime"::DATE = CURRENT_DATE
+    ORDER BY th."refStId", th."transTime" DESC
+) th ON CAST(u."refStId" AS INTEGER) = th."refStId"
+WHERE u."refUtId" = 2
+LIMIT 5;
+`;

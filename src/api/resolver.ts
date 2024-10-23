@@ -26,6 +26,28 @@ export class Resolver {
   ): Promise<any> {
     return await this.userRepository.validateUserNameV1(user_data, domain_code);
   }
+
+  public async userDashBoardDataV1(
+    user_data: any,
+    domain_code: any
+  ): Promise<any> {
+    return await this.userRepository.userDashBoardDataV1(
+      user_data,
+      domain_code
+    );
+  }
+  public async userProfileDataV1(
+    user_data: any,
+    domain_code: any
+  ): Promise<any> {
+    return await this.userRepository.userProfileDataV1(user_data, domain_code);
+  }
+  public async userProfileUpdateV1(
+    user_data: any,
+    domain_code: any
+  ): Promise<any> {
+    return await this.userRepository.userProfileUpdateV1(user_data, domain_code);
+  }
 }
 
 export class ProfileResolver {
@@ -154,8 +176,29 @@ export class DirectorResolver {
   public async userDataV1(user_data: any, domain_code: any): Promise<any> {
     return await this.DirectorRepository.userDataV1(user_data, domain_code);
   }
+  public async therapistApprovalDataV1(
+    user_data: any,
+    domain_code: any
+  ): Promise<any> {
+    return await this.DirectorRepository.therapistApprovalDataV1(
+      user_data,
+      domain_code
+    );
+  }
+  public async approvalButtonV1(
+    user_data: any,
+    domain_code: any
+  ): Promise<any> {
+    return await this.DirectorRepository.approvalButtonV1(
+      user_data,
+      domain_code
+    );
+  }
   public async userTypeLabelV1(user_data: any, domain_code: any): Promise<any> {
-    return await this.DirectorRepository.userTypeLabelV1(user_data, domain_code);
+    return await this.DirectorRepository.userTypeLabelV1(
+      user_data,
+      domain_code
+    );
   }
   public async addEmployeeV1(user_data: any, domain_code: any): Promise<any> {
     return await this.DirectorRepository.addEmployeeV1(user_data, domain_code);

@@ -1,5 +1,9 @@
 export const queryStaffDetails = `SELECT DISTINCT ON (u."refSCustId") * 
 FROM public.users u
+FULL JOIN public."refUserCommunication" uc
+  ON CAST(u."refStId" AS INTEGER) = uc."refStId"
+FULL JOIN public."refUserAddress" ad
+  ON CAST(u."refStId" AS INTEGER) = ad."refStId"
 WHERE u."refUtId" IN (4,8,10); `;
 
 export const getUserStatusLabel = `SELECT * FROM public."refUserType"`;
@@ -53,4 +57,31 @@ export const updateHistoryQuery = `
     "transTypeId", "transTime", "refStId","refUpdatedBy"
   ) VALUES ($1, $2, $3, $4)
   RETURNING *;
+`;
+
+export const updateHistoryQuery1 = `
+  INSERT INTO public."refUserTxnHistory" (
+    "transTypeId","transData","refStId", "transTime", "refUpdatedBy"
+  ) VALUES ($1, $2, $3, $4, $5)
+  RETURNING *;
+`;
+
+export const fetchFormSubmitedData = `SELECT DISTINCT ON ("refSCustId") *
+FROM public.users u
+FULL JOIN public."refUserCommunication" uc
+  ON CAST(u."refStId" AS INTEGER) = uc."refStId"
+FULL JOIN public."refUserAddress" ad
+  ON CAST(u."refStId" AS INTEGER) = ad."refStId"
+FULL JOIN public."refUserTxnHistory" th
+  ON CAST(u."refStId" AS INTEGER) = th."refStId"
+WHERE "refUtId" = 2  
+  AND "reftherapist" IS NULL
+ORDER BY "refSCustId";`;
+
+export const updateUserType = `
+ UPDATE public."users"
+SET 
+  "refUtId" = $2,"reftherapist" =$3
+WHERE "refStId" = $1
+RETURNING *;
 `;

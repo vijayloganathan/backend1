@@ -12,6 +12,12 @@ import {
   getSingInCount,
   getFollowUpCount,
   getRegisterResult,
+  getUserType,
+  getProfileData,
+  fetchPresentHealthProblem,
+  getCommunicationType,
+  updateProfileAddressQuery,
+  updateHistoryQuery1,
 } from "./query";
 import { encrypt } from "../../helper/encrypt";
 import { v4 as uuidv4 } from "uuid";
@@ -47,8 +53,9 @@ export class UserRepository {
         const userData = await executeQuery(selectUserData, refStId);
 
         const signinCount = await executeQuery(getSingInCount, refStId);
-        const status1 = signinCount.length > 0 ? signinCount[0].status : null;
+        console.log("signinCount", signinCount);
         const followUpCount = await executeQuery(getFollowUpCount, refStId);
+        console.log("followUpCount", followUpCount);
         const status2 =
           followUpCount.length > 0 ? followUpCount[0].status : null;
 
@@ -60,7 +67,7 @@ export class UserRepository {
           result = false;
         }
         const registerBtn = {
-          signUpCount: status1,
+          signUpCount: signinCount[0].result,
           followUpCount: result,
           refUtId: userData,
         };
@@ -250,8 +257,9 @@ export class UserRepository {
       const user = await executeQuery(selectUserData, id);
 
       const signinCount = await executeQuery(getSingInCount, id);
-      const status1 = signinCount.length > 0 ? signinCount[0].status : null;
+      console.log("signinCount", signinCount);
       const followUpCount = await executeQuery(getFollowUpCount, id);
+      console.log("followUpCount", followUpCount);
       const status2 = followUpCount.length > 0 ? followUpCount[0].status : null;
 
       const getRegisterCount = await executeQuery(getRegisterResult, id);
@@ -262,7 +270,7 @@ export class UserRepository {
         result = false;
       }
       const registerBtn = {
-        signUpCount: status1,
+        signUpCount: signinCount[0].result,
         followUpCount: result,
         refUtId: userData,
       };
@@ -286,6 +294,267 @@ export class UserRepository {
       );
     } catch (error) {
       console.error("Error in User Token Validation:", error);
+      throw error;
+    }
+  }
+
+  public async userDashBoardDataV1(
+    userData: any
+    // decodedToken: number
+  ): Promise<any> {
+    try {
+      // const refStId = decodedToken;
+      const refStId = 78;
+      const userType = await executeQuery(getUserType, [refStId]);
+      let refDashBoardData = {};
+
+      const tokenData = {
+        id: refStId,
+      };
+
+      const token = generateToken(tokenData, true);
+
+      return encrypt(
+        {
+          success: true,
+          message: "DashBoard Data Passed Successfully",
+          token: token,
+          data: refDashBoardData,
+        },
+        false
+      );
+    } catch (error) {
+      console.error("Error in Dashboard Data Passing:", error);
+      throw error;
+    }
+  }
+  public async userProfileDataV1(
+    userData: any
+    // decodedToken: number
+  ): Promise<any> {
+    // const refStId = decodedToken;
+    try {
+      let profileData = {};
+      const Datas = await executeQuery(getProfileData, [78]);
+      const Data = Datas[0];
+      let addresstype = false;
+      if (Data.refAdAdd1Type == 3) {
+        addresstype = true;
+      }
+
+      function formatDate(isoDate: any) {
+        const date = new Date(isoDate); // Create a new Date object
+        const day = String(date.getDate()).padStart(2, "0"); // Get the day and pad with zero if needed
+        const month = String(date.getMonth() + 1).padStart(2, "0"); // Get the month (0-based) and pad with zero
+        const year = date.getFullYear(); // Get the full year
+
+        return `${year}-${month}-${day}`; // Return formatted date
+      }
+
+      const address = {
+        addresstype: addresstype,
+        refAdAdd1: Data.refAdAdd1,
+        refAdArea1: Data.refAdArea1,
+        refAdCity1: Data.refAdCity1,
+        refAdState1: Data.refAdState1,
+        refAdPincode1: Data.refAdPincode1,
+        refAdAdd2: Data.refAdAdd2,
+        refAdArea2: Data.refAdArea2,
+        refAdCity2: Data.refAdCity2,
+        refAdState2: Data.refAdState2,
+        refAdPincode2: Data.refAdPincode2,
+      };
+
+      profileData = { ...profileData, address };
+
+      const personalData = {
+        refSCustId: Data.refSCustId,
+        refStFName: Data.refStFName,
+        refStLName: Data.refStLName,
+        refStMName: Data.refStMName,
+        refStDOB: formatDate(Data.refStDOB),
+        refStSex: Data.refStSex,
+        refStAge: Data.refStAge,
+        refQualification: Data.refQualification,
+        refOccupation: Data.refOccupation,
+        refProfilePath: Data.refProfilePath,
+        refguardian: Data.refguardian,
+        refUserName: Data.refUserName,
+      };
+
+      profileData = { ...profileData, personalData };
+
+      const generalhealth = {
+        refHeight: Data.refHeight,
+        refWeight: Data.refWeight,
+        refBlood: Data.refBlood,
+        refBMI: Data.refBMI,
+        refBP: Data.refBP,
+        refRecentInjuries: Data.refRecentInjuries,
+        refRecentInjuriesReason: Data.refRecentInjuriesReason,
+        refRecentFractures: Data.refRecentFractures,
+        refRecentFracturesReason: Data.refRecentFracturesReason,
+        refOthers: Data.refOthers,
+        refElse: Data.refElse,
+      };
+
+      profileData = { ...profileData, generalhealth };
+
+      const presentHealth = {
+        refPresentHealth: Data.refPerHealthId,
+        refOtherActivities: Data.refOtherActivities,
+        refMedicalDetails: Data.refMedicalDetails,
+        refUnderPhysicalCare: Data.refUnderPhysCare,
+        refDoctor: Data.refDrName,
+        refHospital: Data.refHospital,
+        refBackPain: Data.refBackpain,
+        refProblem: Data.refProblem,
+        refPastHistory: Data.refPastHistory,
+        refFamilyHistory: Data.refFamilyHistory,
+        refAnythingelse: Data.refAnythingelse,
+      };
+
+      profileData = { ...profileData, presentHealth };
+
+      const communication = {
+        refCtMobile: Data.refCtMobile,
+        refCtEmail: Data.refCtEmail,
+        refCtWhatsapp: Data.refCtWhatsapp,
+        refUcPreference: Data.refUcPreference,
+      };
+
+      profileData = { ...profileData, communication };
+
+      const healthResult = await executeQuery(fetchPresentHealthProblem, []);
+      const presentHealthProblem = healthResult.reduce((acc: any, row: any) => {
+        acc[row.refHealthId] = row.refHealth;
+        return acc;
+      }, {});
+
+      profileData = { ...profileData, presentHealthProblem };
+
+      const modeOfCommunicationResult = await executeQuery(
+        getCommunicationType,
+        []
+      );
+      const modeOfCommunication = modeOfCommunicationResult.reduce(
+        (acc: any, row: any) => {
+          acc[row.refCtId] = row.refCtText;
+          return acc;
+        },
+        {}
+      );
+
+      profileData = { ...profileData, modeOfCommunication };
+
+      const tokenData = {
+        id: 78,
+      };
+
+      const token = generateToken(tokenData, true);
+      return encrypt(
+        {
+          success: true,
+          message: "profile Data Is Passed Successfully",
+          token: token,
+          data: profileData,
+        },
+        false
+      );
+    } catch (error) {
+      console.error("Error in Dashboard Data Passing:", error);
+      throw error;
+    }
+  }
+  public async userProfileUpdateV1(
+    userData: any
+    // decodedToken: number
+  ): Promise<any> {
+    // const refStId = decodedToken;
+    try {
+      // Loop through each section of userData (address, personalData, generalhealth)
+      for (const section in userData) {
+        if (userData.hasOwnProperty(section)) {
+          for (const key in userData[section]) {
+            switch (key) {
+              case "address":
+                let refAdAdd1Type: number = 3;
+                let refAdAdd2Type: number = 0;
+
+                if (userData.address.addresstype == false) {
+                  refAdAdd1Type = 1;
+                  refAdAdd2Type = 2;
+                }
+
+                const params = [
+                  userData.refStId,
+                  refAdAdd1Type,
+                  userData.address.refAdAdd1,
+                  userData.address.refAdArea1,
+                  userData.address.refAdCity1,
+                  userData.address.refAdState1,
+                  userData.address.refAdPincode1,
+                  refAdAdd2Type,
+                  userData.address.refAdAdd2,
+                  userData.address.refAdArea2,
+                  userData.address.refAdCity2,
+                  userData.address.refAdState2,
+                  userData.address.refAdPincode2,
+                ];
+                const userResult = await executeQuery(
+                  updateProfileAddressQuery,
+                  params
+                );
+                if (userResult.length > 0) {
+                  const historyData = [
+                    9,
+                    params,
+                    userData.refStId,
+                    new Date().toLocaleString(),
+                    "user",
+                  ];
+
+                  const updateHistoryQueryResult = await executeQuery(
+                    updateHistoryQuery1,
+                    historyData
+                  );
+                  if (!updateHistoryQueryResult) {
+                    return false;
+                  }
+                }
+                break;
+              case "personalData":
+                break;
+              case "generalhealth":
+                break;
+              case "presentHealth":
+                break;
+              case "communication":
+                break;
+
+              default:
+                console.log("Some Miss Match Restiction Passed");
+                break;
+            }
+          }
+        }
+      }
+
+      const tokenData = {
+        id: 78,
+      };
+
+      const token = generateToken(tokenData, true);
+      return encrypt(
+        {
+          success: true,
+          message: "Profile data passed successfully",
+          token: token,
+        },
+        false
+      );
+    } catch (error) {
+      console.error("Error in Dashboard Data Passing:", error);
       throw error;
     }
   }

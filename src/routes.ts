@@ -4,6 +4,7 @@ import {
   UserProfile,
   StaffRoutes,
   DirectorRoutes,
+  UserPageRoutes,
 } from "./api/routes";
 // import StaffRoutes from "./api/staff/routes";
 
@@ -13,5 +14,6 @@ export default class Router {
     await new UserProfile().register(server);
     await new StaffRoutes().register(server);
     await new DirectorRoutes().register(server);
+    await new UserPageRoutes().register(server);
   }
 }

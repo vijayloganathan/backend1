@@ -14,8 +14,8 @@ import {
   getUserType,
   getUserCount,
   getStaffCount,
-
-  // fetchLables,
+  getRecentFormData,
+  fetchClientData1,
 } from "./query";
 import { encrypt } from "../../helper/encrypt";
 import { generateToken, decodeToken } from "../../helper/token";
@@ -26,15 +26,12 @@ export class StaffRepository {
     // decodedToken: number
   ): Promise<any> {
     try {
-      
       // const refStId = decodedToken;
       const refStId = 3;
       const userType = await executeQuery(getUserType, [refStId]);
       const refUserType = userType[0];
       let refDashBoardData = {};
-      const staffRestriction = await executeQuery(getStaffRestriction, [
-        refUserType.refUtId,
-      ]);
+      const staffRestriction = await executeQuery(getStaffRestriction, [7]);
       const restrictionLabel = staffRestriction.reduce((acc, item, index) => {
         acc[index + 1] = item.columnName; // Use index + 1 for 1-based keys
         return acc;
@@ -50,6 +47,12 @@ export class StaffRepository {
           case "registered":
             const registerCount = await executeQuery(getRegisterCount, []);
             refDashBoardData = { ...refDashBoardData, registerCount };
+            const registerSampleData = await executeQuery(
+              getRecentFormData,
+              []
+            );
+            refDashBoardData = { ...refDashBoardData, registerSampleData };
+
           case "signedup":
             const signUpCount = await executeQuery(getSignUpCount, []);
             refDashBoardData = { ...refDashBoardData, signUpCount };
@@ -77,7 +80,14 @@ export class StaffRepository {
             console.log("This For Notes");
             break;
           case "restrictions":
-            console.log("This for Restrictions");
+            console.log("This for therapist user data");
+            break;
+          case "therapistuserdata":
+            const therapistUserDataCount = await executeQuery(
+              getRegisterCount,
+              []
+            );
+            refDashBoardData = { ...refDashBoardData, therapistUserDataCount };
             break;
           default:
             console.log("Some Miss Match Restiction Passed");
@@ -142,9 +152,21 @@ export class StaffRepository {
   public async staffStudentApprovalV1(userData: any): Promise<any> {
     try {
       // const refStId = parseInt(userData.refStId, 10);
-      const registeredId = [2, 3];
-      const getClientData = await executeQuery(fetchClientData, registeredId);
-      // const getlables = await executeQuery(fetchLables);
+      const getClientData = await executeQuery(fetchClientData1, [
+        // registeredId,
+        // transactionTypes,
+      ]);
+
+      const userTypeLabel = await executeQuery(getUserStatusLabel, []);
+
+      const userTypeMap = new Map(
+        userTypeLabel.map((item) => [item.refUtId, item.refUserType])
+      );
+
+      // Iterate over the array and replace refUtId with the corresponding label
+      getClientData.forEach((user) => {
+        user.refUtIdLabel = userTypeMap.get(user.refUtId) || "Unknown";
+      });
 
       const tokenData = {
         // id: refStId,
@@ -170,12 +192,15 @@ export class StaffRepository {
 
   public async staffApprovalBtnV1(userData: any): Promise<any> {
     try {
-      const studentId = [userData.refStId, 3];
+      console.log("userData", userData);
+
+      const studentId = [userData.refStId, userData.nextStatus];
       // const refStId = parseInt(userData.refStId, 10);
       const updateUserTypeResult = await executeQuery(
         updateUserType,
         studentId
       );
+      console.log("updateUserTypeResult", updateUserTypeResult);
 
       const transId = 4,
         transData = "Accept the User as Student",
@@ -226,7 +251,7 @@ export class StaffRepository {
   }
   public async staffRejectionBtnV1(userData: any): Promise<any> {
     try {
-      const studentId = [userData.refStId, 5];
+      const studentId = [userData.refStId, 9];
       // const refStId = parseInt(userData.refStId, 10);
       const updateUserTypeResult = await executeQuery(
         updateUserType,
@@ -327,6 +352,7 @@ export class StaffRepository {
   public async userFollowUpV1(userData: any): Promise<any> {
     try {
       const studentId = [userData.refStId, 3];
+      console.log("userData", userData);
 
       const userStatus = [
         userData.refStId,
@@ -338,7 +364,7 @@ export class StaffRepository {
         updateUserStatus,
         userStatus
       );
-      const transId = 6,
+      const transId = 7,
         transData = "User FollowUp Data Updated",
         refUpdatedBy = "Front Desk";
 

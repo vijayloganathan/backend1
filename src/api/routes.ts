@@ -7,6 +7,7 @@ import {
   UserProfileController,
   FrontDesk,
   Director,
+  userDashBoard,
 } from "./controller";
 import { Logger } from "winston";
 import { decodeToken, validateToken } from "../helper/token";
@@ -184,7 +185,7 @@ export class StaffRoutes implements IRoute {
           },
         },
         {
-          method: "GET",
+          method: "POST",
           path: "/api/v1/staff/userFollowUp",
           config: {
             // pre: [{ method: validateToken, assign: "token" }],
@@ -235,6 +236,26 @@ export class DirectorRoutes implements IRoute {
         },
         {
           method: "POST",
+          path: "/api/v1/therapist/approvalButton",
+          config: {
+            // pre: [{ method: validateToken, assign: "token" }],
+            handler: controller.approvalButton,
+            description: "therapist Student Approval Button",
+            auth: false,
+          },
+        },
+        {
+          method: "GET",
+          path: "/api/v1/therapist/approvalData",
+          config: {
+            // pre: [{ method: validateToken, assign: "token" }],
+            handler: controller.therapistApprovalData,
+            description: "therapist Student Approval Data ",
+            auth: false,
+          },
+        },
+        {
+          method: "POST",
           path: "/api/v1/director/addEmployee",
           config: {
             // pre: [{ method: validateToken, assign: "token" }],
@@ -268,6 +289,47 @@ export class DirectorRoutes implements IRoute {
               parse: true, // Automatically parse multipart form data
               multipart: true, // Enable multipart form data
             },
+          },
+        },
+      ]);
+      resolve(true);
+    });
+  }
+}
+
+export class UserPageRoutes implements IRoute {
+  public async register(server: any): Promise<any> {
+    return new Promise((resolve) => {
+      const UserPage = new userDashBoard();
+      server.route([
+        {
+          method: "GET",
+          path: "/api/v1/user/dashBoard",
+          config: {
+            // pre: [{ method: validateToken, assign: "token" }],
+            handler: UserPage.userDashBoardData,
+            description: "User Dash Board Tail Data",
+            auth: false,
+          },
+        },
+        {
+          method: "GET",
+          path: "/api/v1/user/profileData",
+          config: {
+            // pre: [{ method: validateToken, assign: "token" }],
+            handler: UserPage.userProfileData,
+            description: "User Profile Data",
+            auth: false,
+          },
+        },
+        {
+          method: "POST",
+          path: "/api/v1/user/updateProfile",
+          config: {
+            // pre: [{ method: validateToken, assign: "token" }],
+            handler: UserPage.userProfileUpdate,
+            description: "User Profile Update Process",
+            auth: false,
           },
         },
       ]);

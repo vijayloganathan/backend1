@@ -11,7 +11,7 @@ if (!process.env.ACCESS_TOKEN) {
 }
 
 // Constants
-const TOKEN_EXPIRATION = "1d"; // Define token expiration as a constant
+const TOKEN_EXPIRATION = "20m"; // Define token expiration as a constant
 
 // Function to generate a token
 function generateToken(tokenData: object, action: boolean): string | object {

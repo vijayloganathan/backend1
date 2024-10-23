@@ -13,6 +13,9 @@ import {
   insertUserDomainQuery,
   insertUserCommunicationQuery,
   updateHistoryQuery,
+  fetchFormSubmitedData,
+  updateHistoryQuery1,
+  updateUserType,
 } from "./query";
 import { encrypt } from "../../helper/encrypt";
 import { generateToken, decodeToken } from "../../helper/token";
@@ -69,6 +72,115 @@ export class DirectorRepository {
 
       return data;
     } catch (error) {}
+  }
+  public async therapistApprovalDataV1(
+    userData: any,
+    decodedToken: number
+  ): Promise<any> {
+    // const staffId = decodedToken;
+    // const Id = userData.refStId;
+    try {
+      // const refStId = parseInt(userData.refStId, 10);
+      const getClientData = await executeQuery(fetchFormSubmitedData, [
+        // registeredId,
+        // transactionTypes,
+      ]);
+
+      const userTypeLabel = await executeQuery(getUserStatusLabel, []);
+
+      const userTypeMap = new Map(
+        userTypeLabel.map((item) => [item.refUtId, item.refUserType])
+      );
+
+      // Iterate over the array and replace refUtId with the corresponding label
+      getClientData.forEach((user) => {
+        user.refUtIdLabel = userTypeMap.get(user.refUtId) || "Unknown";
+      });
+
+      const tokenData = {
+        // id: refStId,
+        id: 6,
+      };
+
+      const token = generateToken(tokenData, true);
+
+      return encrypt(
+        {
+          success: true,
+          message: "therapist Approval Data is Passed Successfully",
+          data: getClientData,
+          token: token,
+        },
+        false
+      );
+    } catch (error) {
+      console.error("Error in userRegisterPageDataV1:", error);
+      throw error;
+    }
+  }
+  public async approvalButtonV1(
+    userData: any,
+    decodedToken: number
+  ): Promise<any> {
+    // const staffId = decodedToken;
+    const Id = userData.refStId;
+    try {
+      console.log("userData", userData);
+      const studentId = [userData.refStId, 3, userData.isTherapy];
+      // const refStId = parseInt(userData.refStId, 10);
+      const updateUserTypeResult = await executeQuery(
+        updateUserType,
+        studentId
+      );
+      console.log("updateUserTypeResult", updateUserTypeResult);
+
+      const transId = 4,
+        transData = "Therapist Submit The response Successfully",
+        refUpdatedBy = "Therapist";
+
+      const historyData = [
+        transId,
+        transData,
+        userData.refStId,
+        new Date().toLocaleString(),
+        refUpdatedBy,
+      ];
+
+      const updateHistoryQueryResult = await executeQuery(
+        updateHistoryQuery1,
+        historyData
+      );
+      console.log("updateHistoryQueryResult", updateHistoryQueryResult);
+
+      const tokenData = {
+        // id: refStId,
+        id: 6,
+      };
+      const token = generateToken(tokenData, true);
+
+      if (!updateUserTypeResult.length && !updateHistoryQueryResult.length) {
+        return encrypt(
+          {
+            success: false,
+            message: "Error in Therapist Approval",
+            token: token,
+          },
+          false
+        );
+      }
+
+      return encrypt(
+        {
+          success: true,
+          message: "Client is Approved By Therapist",
+          token: token,
+        },
+        false
+      );
+    } catch (error) {
+      console.error("Error in Therapist Approval Button:", error);
+      throw error;
+    }
   }
   public async userTypeLabelV1(
     userData: any,

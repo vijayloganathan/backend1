@@ -1,5 +1,5 @@
 import { executeQuery } from "../../helper/db";
-import {buildUpdateQuery} from "../../helper/buildquery"
+import { buildUpdateQuery } from "../../helper/buildquery";
 import {
   checkQuery,
   getCustomerCount,
@@ -298,6 +298,48 @@ export class UserRepository {
       throw error;
     }
   }
+  public async validateTokenData(
+    userData: any,
+    decodedToken: number,
+    domain_code?: any
+  ): Promise<any> {
+    try {
+      const refStId = decodedToken;
+      const id = [refStId];
+      const user = await executeQuery(selectUserData, id);
+
+      const tokenData = {
+        id: refStId,
+        UserType: user[0].refUtId,
+      };
+
+      const token = generateToken(tokenData, true);
+
+      return encrypt(
+        {
+          success: true,
+          message: "user Validate Token",
+          token: token,
+          data: user,
+        },
+        true
+      );
+    } catch (error) {
+      const tokenData = {
+        id: decodedToken,
+      };
+
+      const token = generateToken(tokenData, true);
+      return encrypt(
+        {
+          success: false,
+          message: "user Token Validation Fails",
+          token: token,
+        },
+        true
+      );
+    }
+  }
 
   public async userDashBoardDataV1(
     userData: any
@@ -468,67 +510,71 @@ export class UserRepository {
     }
   }
   public async userProfileUpdateV1(userData: any): Promise<any> {
-    const refStId = 78; 
-  
+    const refStId = 78;
+
     try {
       for (const section in userData) {
         if (userData.hasOwnProperty(section)) {
           let tableName: string;
           let updatedData;
-  
+
           switch (section) {
             case "address":
               let refAdAdd1Type: number = 3;
               let refAdAdd2Type: number = 0;
-  
+
               if (userData.address.addresstype === false) {
                 refAdAdd1Type = 1;
                 refAdAdd2Type = 2;
               }
               tableName = "refUserAddress";
-  
+
               updatedData = userData.address;
               updatedData = { ...updatedData, refAdAdd1Type, refAdAdd2Type };
               delete updatedData.addresstype;
-  
+
               break;
-  
+
             case "personalData":
               tableName = "refUserPersonalData";
               updatedData = userData.personalData;
               break;
-  
+
             case "generalhealth":
               tableName = "refUserHealthData";
               updatedData = userData.generalhealth;
               break;
-  
+
             case "presentHealth":
               tableName = "refUserPresentHealth";
               updatedData = userData.presentHealth;
               break;
-  
+
             case "communication":
               tableName = "refUserCommunication";
               updatedData = userData.communication;
               break;
-  
+
             default:
               console.log("Unrecognized section");
               continue;
           }
-  
+
           const identifier = { column: "refStId", value: refStId };
-          const { updateQuery, values } = buildUpdateQuery(tableName, updatedData, identifier);
-  
+          const { updateQuery, values } = buildUpdateQuery(
+            tableName,
+            updatedData,
+            identifier
+          );
+
           const userResult = await executeQuery(updateQuery, values);
-          console.log('userResult', userResult);
+          console.log("userResult", userResult);
         }
       }
-  
+
       const tokenData = { id: refStId };
       const token = generateToken(tokenData, true);
-  
+
       return encrypt(
         {
           success: true,

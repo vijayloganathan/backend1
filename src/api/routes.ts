@@ -59,6 +59,17 @@ export class UserRouters implements IRoute {
             auth: false,
           },
         },
+        {
+          method: "GET",
+          path: "/api/v1/validateTokenData",
+          config: {
+            pre: [{ method: validateToken, assign: "token" }],
+            handler: controller.validateUserTokenV1,
+            description: "Signup Checking",
+            tags: ["api", "Users", "SignUp"],
+            auth: false,
+          },
+        },
       ]);
       resolve(true);
     });

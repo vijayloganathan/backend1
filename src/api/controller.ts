@@ -84,6 +84,39 @@ export class UserController {
         .code(500);
     }
   };
+  public validateUserTokenV1 = async (
+    request: any,
+    response: Hapi.ResponseToolkit
+  ): Promise<any> => {
+    const decodedToken = request.plugins.token.id;
+    logger.info("Router----- line 17");
+    try {
+      logger.info(`GET URL REQ => ${request.url.href}`);
+      const domainCode = request.headers.domain_code || "";
+      let entity;
+
+      entity = await this.resolver.validateUsersData(
+        request.plugins.token,
+        decodedToken
+      );
+
+      if (entity.success) {
+        return response.response(entity).code(200);
+      }
+      return response.response(entity).code(200); // Unauthorized if failed
+    } catch (error) {
+      logger.error("Error in userLogin:", error);
+      return response
+        .response({
+          success: false,
+          message:
+            error instanceof Error
+              ? error.message
+              : "An unknown error occurred",
+        })
+        .code(500);
+    }
+  };
 
   public userSignUp = async (
     request: Hapi.Request,

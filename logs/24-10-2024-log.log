@@ -66,3 +66,6 @@
 {"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-24T05:00:01.279Z"}
 {"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-24T05:00:34.006Z"}
 {"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-24T05:09:29.447Z"}
+{"address":"0.0.0.0","code":"EADDRINUSE","errno":-4091,"level":"error","message":"Server not running... listen EADDRINUSE: address already in use 0.0.0.0:6200","port":6200,"stack":"Error: listen EADDRINUSE: address already in use 0.0.0.0:6200\n    at Server.setupListenHandle [as _listen2] (node:net:1904:16)\n    at listenInCluster (node:net:1961:12)\n    at doListen (node:net:2135:7)\n    at processTicksAndRejections (node:internal/process/task_queues:83:21)","syscall":"listen","timestamp":"2024-10-24T05:23:00.733Z"}
+{"level":"info","message":"server running --- from server.ts","timestamp":"2024-10-24T05:24:45.581Z"}
+{"level":"info","message":"GET URL REQ => http://192.168.29.35:6201/api/v1/user/profileData","timestamp":"2024-10-24T05:24:49.294Z"}

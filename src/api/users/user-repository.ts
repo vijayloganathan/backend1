@@ -1,4 +1,5 @@
 import { executeQuery } from "../../helper/db";
+import {buildUpdateQuery} from "../../helper/buildquery"
 import {
   checkQuery,
   getCustomerCount,
@@ -466,85 +467,68 @@ export class UserRepository {
       throw error;
     }
   }
-  public async userProfileUpdateV1(
-    userData: any
-    // decodedToken: number
-  ): Promise<any> {
-    // const refStId = decodedToken;
+  public async userProfileUpdateV1(userData: any): Promise<any> {
+    const refStId = 78; 
+  
     try {
-      // Loop through each section of userData (address, personalData, generalhealth)
       for (const section in userData) {
         if (userData.hasOwnProperty(section)) {
-          for (const key in userData[section]) {
-            switch (key) {
-              case "address":
-                let refAdAdd1Type: number = 3;
-                let refAdAdd2Type: number = 0;
-
-                if (userData.address.addresstype == false) {
-                  refAdAdd1Type = 1;
-                  refAdAdd2Type = 2;
-                }
-
-                const params = [
-                  userData.refStId,
-                  refAdAdd1Type,
-                  userData.address.refAdAdd1,
-                  userData.address.refAdArea1,
-                  userData.address.refAdCity1,
-                  userData.address.refAdState1,
-                  userData.address.refAdPincode1,
-                  refAdAdd2Type,
-                  userData.address.refAdAdd2,
-                  userData.address.refAdArea2,
-                  userData.address.refAdCity2,
-                  userData.address.refAdState2,
-                  userData.address.refAdPincode2,
-                ];
-                const userResult = await executeQuery(
-                  updateProfileAddressQuery,
-                  params
-                );
-                if (userResult.length > 0) {
-                  const historyData = [
-                    9,
-                    params,
-                    userData.refStId,
-                    new Date().toLocaleString(),
-                    "user",
-                  ];
-
-                  const updateHistoryQueryResult = await executeQuery(
-                    updateHistoryQuery1,
-                    historyData
-                  );
-                  if (!updateHistoryQueryResult) {
-                    return false;
-                  }
-                }
-                break;
-              case "personalData":
-                break;
-              case "generalhealth":
-                break;
-              case "presentHealth":
-                break;
-              case "communication":
-                break;
-
-              default:
-                console.log("Some Miss Match Restiction Passed");
-                break;
-            }
+          let tableName: string;
+          let updatedData;
+  
+          switch (section) {
+            case "address":
+              let refAdAdd1Type: number = 3;
+              let refAdAdd2Type: number = 0;
+  
+              if (userData.address.addresstype === false) {
+                refAdAdd1Type = 1;
+                refAdAdd2Type = 2;
+              }
+              tableName = "refUserAddress";
+  
+              updatedData = userData.address;
+              updatedData = { ...updatedData, refAdAdd1Type, refAdAdd2Type };
+              delete updatedData.addresstype;
+  
+              break;
+  
+            case "personalData":
+              tableName = "refUserPersonalData";
+              updatedData = userData.personalData;
+              break;
+  
+            case "generalhealth":
+              tableName = "refUserHealthData";
+              updatedData = userData.generalhealth;
+              break;
+  
+            case "presentHealth":
+              tableName = "refUserPresentHealth";
+              updatedData = userData.presentHealth;
+              break;
+  
+            case "communication":
+              tableName = "refUserCommunication";
+              updatedData = userData.communication;
+              break;
+  
+            default:
+              console.log("Unrecognized section");
+              continue;
           }
+  
+          const identifier = { column: "refStId", value: refStId };
+          const { updateQuery, values } = buildUpdateQuery(tableName, updatedData, identifier);
+  
+          const userResult = await executeQuery(updateQuery, values);
+          console.log('userResult', userResult);
         }
       }
-
-      const tokenData = {
-        id: 78,
-      };
-
+  
+      const tokenData = { id: refStId };
       const token = generateToken(tokenData, true);
+  
       return encrypt(
         {
           success: true,

@@ -1,10 +1,10 @@
-export const queryStaffDetails = `SELECT DISTINCT ON (u."refSCustId") * 
+export const queryStaffDetails = `SELECT DISTINCT ON (u."refSCustId") u."refStId",u."refSCustId",u."refStFName",u."refStLName",uc."refCtEmail",uc."refCtMobile",u."refUtId"
 FROM public.users u
 FULL JOIN public."refUserCommunication" uc
   ON CAST(u."refStId" AS INTEGER) = uc."refStId"
 FULL JOIN public."refUserAddress" ad
   ON CAST(u."refStId" AS INTEGER) = ad."refStId"
-WHERE u."refUtId" IN (4,8,10); `;
+WHERE u."refUtId" IN (4,8,10);`;
 
 export const getUserStatusLabel = `SELECT * FROM public."refUserType"`;
 
@@ -13,11 +13,11 @@ export const getUserData = ``;
 export const getDataForUserManagement = `
 SELECT DISTINCT ON (u."refSCustId") *
 FROM public.users u
-JOIN public."refUserCommunication" uc
+LEFT JOIN public."refUserCommunication" uc
   ON CAST(u."refStId" AS INTEGER) = uc."refStId"
-JOIN public."refUserAddress" ad
+LEFT JOIN public."refUserAddress" ad
   ON CAST(u."refStId" AS INTEGER) = ad."refStId"
-JOIN public."refGeneralHealth" gh
+LEFT JOIN public."refGeneralHealth" gh
   ON CAST(u."refStId" AS INTEGER) = gh."refStId"
 WHERE u."refStId" = $1;`;
 
@@ -32,12 +32,21 @@ FROM public.users
 WHERE "refSCustId" LIKE 'UBYS%';`;
 
 export const insertUserQuery = `
-  INSERT INTO public.users (
-    "refStFName", "refStLName", "refStDOB", 
-   "refSCustId","refUtId","refDummy1","refDummy2"
-  ) VALUES ($1, $2, $3, $4, $5, $6,$7) 
-  RETURNING "refStId", "refSCustId";
+ WITH inserted_user AS (
+    INSERT INTO public.users (
+        "refStFName", "refStLName", "refStDOB", 
+        "refSCustId", "refUtId", "refPan", "refAadhar","refBranchId"
+    ) VALUES ($1, $2, $3, $4, $5, $6, $7,$8)
+    RETURNING "refStId"
+)
+INSERT INTO public."refEmployeeData" ("refStId") 
+SELECT "refStId" FROM inserted_user
+RETURNING "refStId";
+
+
+
 `;
+
 export const insertUserDomainQuery = `
   INSERT INTO public."refUsersDomain" (
     "refStId", "refCustId","refUserName", "refCustPassword","refCustHashedPassword"
@@ -123,7 +132,7 @@ JOIN
 LEFT JOIN
     public.branch b ON u."refBranchId" = b."refbranchId"
 WHERE
-    notif."refRead" = false
+    notif."refRead" = false AND ( u."refUtId" = 5 OR u."refUtId" = 6 )
 GROUP BY
     u."refStId", u."refSCustId", u."refStFName", u."refStLName", b."refBranchName",
     CASE
@@ -133,7 +142,41 @@ GROUP BY
     END
 ORDER BY
     u."refStId";
-
+`;
+export const getStaffUpdateList = `SELECT
+    u."refStId",
+    u."refSCustId",
+    u."refStFName",
+    u."refStLName",
+    b."refBranchName" AS "branchId",
+    TO_DATE(split_part(MIN(txn."transTime"), ',', 1), 'DD/MM/YYYY') AS "refDate",
+    TO_CHAR(TO_TIMESTAMP(MIN(txn."transTime"), 'DD/MM/YYYY, HH12:MI:SS am'), 'HH24:MI:SS') AS "refTime",
+    COUNT(CASE WHEN notif."refRead" = false THEN 1 END) AS "unreadCount",
+    CASE
+        WHEN txn."transTypeId" BETWEEN 9 AND 13 THEN 'users'
+        WHEN txn."transTypeId" = 16 THEN 'Approval'
+        ELSE 'other'
+    END AS "groupType"
+FROM
+    public."refNotification" notif
+JOIN
+    public."refUserTxnHistory" txn ON notif."transId" = txn."transId"
+JOIN
+    public.users u ON u."refStId" = txn."refStId"
+LEFT JOIN
+    public.branch b ON u."refBranchId" = b."refbranchId"
+WHERE
+    notif."refRead" = false 
+    AND u."refUtId" NOT IN (5, 6)
+GROUP BY
+    u."refStId", u."refSCustId", u."refStFName", u."refStLName", b."refBranchName",
+    CASE
+        WHEN txn."transTypeId" BETWEEN 9 AND 13 THEN 'users'
+        WHEN txn."transTypeId" = 16 THEN 'Approval'
+        ELSE 'other'
+    END
+ORDER BY
+    u."refStId";
 `;
 
 export const userUpdateAuditData = `SELECT 
@@ -165,3 +208,5 @@ export const updateTempData = `UPDATE public."refTempUserData" SET "refStatus"=$
 `;
 
 export const getMailId = `SELECT "refCtEmail" FROM public."refUserCommunication" WHERE "refStId"=$1`;
+
+export const fetchBranchList = `SELECT * FROM public.branch;`;

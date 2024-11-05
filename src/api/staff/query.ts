@@ -252,3 +252,29 @@ export const getTempData = `SELECT * FROM public."refTempUserData" WHERE "refTeI
 export const getPresentHealthLabel = 'SELECT * FROM public."refHealthIssues"';
 
 export const updateNotification = `INSERT INTO public."refNotification" ("transId", "refRead") VALUES ($1, $2);`;
+
+export const getProfileData = `SELECT DISTINCT ua."refStId", * FROM public.users u
+LEFT JOIN public."refEmployeeData" ed
+ON CAST (u."refStId" AS INTEGER)=ed."refStId"
+LEFT JOIN public."refUserCommunication" uc
+ON CAST (u."refStId" AS INTEGER)=uc."refStId"
+LEFT JOIN public."refUserAddress" ua
+ON CAST (u."refStId" AS INTEGER) = ua."refStId"
+WHERE u."refStId"=$1
+`;
+
+export const getCommunicationType = `
+  SELECT "refCtId", INITCAP("refCtText") AS "refCtText"
+FROM public."refCommType";
+`;
+
+export const updateStaffPan = `UPDATE public."refEmployeeData" SET "refPanPath"=$1 WHERE "refStId"=$2
+RETURNING *;`;
+
+export const updateStaffAadhar = `UPDATE public."refEmployeeData" SET "refAadharPath"=$1 WHERE "refStId"=$2
+RETURNING *;`;
+
+export const updateStaffCertification = `UPDATE public."refEmployeeData" SET "refCertificationPath"=$1 WHERE "refStId"=$2
+RETURNING *;`;
+
+export const getDocuments = `SELECT * FROM public."refEmployeeData" WHERE "refStId"=$1`;

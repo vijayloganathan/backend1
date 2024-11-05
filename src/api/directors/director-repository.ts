@@ -35,12 +35,22 @@ import {
   updateTempData,
   userUpdateApprovalList,
   getMailId,
+  getStaffUpdateList,
+  fetchBranchList,
 } from "./query";
 import { encrypt } from "../../helper/encrypt";
 import { generateToken, decodeToken } from "../../helper/token";
 
 export class DirectorRepository {
-  public async directorStaffPgV1(userData: any): Promise<any> {
+  public async directorStaffPgV1(
+    userData: any,
+    decodedToken: number
+  ): Promise<any> {
+    const refStId = decodedToken;
+    const tokenData = {
+      id: refStId,
+    };
+    const token = generateToken(tokenData, true);
     try {
       const userTypeLabel = await executeQuery(getUserStatusLabel, []);
       const StaffData = await executeQuery(queryStaffDetails, []);
@@ -52,32 +62,39 @@ export class DirectorRepository {
         user.refUserTypeName = userTypeMap.get(user.refUtId) || "Unknown";
       });
 
-      const token = {
-        //  id: userData.refStId
-        id: 26,
-      };
       const results = {
         success: true,
         message: "staff Data Is Passed Successfully",
-        token: generateToken(token, true),
+        token: token,
         data: StaffData,
       };
-      return encrypt(results, false);
+      return encrypt(results, true);
     } catch (error) {
-      console.log("error", error);
+      const results = {
+        success: false,
+        message: "error in staff Data Is Passed Successfully",
+        token: token,
+      };
+      return encrypt(results, true);
     }
   }
+
   public async userDataV1(userData: any, decodedToken: number): Promise<any> {
-    // const staffId = decodedToken;
+    const staffId = decodedToken;
     const Id = userData.refStId;
+    const tokenData = {
+      id: staffId,
+    };
+    const token = generateToken(tokenData, true);
+
     try {
       const userTypeLabel = await executeQuery(getUserStatusLabel, []);
-
       const userData = await executeQuery(getDataForUserManagement, [Id]);
       const userTypeMap = new Map(
         userTypeLabel.map((item) => [item.refUtId, item.refUserType])
       );
 
+      // console.log("userData", userData);
       userData.forEach((user) => {
         user.refUtIdLabel = userTypeMap.get(user.refUtId) || "Unknown";
       });
@@ -88,21 +105,37 @@ export class DirectorRepository {
         userTransaction: userTransaction,
       };
 
-      return data;
-    } catch (error) {}
+      return encrypt(
+        {
+          success: true,
+          message: "Director User Data",
+          data: data,
+          token: token,
+        },
+        true
+      );
+    } catch (error) {
+      return encrypt(
+        {
+          success: false,
+          message: "Error in Director User Data",
+          token: token,
+        },
+        true
+      );
+    }
   }
   public async therapistApprovalDataV1(
     userData: any,
     decodedToken: number
   ): Promise<any> {
-    // const staffId = decodedToken;
-    // const Id = userData.refStId;
+    const refStId = decodedToken;
+    const tokenData = {
+      id: refStId,
+    };
+    const token = generateToken(tokenData, true);
     try {
-      // const refStId = parseInt(userData.refStId, 10);
-      const getClientData = await executeQuery(fetchFormSubmitedData, [
-        // registeredId,
-        // transactionTypes,
-      ]);
+      const getClientData = await executeQuery(fetchFormSubmitedData, []);
 
       const userTypeLabel = await executeQuery(getUserStatusLabel, []);
 
@@ -115,13 +148,6 @@ export class DirectorRepository {
         user.refUtIdLabel = userTypeMap.get(user.refUtId) || "Unknown";
       });
 
-      const tokenData = {
-        // id: refStId,
-        id: 6,
-      };
-
-      const token = generateToken(tokenData, true);
-
       return encrypt(
         {
           success: true,
@@ -129,19 +155,28 @@ export class DirectorRepository {
           data: getClientData,
           token: token,
         },
-        false
+        true
       );
     } catch (error) {
-      console.error("Error in userRegisterPageDataV1:", error);
-      throw error;
+      return encrypt(
+        {
+          success: true,
+          message: "error in therapist Approval Data",
+          token: token,
+        },
+        true
+      );
     }
   }
   public async approvalButtonV1(
     userData: any,
     decodedToken: number
   ): Promise<any> {
-    // const staffId = decodedToken;
-    const Id = userData.refStId;
+    const refStId = decodedToken;
+    const tokenData = {
+      id: refStId,
+    };
+    const token = generateToken(tokenData, true);
     try {
       const studentId = [userData.refStId, 3, userData.isTherapy];
       // const refStId = parseInt(userData.refStId, 10);
@@ -167,12 +202,6 @@ export class DirectorRepository {
         historyData
       );
 
-      const tokenData = {
-        // id: refStId,
-        id: 6,
-      };
-      const token = generateToken(tokenData, true);
-
       if (!updateUserTypeResult.length && !updateHistoryQueryResult.length) {
         return encrypt(
           {
@@ -180,7 +209,7 @@ export class DirectorRepository {
             message: "Error in Therapist Approval",
             token: token,
           },
-          false
+          true
         );
       }
 
@@ -190,70 +219,78 @@ export class DirectorRepository {
           message: "Client is Approved By Therapist",
           token: token,
         },
-        false
+        true
       );
     } catch (error) {
-      console.error("Error in Therapist Approval Button:", error);
-      throw error;
+      return encrypt(
+        {
+          success: false,
+          message: "Error in Therapist Approval Button",
+          token: token,
+        },
+        true
+      );
     }
   }
   public async userTypeLabelV1(
     userData: any,
     decodedToken: number
   ): Promise<any> {
-    // const staffId = decodedToken;
-    // const Id = userData.refStId;
+    const refStId = decodedToken;
+    const tokenData = {
+      id: refStId,
+    };
+    const token = generateToken(tokenData, true);
     try {
       const label = await executeQuery(getUserTypeLabel, []);
-
-      const tokenData = {
-        // id: refStId,
-        id: 3,
-      };
-
-      const token = generateToken(tokenData, true);
+      const branch = await executeQuery(fetchBranchList, []);
 
       return encrypt(
         {
           success: true,
-          message: "user Validate Token",
+          message: "successfully pass the User Type Label",
           token: token,
           userTypeLabel: label,
+          branch: branch,
         },
-        false
+        true
       );
     } catch (error) {
-      const tokenData = {
-        // id: refStId,
-        id: 3,
-      };
-
-      const token = generateToken(tokenData, true);
-      const results = {
-        success: false,
-        message: "Error in Passing Labels.",
-      };
-      return encrypt(results, false);
+      return encrypt(
+        {
+          success: false,
+          message: "error in passing the User Type Label Passing",
+          token: token,
+        },
+        true
+      );
     }
   }
   public async addEmployeeV1(
     userData: any,
     decodedToken: number
   ): Promise<any> {
+    const refStId = decodedToken;
+    const tokenData = {
+      id: refStId,
+    };
+    const token = generateToken(tokenData, true);
     try {
       const userCountResult = await executeQuery(getCustomerCount);
       const userCount = parseInt(userCountResult[0].count, 10);
 
       let newCustomerId = `UBYS${(10000 + userCount + 1).toString()}`;
+      console.log("newCustomerId", newCustomerId);
 
       const params = [
         userData.refFName,
         userData.refLName,
         userData.refDob,
         newCustomerId,
-        userData.refType,
+        userData.refUserType,
         userData.refPanCard,
         userData.refAadharCard,
+        userData.refBranchId,
       ];
 
       const userResult = await executeQuery(insertUserQuery, params);
@@ -277,8 +314,8 @@ export class DirectorRepository {
 
       const domainParams = [
         newUser.refStId,
-        newUser.refSCustId,
-        newUser.refSCustId,
+        newCustomerId,
+        newCustomerId,
         password,
         hashedPassword,
       ];
@@ -307,7 +344,7 @@ export class DirectorRepository {
           const mailOptions = {
             to: userData.refEmail, // Replace with the recipient's email
             subject: "Director Add U As An Employee In Ublis Yoga", // Subject of the email
-            html: staffDetailSend(newUser.refSCustId, password),
+            html: staffDetailSend(domainResult[0].refCustId, password),
           };
 
           // Call the sendEmail function
@@ -338,20 +375,23 @@ export class DirectorRepository {
             },
             false
           );
-          return encryptedResponse;
-        } else {
-          return encrypt(
-            { success: false, message: "Failed to update history" },
-            true
-          );
         }
-      } else {
-        return encrypt({ success: false, message: "Signup failed" }, true);
       }
-    } catch (error) {
-      console.error("Error in Storing Data:", error);
       return encrypt(
-        { success: false, message: "An error occurred while storing data" },
+        {
+          success: true,
+          message: "New Employee Added Successfully",
+          token: token,
+        },
+        true
+      );
+    } catch (error) {
+      return encrypt(
+        {
+          success: false,
+          message: "error in Adding New Employee",
+          token: token,
+        },
         true
       );
     }
@@ -431,10 +471,11 @@ export class DirectorRepository {
     userData: any,
     decodedToken: number
   ): Promise<any> {
-    const staffId = decodedToken || 1;
-    let token = {
-      id: staffId,
+    const refStId = decodedToken;
+    const tokenData = {
+      id: refStId,
     };
+    const token = generateToken(tokenData, true);
 
     function formatDate(isoDate: any) {
       const date = new Date(isoDate);
@@ -457,7 +498,7 @@ export class DirectorRepository {
           token: token,
           data: getList,
         },
-        false
+        true
       );
     } catch (error) {
       return encrypt(
@@ -466,7 +507,51 @@ export class DirectorRepository {
           message: "Error in User Update Audit list Data Sending",
           token: token,
         },
-        false
+        true
+      );
+    }
+  }
+  public async staffAuditListV1(
+    userData: any,
+    decodedToken: number
+  ): Promise<any> {
+    const refStId = decodedToken;
+    const tokenData = {
+      id: refStId,
+    };
+    const token = generateToken(tokenData, true);
+
+    function formatDate(isoDate: any) {
+      const date = new Date(isoDate);
+      const day = String(date.getDate()).padStart(2, "0");
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const year = date.getFullYear();
+
+      return `${year}-${month}-${day}`;
+    }
+    try {
+      const getList = await executeQuery(getStaffUpdateList, []);
+      for (let i = 0; i < getList.length; i++) {
+        getList[i].refDate = formatDate(getList[i].refDate);
+      }
+
+      return encrypt(
+        {
+          success: true,
+          message: "Staff Update Audit list Data is Send Successfully",
+          token: token,
+          data: getList,
+        },
+        true
+      );
+    } catch (error) {
+      return encrypt(
+        {
+          success: false,
+          message: "Error in Staff Update Audit list Data Sending",
+          token: token,
+        },
+        true
       );
     }
   }
@@ -474,11 +559,12 @@ export class DirectorRepository {
     userData: any,
     decodedToken: number
   ): Promise<any> {
-    const staffId = decodedToken || 1;
     const id = userData.refStId;
-    let token = {
-      id: staffId,
+    const refStId = decodedToken;
+    const tokenData = {
+      id: refStId,
     };
+    const token = generateToken(tokenData, true);
 
     try {
       const getList = await executeQuery(userUpdateAuditData, [id]);
@@ -489,7 +575,7 @@ export class DirectorRepository {
           token: token,
           data: getList,
         },
-        false
+        true
       );
     } catch (error) {
       return encrypt(
@@ -498,7 +584,7 @@ export class DirectorRepository {
           message: "Error in User Update Audit Data Sending",
           token: token,
         },
-        false
+        true
       );
     }
   }
@@ -506,13 +592,38 @@ export class DirectorRepository {
     userData: any,
     decodedToken: number
   ): Promise<any> {
-    const staffId = decodedToken || 1;
     const id = userData.refStId;
-    let token = {
-      id: staffId,
+    const refStId = decodedToken;
+    const tokenData = {
+      id: refStId,
     };
+    const token = generateToken(tokenData, true);
+
     try {
-      const getList = await executeQuery(userUpdateApprovalList, [id]);
+      let getList = await executeQuery(userUpdateApprovalList, [id]);
+
+      if (
+        getList[0] &&
+        getList[0].refChanges &&
+        (getList[0].refChanges.label === "Aadhar Card " ||
+          getList[0].refChanges.label === "Pan Card" ||
+          getList[0].refChanges.label === "Certification")
+      ) {
+        const filePath = getList[0].refChanges.data?.newValue;
+        if (filePath) {
+          const fileBuffer = await viewFile(filePath);
+          const fileBase64 = fileBuffer.toString("base64");
+
+          const documentData = {
+            filename: path.basename(filePath),
+            content: fileBase64,
+            contentType: "application/pdf",
+            label: getList[0].refChanges.label,
+          };
+
+          getList[0].refChanges.data.newValue = documentData;
+        }
+      }
 
       return encrypt(
         {
@@ -521,7 +632,7 @@ export class DirectorRepository {
           token: token,
           data: getList,
         },
-        false
+        true
       );
     } catch (error) {
       return encrypt(
@@ -530,23 +641,25 @@ export class DirectorRepository {
           message: "Error in Sending User Approval List",
           token: token,
         },
-        false
+        true
       );
     }
   }
+
   public async userUpdateAuditListReadV1(
     userData: any,
     decodedToken: number
   ): Promise<any> {
-    const staffId = decodedToken || 1;
-    let token = {
-      id: 3,
+    const refStId = decodedToken;
+    const tokenData = {
+      id: refStId,
     };
+    const token = generateToken(tokenData, true);
     try {
       for (let i = 0; i < userData.transId.length; i++) {
         const getList = await executeQuery(userAuditDataRead, [
           true,
-          staffId,
+          refStId,
           userData.transId[i],
         ]);
         if (!getList) {
@@ -563,7 +676,7 @@ export class DirectorRepository {
           message: "User Audit Notification Is Marked as Read Successfully",
           token: token,
         },
-        false
+        true
       );
     } catch (error) {
       return encrypt(
@@ -572,7 +685,7 @@ export class DirectorRepository {
           message: "Error in updating the notification as read",
           token: token,
         },
-        false
+        true
       );
     }
   }
@@ -581,7 +694,7 @@ export class DirectorRepository {
     decodedToken: number
   ): Promise<any> {
     const client: PoolClient = await getClient();
-    const staffId = decodedToken || 1;
+    const staffId = decodedToken;
     const id = userData.refStId;
     const userAppId = userData.userAppId;
     let tokenData = {
@@ -590,8 +703,10 @@ export class DirectorRepository {
     const token = generateToken(tokenData, true);
     try {
       let mailId = await executeQuery(getMailId, [id]);
+      console.log("mailId", mailId);
       let changeData: any[] = [];
       mailId = mailId[0].refCtEmail;
+      console.log(" ", mailId);
       for (let i = 0; i < userAppId.length; i++) {
         const tempData = await executeQuery(getTempData, [userAppId[i]]);
         const transTypeId = tempData[0].transTypeId;
@@ -601,8 +716,10 @@ export class DirectorRepository {
             const tableName: string = tempData[0].refTable;
 
             const updatedData = tempData[0].refData;
+            console.log("updatedData", updatedData);
 
             const changes = tempData[0].refChanges;
+            console.log("changes", changes);
 
             const identifier = { column: "refStId", value: id };
 
@@ -658,7 +775,7 @@ export class DirectorRepository {
                 );
 
                 if (!isDuplicate) {
-                  changeData.push(Data); // Push only if not a duplicate
+                  changeData.push(Data);
                 }
 
                 if (!queryResult) {
@@ -698,14 +815,14 @@ export class DirectorRepository {
           .join("");
         const mailOptions = {
           to: Array.isArray(mailId) ? mailId.join(",") : mailId,
-          subject: "Director Add U As An Employee In Ublis Yoga",
+          subject:
+            "Director Approved Your Profile Changes Submitted by Front Office",
           html: updateDataApproval(tableRows),
         };
 
         // Call the sendEmail function
         try {
           await sendEmail(mailOptions);
-         
         } catch (error) {
           console.error("Failed to send email:", error);
         }
@@ -719,7 +836,7 @@ export class DirectorRepository {
           message: "user Profile Data Update is Approved",
           token: token,
         },
-        false
+        true
       );
     } catch (error) {
       await client.query("ROLLBACK");
@@ -729,7 +846,7 @@ export class DirectorRepository {
         message: "Error in updating the profile data",
         token: token,
       };
-      return encrypt(results, false);
+      return encrypt(results, true);
     } finally {
       client.release();
     }
@@ -740,7 +857,7 @@ export class DirectorRepository {
     decodedToken: number
   ): Promise<any> {
     const client: PoolClient = await getClient();
-    const staffId = decodedToken || 1;
+    const staffId = decodedToken;
     const id = userData.refStId;
     const userAppId = userData.userAppId;
     let tokenData = {
@@ -837,7 +954,8 @@ export class DirectorRepository {
           .join("");
         const mailOptions = {
           to: Array.isArray(mailId) ? mailId.join(",") : mailId,
-          subject: "Director Add U As An Employee In Ublis Yoga",
+          subject:
+            "Director Rejected Your Profile Changes Submitted by Front Office",
           html: updateDataRejection(tableRows),
         };
 
@@ -856,7 +974,7 @@ export class DirectorRepository {
           message: "user update Profile Data is Rejected ",
           token: token,
         },
-        false
+        true
       );
     } catch (error) {
       await client.query("ROLLBACK");
@@ -866,7 +984,7 @@ export class DirectorRepository {
         message: "Error in Rejecting the profile data",
         token: token,
       };
-      return encrypt(results, false);
+      return encrypt(results, true);
     } finally {
       client.release();
     }

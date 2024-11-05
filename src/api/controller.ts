@@ -5,6 +5,7 @@ import {
   ProfileResolver,
   FrontDeskResolver,
   DirectorResolver,
+  BatchProgramResolver,
 } from "./resolver";
 import logger from "../helper/logger";
 import { decodeToken } from "../helper/token";
@@ -35,6 +36,37 @@ export class UserController {
       // }
 
       // Check entity response for success/failure
+      if (entity.success) {
+        return response.response(entity).code(200);
+      }
+      return response.response(entity).code(200); // Unauthorized if failed
+    } catch (error) {
+      logger.error("Error in userLogin:", error);
+      return response
+        .response({
+          success: false,
+          message:
+            error instanceof Error
+              ? error.message
+              : "An unknown error occurred",
+        })
+        .code(500);
+    }
+  };
+  public changePasswordV1 = async (
+    request: any,
+    response: Hapi.ResponseToolkit
+  ): Promise<any> => {
+    try {
+      const decodedToken = request.plugins.token.id;
+      logger.info(`GET URL REQ => ${request.url.href}`);
+      let entity;
+
+      entity = await this.resolver.changePasswordV1(
+        request.payload,
+        decodedToken
+      );
+
       if (entity.success) {
         return response.response(entity).code(200);
       }
@@ -92,13 +124,13 @@ export class UserController {
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
     const decodedToken = request.plugins.token.id;
+    logger.info("Router-----store Register Form Data");
     try {
       logger.info(`GET URL REQ => ${request.url.href}`);
-      const domainCode = request.headers.domain_code || "";
       let entity;
 
-      entity = await this.resolver.validateUsersData(
-        request.plugins.token,
+      entity = await this.resolver.validateUserTokenV1(
+        request.payload,
         decodedToken
       );
 
@@ -107,7 +139,7 @@ export class UserController {
       }
       return response.response(entity).code(200); // Unauthorized if failed
     } catch (error) {
-      logger.error("Error in user Token Validation", error);
+      logger.error("Error in userLogin:", error);
       return response
         .response({
           success: false,
@@ -455,14 +487,16 @@ export class FrontDesk {
     }
   };
   public staffStudentApproval = async (
-    request: Hapi.Request,
+    request: any,
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
     try {
+      const decodedToken = request.plugins.token.id;
       logger.info(`GET URL REQ => ${request.url.href}`);
       const domainCode = request.headers.domain_code || "";
       const entity = await this.resolver.staffStudentApprovalV1(
-        request.payload
+        request.payload,
+        decodedToken
       );
 
       if (entity.success) {
@@ -483,13 +517,17 @@ export class FrontDesk {
     }
   };
   public staffApprovalBtn = async (
-    request: Hapi.Request,
+    request: any,
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
     try {
+      const decodedToken = request.plugins.token.id;
       logger.info(`GET URL REQ => ${request.url.href}`);
       const domainCode = request.headers.domain_code || "";
-      const entity = await this.resolver.staffApprovalBtnV1(request.payload);
+      const entity = await this.resolver.staffApprovalBtnV1(
+        request.payload,
+        decodedToken
+      );
 
       if (entity.success) {
         return response.response(entity).code(200);
@@ -509,13 +547,17 @@ export class FrontDesk {
     }
   };
   public staffRejectionBtn = async (
-    request: Hapi.Request,
+    request: any,
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
     try {
+      const decodedToken = request.plugins.token.id;
       logger.info(`GET URL REQ => ${request.url.href}`);
       const domainCode = request.headers.domain_code || "";
-      const entity = await this.resolver.staffRejectionBtnV1(request.payload);
+      const entity = await this.resolver.staffRejectionBtnV1(
+        request.payload,
+        decodedToken
+      );
 
       if (entity.success) {
         return response.response(entity).code(200);
@@ -535,13 +577,17 @@ export class FrontDesk {
     }
   };
   public userSignedUp = async (
-    request: Hapi.Request,
+    request: any,
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
     try {
+      const decodedToken = request.plugins.token.id;
       logger.info(`GET URL REQ => ${request.url.href}`);
       const domainCode = request.headers.domain_code || "";
-      const entity = await this.resolver.userSignedUpV1(request.payload);
+      const entity = await this.resolver.userSignedUpV1(
+        request.payload,
+        decodedToken
+      );
 
       if (entity.success) {
         return response.response(entity).code(200);
@@ -561,13 +607,18 @@ export class FrontDesk {
     }
   };
   public userFollowUp = async (
-    request: Hapi.Request,
+    request: any,
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
     try {
+      const decodedToken = request.plugins.token.id;
+
       logger.info(`GET URL REQ => ${request.url.href}`);
       const domainCode = request.headers.domain_code || "";
-      const entity = await this.resolver.userFollowUpV1(request.payload);
+      const entity = await this.resolver.userFollowUpV1(
+        request.payload,
+        decodedToken
+      );
 
       if (entity.success) {
         return response.response(entity).code(200);
@@ -587,42 +638,16 @@ export class FrontDesk {
     }
   };
   public userManagementPage = async (
-    request: Hapi.Request,
+    request: any,
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
     try {
+      const decodedToken = request.plugins.token.id;
       logger.info(`GET URL REQ => ${request.url.href}`);
       const domainCode = request.headers.domain_code || "";
-      const entity = await this.resolver.userManagementPageV1(request.payload);
-
-      if (entity.success) {
-        return response.response(entity).code(200);
-      }
-      return response.response(entity).code(200);
-    } catch (error) {
-      logger.error("Error in Sending User Data To User Management Page", error);
-      return response
-        .response({
-          success: false,
-          message:
-            error instanceof Error
-              ? error.message
-              : "An unknown error occurred",
-        })
-        .code(500);
-    }
-  };
-  public userDataUpdate = async (
-    request: Hapi.Request,
-    response: Hapi.ResponseToolkit
-  ): Promise<any> => {
-    // const decodedToken = request.plugins.token.id;
-    try {
-      logger.info(`GET URL REQ => ${request.url.href}`);
-      const domainCode = request.headers.domain_code || "";
-      const entity = await this.resolver.userDataUpdateV1(
-        request.payload
-        // decodedToken
+      const entity = await this.resolver.userManagementPageV1(
+        request.payload,
+        decodedToken
       );
 
       if (entity.success) {
@@ -642,36 +667,133 @@ export class FrontDesk {
         .code(500);
     }
   };
-  // public userDataUpdateApprovalBtn = async (
-  //   request: Hapi.Request,
-  //   response: Hapi.ResponseToolkit
-  // ): Promise<any> => {
-  //   // const decodedToken = request.plugins.token.id;
-  //   try {
-  //     logger.info(`GET URL REQ => ${request.url.href}`);
-  //     const domainCode = request.headers.domain_code || "";
-  //     const entity = await this.resolver.userDataUpdateApprovalBtnV1(
-  //       request.payload
-  //       // decodedToken
-  //     );
+  public userDataUpdate = async (
+    request: any,
+    response: Hapi.ResponseToolkit
+  ): Promise<any> => {
+    const decodedToken = request.plugins.token.id;
+    try {
+      logger.info(`GET URL REQ => ${request.url.href}`);
+      const domainCode = request.headers.domain_code || "";
+      const entity = await this.resolver.userDataUpdateV1(
+        request.payload,
+        decodedToken
+      );
 
-  //     if (entity.success) {
-  //       return response.response(entity).code(200);
-  //     }
-  //     return response.response(entity).code(200);
-  //   } catch (error) {
-  //     logger.error("Error in Sending User Data To User Management Page", error);
-  //     return response
-  //       .response({
-  //         success: false,
-  //         message:
-  //           error instanceof Error
-  //             ? error.message
-  //             : "An unknown error occurred",
-  //       })
-  //       .code(500);
-  //   }
-  // };
+      if (entity.success) {
+        return response.response(entity).code(200);
+      }
+      return response.response(entity).code(200);
+    } catch (error) {
+      logger.error("Error in Sending User Data To User Management Page", error);
+      return response
+        .response({
+          success: false,
+          message:
+            error instanceof Error
+              ? error.message
+              : "An unknown error occurred",
+        })
+        .code(500);
+    }
+  };
+  public ProfileData = async (
+    request: any,
+    response: Hapi.ResponseToolkit
+  ): Promise<any> => {
+    const decodedToken = request.plugins.token.id;
+    try {
+      logger.info(`GET URL REQ => ${request.url.href}`);
+      const domainCode = request.headers.domain_code || "";
+      const entity = await this.resolver.ProfileDataV1(
+        request.payload,
+        decodedToken
+      );
+
+      if (entity.success) {
+        return response.response(entity).code(200);
+      }
+      return response.response(entity).code(200);
+    } catch (error) {
+      logger.error("Error in Sending Staff Profile Data", error);
+      return response
+        .response({
+          success: false,
+          message:
+            error instanceof Error
+              ? error.message
+              : "An unknown error occurred",
+        })
+        .code(500);
+    }
+  };
+  public addEmployeeDocument = async (
+    request: any,
+    response: Hapi.ResponseToolkit
+  ): Promise<any> => {
+    const decodedToken = request.plugins.token.id;
+    try {
+      logger.info(`GET URL REQ => ${request.url.href}`);
+      const payload = request.payload;
+
+      let DocumentsPath: { [key: string]: string } = {}; // Initialize as an object
+      let documents: { name: string; file: any }[] = [];
+
+      // Add documents based on conditions
+      if (payload.panCard) {
+        documents.push({ name: "refPanPath", file: payload.panCard });
+      }
+      if (payload.aadharCard) {
+        documents.push({ name: "refAadharPath", file: payload.aadharCard });
+      }
+      if (payload.certification) {
+        documents.push({
+          name: "refCertificationPath",
+          file: payload.certification,
+        });
+      }
+
+      for (const doc of documents) {
+        if (!doc.file || !doc.file.hapi) {
+          logger.error(`Document ${doc.name} is missing or malformed`);
+          continue;
+        }
+
+        logger.info(`Uploaded file: ${doc.file.hapi.filename}`);
+        logger.info(`File type: ${doc.file.hapi.headers["content-type"]}`);
+
+        if (doc.file.hapi.headers["content-type"] !== "application/pdf") {
+          logger.error(`File ${doc.file.hapi.filename} is not in PDF format`);
+          continue;
+        }
+
+        const filePath = await storeFile(doc.file);
+        DocumentsPath[doc.name] = filePath; // Store in DocumentsPath object with fileName as key
+      }
+
+      const entity = await this.resolver.userDataUpdateV1({
+        ...payload,
+        DocumentsPath,
+        decodedToken,
+      });
+
+      if (entity.success) {
+        return response.response(entity).code(200);
+      }
+      return response.response(entity).code(200);
+    } catch (error) {
+      logger.error("Error in Storing Employee Documents", error);
+      return response
+        .response({
+          success: false,
+          message:
+            error instanceof Error
+              ? error.message
+              : "An unknown error occurred",
+        })
+        .code(500);
+    }
+  };
 }
 
 export class Director {
@@ -685,9 +807,14 @@ export class Director {
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
     try {
+      const decodedToken = request.plugins.token.id;
+
       logger.info(`GET URL REQ => ${request.url.href}`);
       const domainCode = request.headers.domain_code || "";
-      const entity = await this.resolver.directorStaffPgV1(request.payload);
+      const entity = await this.resolver.directorStaffPgV1(
+        request.payload,
+        decodedToken
+      );
 
       if (entity.success) {
         return response.response(entity).code(200);
@@ -710,13 +837,13 @@ export class Director {
     request: any,
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
-    // const decodedToken = request.plugins.token.id;
+    const decodedToken = request.plugins.token.id;
     try {
       logger.info(`GET URL REQ => ${request.url.href}`);
       const domainCode = request.headers.domain_code || "";
       const entity = await this.resolver.userDataV1(
-        request.payload
-        // decodedToken
+        request.payload,
+        decodedToken
       );
 
       if (entity.success) {
@@ -741,13 +868,13 @@ export class Director {
     request: any,
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
-    // const decodedToken = request.plugins.token.id;
+    const decodedToken = request.plugins.token.id;
     try {
       logger.info(`GET URL REQ => ${request.url.href}`);
       const domainCode = request.headers.domain_code || "";
       const entity = await this.resolver.therapistApprovalDataV1(
-        request.payload
-        // decodedToken
+        request.payload,
+        decodedToken
       );
 
       if (entity.success) {
@@ -771,13 +898,13 @@ export class Director {
     request: any,
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
-    // const decodedToken = request.plugins.token.id;
+    const decodedToken = request.plugins.token.id;
     try {
       logger.info(`GET URL REQ => ${request.url.href}`);
       const domainCode = request.headers.domain_code || "";
       const entity = await this.resolver.approvalButtonV1(
-        request.payload
-        // decodedToken
+        request.payload,
+        decodedToken
       );
 
       if (entity.success) {
@@ -801,13 +928,13 @@ export class Director {
     request: any,
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
-    // const decodedToken = request.plugins.token.id;
+    const decodedToken = request.plugins.token.id;
     try {
       logger.info(`GET URL REQ => ${request.url.href}`);
       const domainCode = request.headers.domain_code || "";
       const entity = await this.resolver.userTypeLabelV1(
-        request.payload
-        // decodedToken
+        request.payload,
+        decodedToken
       );
 
       if (entity.success) {
@@ -831,13 +958,13 @@ export class Director {
     request: any,
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
-    // const decodedToken = request.plugins.token.id;
+    const decodedToken = request.plugins.token.id;
     try {
       logger.info(`GET URL REQ => ${request.url.href}`);
       const domainCode = request.headers.domain_code || "";
       const entity = await this.resolver.addEmployeeV1(
-        request.payload
-        // decodedToken
+        request.payload,
+        decodedToken
       );
 
       if (entity.success) {
@@ -917,13 +1044,42 @@ export class Director {
     request: any,
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
-    // const decodedToken = request.plugins.token.id;
+    const decodedToken = request.plugins.token.id;
     try {
       logger.info(`GET URL REQ => ${request.url.href}`);
       const domainCode = request.headers.domain_code || "";
       const entity = await this.resolver.userAuditListV1(
-        request.payload
-        // decodedToken
+        request.payload,
+        decodedToken
+      );
+
+      if (entity.success) {
+        return response.response(entity).code(200);
+      }
+      return response.response(entity).code(200);
+    } catch (error) {
+      logger.error("Error in Sending Data:", error);
+      return response
+        .response({
+          success: false,
+          message:
+            error instanceof Error
+              ? error.message
+              : "An unknown error occurred",
+        })
+        .code(500);
+    }
+  };
+  public staffAuditList = async (
+    request: any,
+    response: Hapi.ResponseToolkit
+  ): Promise<any> => {
+    const decodedToken = request.plugins.token.id || 1;
+    try {
+      logger.info(`GET URL REQ => ${request.url.href}`);
+      const entity = await this.resolver.staffAuditListV1(
+        request.payload,
+        decodedToken
       );
 
       if (entity.success) {
@@ -947,13 +1103,13 @@ export class Director {
     request: any,
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
-    // const decodedToken = request.plugins.token.id;
+    const decodedToken = request.plugins.token.id;
     try {
       logger.info(`GET URL REQ => ${request.url.href}`);
       const domainCode = request.headers.domain_code || "";
       const entity = await this.resolver.userUpdateAuditListV1(
-        request.payload
-        // decodedToken
+        request.payload,
+        decodedToken
       );
 
       if (entity.success) {
@@ -977,13 +1133,13 @@ export class Director {
     request: any,
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
-    // const decodedToken = request.plugins.token.id;
+    const decodedToken = request.plugins.token.id;
     try {
       logger.info(`GET URL REQ => ${request.url.href}`);
       const domainCode = request.headers.domain_code || "";
       const entity = await this.resolver.userUpdateAuditListReadV1(
-        request.payload
-        // decodedToken
+        request.payload,
+        decodedToken
       );
 
       if (entity.success) {
@@ -1007,13 +1163,13 @@ export class Director {
     request: any,
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
-    // const decodedToken = request.plugins.token.id;
+    const decodedToken = request.plugins.token.id;
     try {
       logger.info(`GET URL REQ => ${request.url.href}`);
       const domainCode = request.headers.domain_code || "";
       const entity = await this.resolver.userDataUpdateApprovalBtnV1(
-        request.payload
-        // decodedToken
+        request.payload,
+        decodedToken
       );
 
       if (entity.success) {
@@ -1037,13 +1193,13 @@ export class Director {
     request: any,
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
-    // const decodedToken = request.plugins.token.id;
+    const decodedToken = request.plugins.token.id;
     try {
       logger.info(`GET URL REQ => ${request.url.href}`);
       const domainCode = request.headers.domain_code || "";
       const entity = await this.resolver.userDataListApprovalV1(
-        request.payload
-        // decodedToken
+        request.payload,
+        decodedToken
       );
 
       if (entity.success) {
@@ -1067,13 +1223,13 @@ export class Director {
     request: any,
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
-    // const decodedToken = request.plugins.token.id;
+    const decodedToken = request.plugins.token.id;
     try {
       logger.info(`GET URL REQ => ${request.url.href}`);
       const domainCode = request.headers.domain_code || "";
       const entity = await this.resolver.userDataUpdateRejectBtnV1(
-        request.payload
-        // decodedToken
+        request.payload,
+        decodedToken
       );
 
       if (entity.success) {
@@ -1230,6 +1386,45 @@ export class userDashBoard {
       return response.response(entity).code(200);
     } catch (error) {
       logger.error("Error in Updating User Profile Data", error);
+      return response
+        .response({
+          success: false,
+          message:
+            error instanceof Error
+              ? error.message
+              : "An unknown error occurred",
+        })
+        .code(500);
+    }
+  };
+}
+export class batchPrograms {
+  public resolver: any;
+
+  constructor() {
+    this.resolver = new BatchProgramResolver();
+  }
+
+  public userBirthdayBatch = async (
+    request: any,
+    response: Hapi.ResponseToolkit
+  ): Promise<any> => {
+    // const decodedToken = request.plugins.token.id;
+    try {
+      console.log("--------------------------------------------------");
+      logger.info(`GET URL REQ => ${request.url.href}`);
+      const domainCode = request.headers.domain_code || "";
+      const entity = await this.resolver.BirthdayRepositoryV1(
+        request.payload
+        // decodedToken
+      );
+
+      if (entity.success) {
+        return response.response(entity).code(200);
+      }
+      return response.response(entity).code(200);
+    } catch (error) {
+      logger.error("Error in Sending Birthday Wish To The User", error);
       return response
         .response({
           success: false,

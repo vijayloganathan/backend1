@@ -44,8 +44,10 @@ export const insertProfilePersonalData = `
     "refBranchId"=$11,
     "refSessionType"=$12,
     "refSPreferTimeId"=$13,
-    "refSessionMode"=$14
-  WHERE "refStId" = $15
+    "refSessionMode"=$14,
+    "refMaritalStatus"=$15,
+    "refWeddingDate"=$16
+  WHERE "refStId" = $17
   RETURNING *;
 
 `;

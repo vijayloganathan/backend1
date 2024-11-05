@@ -47,6 +47,16 @@ const label = {
   refOtherActivities: "Other Activities",
   refUserName: "Username",
   refUcPreference: "Communication Preference",
+  refExperence: "Experence",
+  refSpecialization: "Specialization",
+  refPanPath: "Pan Card",
+  refAadharPath: "Aadhar Card ",
+  refCertificationPath: "Certification",
+  refWorkingTime: "Working Time",
+  refFeedback: "Feed Back",
+  refPerformance: "Performance",
+  refMaritalStatus: "Marital Status",
+  refWeddingDate: "Wedding Date",
 };
 
 export function reLabelText(key: string): string {

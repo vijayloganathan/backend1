@@ -135,7 +135,9 @@ export class ProfileRepository {
         userData.personalData.ref_su_seTId, //12
         userData.personalData.ref_su_prTimeId, //13
         userData.personalData.ref_su_seModeId, //14
-        userData.refStId, //15
+        userData.personalData.ref_su_MaritalStatus, //15
+        userData.personalData.ref_su_WeddingDate, //16
+        userData.refStId, //17
       ];
 
       const userResult1 = await client.query(

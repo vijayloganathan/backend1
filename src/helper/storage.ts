@@ -29,29 +29,26 @@ const generateUniqueFilename = (originalName: string): string => {
 
 // Function to store a file
 export const storeFile = async (file: HapiFile): Promise<string> => {
-  const uploadDir = path.join(process.cwd(), "./src/asserts/documents");
+  const uploadDir = path.join(process.cwd(), "./src/assets/documents");
   const uniqueFilename = generateUniqueFilename(file.hapi.filename);
   const uploadPath = path.join(uploadDir, uniqueFilename);
 
-  // Check if the directory exists, if not create it
   if (!fs.existsSync(uploadDir)) {
-    fs.mkdirSync(uploadDir, { recursive: true }); // Create directory recursively
+    fs.mkdirSync(uploadDir, { recursive: true });
   }
 
   const fileStream = fs.createWriteStream(uploadPath);
 
   return new Promise((resolve, reject) => {
-    // Ensure that file is treated as a Readable stream
     const readableFileStream: Readable = file as unknown as Readable;
 
     readableFileStream.pipe(fileStream);
 
     readableFileStream.on("end", () => {
-      resolve(uploadPath); // Return the stored file path
+      resolve(uploadPath);
     });
 
     readableFileStream.on("error", (err: Error) => {
-      // Explicitly define the type of err
       reject(err);
     });
   });

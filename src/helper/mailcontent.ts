@@ -173,3 +173,65 @@ export function updateDataRejection(tableRows: any) {
       </html>`;
   return mail;
 }
+
+export function sendBirthdayWish(firstName: string, lastName: string) {
+  const name = `${firstName} ${lastName}`;
+  const mail = `<!DOCTYPE html>
+      <html lang="en">
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Happy Birthday Wishes</title>
+        <style>
+          body { font-family: Arial, sans-serif; background-color: #f9f9f9; color: #333; }
+          .container { max-width: 600px; background-color: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); position: relative; overflow: hidden; }
+          .header { background-color: #ff6b6b; padding: 15px; text-align: center; border-radius: 8px 8px 0 0; color: #ffffff; position: relative; }
+          .header h1 { margin: 0; font-size: 24px; }
+          .content { padding: 20px; text-align: center; }
+          .content p { font-size: 16px; line-height: 1.6; }
+          .name { font-size: 20px; font-weight: bold; color: #ff7043; }
+          .birthday-quote { margin-top: 20px; font-size: 18px; color: #555; font-style: italic; }
+          .cake { margin: 20px auto; width: 100px; height: 100px; background: url('https://example.com/cake.png') no-repeat center; background-size: cover; }
+          .confetti { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; overflow: hidden; }
+          .confetti span { position: absolute; width: 8px; height: 8px; background-color: #ff7043; border-radius: 50%; animation: fall 5s infinite ease-in-out; }
+          .footer { text-align: center; padding: 10px; font-size: 14px; color: #666; }
+          
+          /* Keyframes for confetti */
+          @keyframes fall {
+            0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+          }
+          
+          /* Random confetti positions */
+          ${Array.from(
+            { length: 15 },
+            (_, i) => `
+            .confetti span:nth-child(${i + 1}) { left: ${
+              Math.random() * 100
+            }%; animation-delay: ${Math.random() * 2}s; }
+          `
+          ).join("")}
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <div class="header">
+            <h1>Happy Birthday from Ublis Yogo!</h1>
+          </div>
+          <div class="content">
+            <p class="name">Dear ${name},</p>
+            <p>Wishing you a very happy birthday filled with love, laughter, and wonderful memories!</p>
+            <p class="birthday-quote">"May your special day be as amazing as you are and bring you everything you’ve been hoping for."</p>
+            <div class="cake"></div>
+            <p>We hope this year brings you endless joy and success in every way.</p>
+            <p>Best wishes,<br>Ublis Yogo Team</p>
+          </div>
+          <div class="footer">&copy; 2024 Ublis Yogo. All rights reserved.</div>
+          <div class="confetti">
+            ${Array.from({ length: 15 }, () => `<span></span>`).join("")}
+          </div>
+        </div>
+      </body>
+      </html>`;
+  return mail;
+}

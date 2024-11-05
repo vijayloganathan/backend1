@@ -25,6 +25,7 @@ export const sendEmail = async (mailOptions: MailOptions): Promise<void> => {
       from: process.env.EMAILID, // Sender address
       ...mailOptions,
     });
+    
   } catch (error) {
     console.error("Error sending email:", error);
   }

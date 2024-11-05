@@ -56,6 +56,7 @@ function validateToken(request: any, h: ResponseToolkit) {
   }
   const token = authHeader.split(" ")[1];
   const decodedToken = decodeToken(token);
+  console.log("decodedToken line ---------------------59", decodedToken);
   request.plugins.token = decodedToken;
 
   return h.continue;

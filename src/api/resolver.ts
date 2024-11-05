@@ -2,6 +2,7 @@ import { UserRepository } from "./users/user-repository";
 import { ProfileRepository } from "./profile/profile-repository";
 import { StaffRepository } from "./staff/staff-repository";
 import { DirectorRepository } from "./directors/director-repository";
+import { BatchRepository } from "./batch/birthday-repository";
 
 export class Resolver {
   public userRepository: any;
@@ -13,10 +14,16 @@ export class Resolver {
   public async userLoginV1(user_data: any, domain_code: any): Promise<any> {
     return await this.userRepository.userLoginV1(user_data, domain_code);
   }
+  public async changePasswordV1(
+    user_data: any,
+    domain_code: any
+  ): Promise<any> {
+    return await this.userRepository.changePasswordV1(user_data, domain_code);
+  }
   public async validateUsers(user_data: any, domain_code: any): Promise<any> {
     return await this.userRepository.validateUsers(user_data, domain_code);
   }
-  public async validateUsersData(
+  public async validateUserTokenV1(
     user_data: any,
     domain_code: any
   ): Promise<any> {
@@ -174,17 +181,22 @@ export class FrontDeskResolver {
     user_data: any,
     domain_code: any
   ): Promise<any> {
+    console.log("-------------------------------------------------line 185");
     return await this.StaffRepository.userDataUpdateV1(user_data, domain_code);
   }
-  // public async userDataUpdateApprovalBtnV1(
-  //   user_data: any,
-  //   domain_code: any
-  // ): Promise<any> {
-  //   return await this.StaffRepository.userDataUpdateApprovalBtnV1(
-  //     user_data,
-  //     domain_code
-  //   );
-  // }
+  public async ProfileDataV1(user_data: any, domain_code: any): Promise<any> {
+    return await this.StaffRepository.ProfileDataV1(user_data, domain_code);
+  }
+
+  public async addEmployeeDocumentV1(
+    user_data: any,
+    domain_code: any
+  ): Promise<any> {
+    return await this.StaffRepository.addEmployeeDocumentV1(
+      user_data,
+      domain_code
+    );
+  }
 }
 
 export class DirectorResolver {
@@ -246,6 +258,15 @@ export class DirectorResolver {
       domain_code
     );
   }
+  public async staffAuditListV1(
+    user_data: any,
+    domain_code: any
+  ): Promise<any> {
+    return await this.DirectorRepository.staffAuditListV1(
+      user_data,
+      domain_code
+    );
+  }
   public async userUpdateAuditListV1(
     user_data: any,
     domain_code: any
@@ -287,6 +308,21 @@ export class DirectorResolver {
     domain_code: any
   ): Promise<any> {
     return await this.DirectorRepository.userDataUpdateRejectBtnV1(
+      user_data,
+      domain_code
+    );
+  }
+}
+export class BatchProgramResolver {
+  public BatchRepository: any;
+  constructor() {
+    this.BatchRepository = new BatchRepository();
+  }
+  public async BirthdayRepositoryV1(
+    user_data: any,
+    domain_code: any
+  ): Promise<any> {
+    return await this.BatchRepository.BirthdayRepositoryV1(
       user_data,
       domain_code
     );

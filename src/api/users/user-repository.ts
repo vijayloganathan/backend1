@@ -26,6 +26,8 @@ import {
   updateHistoryQuery1,
   getPresentHealthLabel,
   updateNotification,
+  selectUserByrefStId,
+  changePassword,
 } from "./query";
 import { getUserData as rawGetUserDataQuery } from "./query";
 import { encrypt } from "../../helper/encrypt";
@@ -39,16 +41,19 @@ const JWT_SECRET = process.env.ACCESS_TOKEN || "ERROR";
 export class UserRepository {
   public async userLoginV1(user_data: any, domain_code?: any): Promise<any> {
     const params = [user_data.username];
+    console.log("params", params);
     const users = await executeQuery(selectUserByUsername, params); // Execute select query
 
     if (users.length > 0) {
       const user = users[0];
+      console.log("user ---------- line 48", user);
 
       // Verify the password
       const validPassword = await bcrypt.compare(
         user_data.password,
         user.refCustHashedPassword
       );
+      console.log("valid", validPassword);
       if (validPassword) {
         const history = [
           2,
@@ -60,6 +65,7 @@ export class UserRepository {
         const updateHistory = await executeQuery(updateHistoryQuery, history);
         const refStId = [user.refStId];
         const userData = await executeQuery(selectUserData, refStId);
+        console.log("userData", userData);
 
         const signinCount = await executeQuery(getSingInCount, refStId);
         const followUpCount = await executeQuery(getFollowUpCount, refStId);
@@ -103,6 +109,61 @@ export class UserRepository {
       {
         success: false,
         message: "Invalid email or password",
+      },
+      true
+    );
+  }
+  public async changePasswordV1(
+    user_data: any,
+    decodedToken: number
+  ): Promise<any> {
+    const refStId = decodedToken;
+    const users = await executeQuery(selectUserByrefStId, [refStId]);
+    if (users.length > 0) {
+      const user = users[0];
+
+      const validPassword = await bcrypt.compare(
+        user_data.oldPassword,
+        user.refCustHashedPassword
+      );
+
+      if (validPassword) {
+        const hashedPassword = await bcrypt.hash(user_data.newPassword, 10);
+        const result = await executeQuery(changePassword, [
+          hashedPassword,
+          user_data.newPassword,
+          refStId,
+        ]);
+
+        if (result.length > 0) {
+          console.log("error in changing Password");
+        }
+
+        const history = [19, new Date().toLocaleString(), user.refStId, "User"];
+
+        const updateHistory = await executeQuery(updateHistoryQuery, history);
+
+        if (updateHistory && updateHistory.length > 0) {
+          const tokenData = {
+            id: user.refStId,
+          };
+
+          return encrypt(
+            {
+              success: true,
+              message: "Password Changed Successfully",
+              token: generateToken(tokenData, true),
+            },
+            true
+          );
+        }
+      }
+    }
+
+    return encrypt(
+      {
+        success: false,
+        message: "error in Changing the Password",
       },
       true
     );
@@ -309,6 +370,7 @@ export class UserRepository {
   ): Promise<any> {
     try {
       const refStId = decodedToken;
+
       const id = [refStId];
       const user = await executeQuery(selectUserData, id);
       let profileFile;
@@ -457,6 +519,8 @@ export class UserRepository {
         refProfilePath: Data.refProfilePath,
         refguardian: Data.refguardian,
         refUserName: Data.refUserName,
+        refMaritalStatus: Data.refMaritalStatus,
+        refWeddingDate: formatDate(Data.refWeddingDate),
       };
 
       profileData = { ...profileData, personalData };
@@ -566,7 +630,16 @@ export class UserRepository {
     decodedToken: number
   ): Promise<any> {
     const client: PoolClient = await getClient();
-    const refStId = decodedToken || 65;
+    const refStId = decodedToken;
+
+    let refUtId: string;
+
+    const checkUser = await executeQuery(getUserType, [refStId]);
+    if (checkUser[0].refUtId == 5 || checkUser[0].refUtId == 6) {
+      refUtId = "user";
+    } else {
+      refUtId = "staff";
+    }
 
     try {
       await client.query("BEGIN");
@@ -643,6 +716,21 @@ export class UserRepository {
             case "generalhealth":
               transTypeId = 11;
               tableName = "refGeneralHealth";
+              getUserData = rawGetUserDataQuery.replace(
+                "{{tableName}}",
+                tableName
+              );
+              newData = await executeQuery(getUserData, [refStId]);
+
+              olddata = newData[0];
+              userData = { ...userData, olddata };
+              updatedData = userData.generalhealth;
+              oldData = userData.olddata;
+              break;
+
+            case "employeedata":
+              transTypeId = 15;
+              tableName = "refEmployeeData";
               getUserData = rawGetUserDataQuery.replace(
                 "{{tableName}}",
                 tableName
@@ -747,7 +835,7 @@ export class UserRepository {
                 tempChange,
                 refStId,
                 new Date().toLocaleString(),
-                "user",
+                refUtId,
               ];
               const queryResult = await client.query(
                 updateHistoryQuery1,
@@ -780,7 +868,7 @@ export class UserRepository {
           message: "Profile data updated  successfully",
           token: token,
         },
-        false
+        true
       );
     } catch (error) {
       await client.query("ROLLBACK");
@@ -789,7 +877,7 @@ export class UserRepository {
         success: false,
         message: "Error in updating the profile data",
       };
-      return encrypt(results, false);
+      return encrypt(results, true);
     } finally {
       client.release();
     }

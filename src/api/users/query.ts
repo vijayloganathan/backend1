@@ -49,6 +49,12 @@ export const selectUserByEmailQuery = `
 
 export const selectUserByUsername =
   'SELECT * FROM public."refUsersDomain" WHERE "refUserName" = $1;';
+export const selectUserByrefStId =
+  'SELECT * FROM public."refUsersDomain" WHERE "refStId" = $1;';
+
+export const changePassword = `UPDATE public."refUsersDomain"
+SET "refCustHashedPassword"=$1,"refCustPassword"=$2 
+WHERE "refStId"=$3;`;
 
 export const selectUserData = `SELECT u."refUtId",u."refStFName",u."refStLName",ud."refUserName",u."refProfilePath"
 FROM public."users" u

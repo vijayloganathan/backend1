@@ -8,6 +8,7 @@ import {
   FrontDesk,
   Director,
   userDashBoard,
+  batchPrograms,
 } from "./controller";
 import { Logger } from "winston";
 import { decodeToken, validateToken } from "../helper/token";
@@ -67,6 +68,16 @@ export class UserRouters implements IRoute {
             handler: controller.validateUserTokenV1,
             description: "Signup Checking",
             tags: ["api", "Users", "SignUp"],
+            auth: false,
+          },
+        },
+        {
+          method: "POST",
+          path: "/api/v1/changePassword",
+          config: {
+            pre: [{ method: validateToken, assign: "token" }],
+            handler: controller.changePasswordV1,
+            description: "Change Password",
             auth: false,
           },
         },
@@ -179,7 +190,7 @@ export class StaffRoutes implements IRoute {
           method: "GET",
           path: "/api/v1/staff/studentApproval",
           config: {
-            // pre: [{ method: validateToken, assign: "token" }],
+            pre: [{ method: validateToken, assign: "token" }],
             handler: controller.staffStudentApproval,
             description: "Staff Student Approval Request",
             auth: false,
@@ -189,7 +200,7 @@ export class StaffRoutes implements IRoute {
           method: "POST",
           path: "/api/v1/staff/Approvalbtn",
           config: {
-            // pre: [{ method: validateToken, assign: "token" }],
+            pre: [{ method: validateToken, assign: "token" }],
             handler: controller.staffApprovalBtn,
             description: "Staff Student Approval Request",
             auth: false,
@@ -199,7 +210,7 @@ export class StaffRoutes implements IRoute {
           method: "POST",
           path: "/api/v1/staff/rejectionbtn",
           config: {
-            // pre: [{ method: validateToken, assign: "token" }],
+            pre: [{ method: validateToken, assign: "token" }],
             handler: controller.staffRejectionBtn,
             description: "Staff Student Rejection Request",
             auth: false,
@@ -209,7 +220,7 @@ export class StaffRoutes implements IRoute {
           method: "GET",
           path: "/api/v1/staff/userSignedUp",
           config: {
-            // pre: [{ method: validateToken, assign: "token" }],
+            pre: [{ method: validateToken, assign: "token" }],
             handler: controller.userSignedUp,
             description: "Staff Student Approval Request",
             auth: false,
@@ -219,7 +230,7 @@ export class StaffRoutes implements IRoute {
           method: "POST",
           path: "/api/v1/staff/userFollowUp",
           config: {
-            // pre: [{ method: validateToken, assign: "token" }],
+            pre: [{ method: validateToken, assign: "token" }],
             handler: controller.userFollowUp,
             description: "Signup User FollowUp Details",
             auth: false,
@@ -229,7 +240,7 @@ export class StaffRoutes implements IRoute {
           method: "GET",
           path: "/api/v1/staff/userManagementPage",
           config: {
-            // pre: [{ method: validateToken, assign: "token" }],
+            pre: [{ method: validateToken, assign: "token" }],
             handler: controller.userManagementPage,
             description: "Signup User FollowUp Details",
             auth: false,
@@ -239,10 +250,37 @@ export class StaffRoutes implements IRoute {
           method: "POST",
           path: "/api/v1/staff/userDataUpdate",
           config: {
-            // pre: [{ method: validateToken, assign: "token" }],
+            pre: [{ method: validateToken, assign: "token" }],
             handler: controller.userDataUpdate,
             description: "Staff To Update Student Details",
             auth: false,
+          },
+        },
+        {
+          method: "POST",
+          path: "/api/v1/staff/ProfileData",
+          config: {
+            pre: [{ method: validateToken, assign: "token" }],
+            handler: controller.ProfileData,
+            description: "Staff To Update Student Details",
+            auth: false,
+          },
+        },
+        {
+          method: "POST",
+          path: "/api/v1/staff/addEmployeeDocument",
+          config: {
+            pre: [{ method: validateToken, assign: "token" }],
+            handler: controller.addEmployeeDocument,
+            description: "Add New Staff Or Employee Documents",
+            tags: ["api", "Users"],
+            auth: false,
+            payload: {
+              maxBytes: 10485760,
+              output: "stream",
+              parse: true,
+              multipart: true,
+            },
           },
         },
       ]);
@@ -259,7 +297,7 @@ export class DirectorRoutes implements IRoute {
           method: "GET",
           path: "/api/v1/director/staff",
           config: {
-            // pre: [{ method: validateToken, assign: "token" }],
+            pre: [{ method: validateToken, assign: "token" }],
             handler: controller.directorStaffPg,
             description: "director Page Staff Module",
             auth: false,
@@ -269,7 +307,7 @@ export class DirectorRoutes implements IRoute {
           method: "POST",
           path: "/api/v1/director/userData",
           config: {
-            // pre: [{ method: validateToken, assign: "token" }],
+            pre: [{ method: validateToken, assign: "token" }],
             handler: controller.userData,
             description: "director Page Staff Module",
             auth: false,
@@ -279,7 +317,7 @@ export class DirectorRoutes implements IRoute {
           method: "POST",
           path: "/api/v1/therapist/approvalButton",
           config: {
-            // pre: [{ method: validateToken, assign: "token" }],
+            pre: [{ method: validateToken, assign: "token" }],
             handler: controller.approvalButton,
             description: "therapist Student Approval Button",
             auth: false,
@@ -289,7 +327,7 @@ export class DirectorRoutes implements IRoute {
           method: "GET",
           path: "/api/v1/therapist/approvalData",
           config: {
-            // pre: [{ method: validateToken, assign: "token" }],
+            pre: [{ method: validateToken, assign: "token" }],
             handler: controller.therapistApprovalData,
             description: "therapist Student Approval Data ",
             auth: false,
@@ -299,7 +337,7 @@ export class DirectorRoutes implements IRoute {
           method: "POST",
           path: "/api/v1/director/addEmployee",
           config: {
-            // pre: [{ method: validateToken, assign: "token" }],
+            pre: [{ method: validateToken, assign: "token" }],
             handler: controller.addEmployee,
             description: "Add New Staff Or Employee Documents",
             auth: false,
@@ -309,7 +347,7 @@ export class DirectorRoutes implements IRoute {
           method: "GET",
           path: "/api/v1/director/userTypeLabel",
           config: {
-            // pre: [{ method: validateToken, assign: "token" }],
+            pre: [{ method: validateToken, assign: "token" }],
             handler: controller.userTypeLabel,
             description: "Add New Staff Or Employee Documents",
             auth: false,
@@ -317,11 +355,11 @@ export class DirectorRoutes implements IRoute {
         },
         {
           method: "POST",
-          path: "/api/v1/director/addEmployeeDocument",
+          path: "/api/v1/director/addProfileImage",
           config: {
             pre: [{ method: validateToken, assign: "token" }],
             handler: controller.addEmployeeData,
-            description: "Add New Staff Or Employee Documents",
+            description: "Add Profile Image ",
             tags: ["api", "Users"],
             auth: false,
             payload: {
@@ -336,9 +374,19 @@ export class DirectorRoutes implements IRoute {
           method: "GET",
           path: "/api/v1/director/userAuditList",
           config: {
-            // pre: [{ method: validateToken, assign: "token" }],
+            pre: [{ method: validateToken, assign: "token" }],
             handler: controller.userAuditList,
             description: "sending user Details to user Audit page ",
+            auth: false,
+          },
+        },
+        {
+          method: "GET",
+          path: "/api/v1/director/staffAuditList",
+          config: {
+            pre: [{ method: validateToken, assign: "token" }],
+            handler: controller.staffAuditList,
+            description: "sending Staff Details to user Audit page ",
             auth: false,
           },
         },
@@ -346,7 +394,7 @@ export class DirectorRoutes implements IRoute {
           method: "POST",
           path: "/api/v1/director/userUpdateAuditList",
           config: {
-            // pre: [{ method: validateToken, assign: "token" }],
+            pre: [{ method: validateToken, assign: "token" }],
             handler: controller.userUpdateAuditList,
             description: "sending user Details to user Audit page ",
             auth: false,
@@ -356,7 +404,7 @@ export class DirectorRoutes implements IRoute {
           method: "POST",
           path: "/api/v1/director/userUpdateAuditListRead",
           config: {
-            // pre: [{ method: validateToken, assign: "token" }],
+            pre: [{ method: validateToken, assign: "token" }],
             handler: controller.userUpdateAuditListRead,
             description: "sending user Details to user Audit page ",
             auth: false,
@@ -366,7 +414,7 @@ export class DirectorRoutes implements IRoute {
           method: "POST",
           path: "/api/v1/director/userDataListApproval",
           config: {
-            // pre: [{ method: validateToken, assign: "token" }],
+            pre: [{ method: validateToken, assign: "token" }],
             handler: controller.userDataListApproval,
             description: "Staff To Update Student Details",
             auth: false,
@@ -376,7 +424,7 @@ export class DirectorRoutes implements IRoute {
           method: "POST",
           path: "/api/v1/director/userDataUpdateApprovalBtn",
           config: {
-            // pre: [{ method: validateToken, assign: "token" }],
+            pre: [{ method: validateToken, assign: "token" }],
             handler: controller.userDataUpdateApprovalBtn,
             description: "Staff To Update Student Details",
             auth: false,
@@ -386,7 +434,7 @@ export class DirectorRoutes implements IRoute {
           method: "POST",
           path: "/api/v1/director/userDataUpdateRejectBtn",
           config: {
-            // pre: [{ method: validateToken, assign: "token" }],
+            pre: [{ method: validateToken, assign: "token" }],
             handler: controller.userDataUpdateRejectBtn,
             description: "Staff To Update Student Details",
             auth: false,
@@ -438,7 +486,23 @@ export class UserPageRoutes implements IRoute {
     });
   }
 }
-
-// export class SignUp implements IRoute{
-
-// }
+export class BatchProgram implements IRoute {
+  public async register(server: any): Promise<any> {
+    return new Promise((resolve) => {
+      const UserPage = new batchPrograms();
+      server.route([
+        {
+          method: "GET",
+          path: "/api/v1/batch/birthday",
+          config: {
+            // pre: [{ method: validateToken, assign: "token" }],
+            handler: UserPage.userBirthdayBatch,
+            description: "User BirthDay Wish",
+            auth: false,
+          },
+        },
+      ]);
+      resolve(true);
+    });
+  }
+}

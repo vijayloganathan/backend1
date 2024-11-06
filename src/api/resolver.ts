@@ -3,6 +3,7 @@ import { ProfileRepository } from "./profile/profile-repository";
 import { StaffRepository } from "./staff/staff-repository";
 import { DirectorRepository } from "./directors/director-repository";
 import { BatchRepository } from "./batch/birthday-repository";
+import {FinanceRepository} from "./finance/finance-repository"
 
 export class Resolver {
   public userRepository: any;
@@ -181,7 +182,6 @@ export class FrontDeskResolver {
     user_data: any,
     domain_code: any
   ): Promise<any> {
-    console.log("-------------------------------------------------line 185");
     return await this.StaffRepository.userDataUpdateV1(user_data, domain_code);
   }
   public async ProfileDataV1(user_data: any, domain_code: any): Promise<any> {
@@ -405,4 +405,19 @@ export class BatchProgramResolver {
       domain_code
     );
   }
+}
+export class FinanceResolver {
+  public FinanceRepository: any;
+  // constructor() {
+  //   this.FinanceRepository = new FinanceRepository();
+  // }
+  // public async BirthdayRepositoryV1(
+  //   user_data: any,
+  //   domain_code: any
+  // ): Promise<any> {
+  //   return await this.FinanceRepository.BirthdayRepositoryV1(
+  //     user_data,
+  //     domain_code
+  //   );
+  // }
 }

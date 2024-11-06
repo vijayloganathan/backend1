@@ -6,6 +6,7 @@ import {
   DirectorRoutes,
   UserPageRoutes,
   BatchProgram,
+  Finance,
 } from "./api/routes";
 // import StaffRoutes from "./api/staff/routes";
 
@@ -17,5 +18,6 @@ export default class Router {
     await new DirectorRoutes().register(server);
     await new UserPageRoutes().register(server);
     await new BatchProgram().register(server);
+    await new Finance().register(server);
   }
 }

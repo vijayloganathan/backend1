@@ -1201,7 +1201,7 @@ export class DirectorRepository {
       const month = String(date.getMonth() + 1).padStart(2, "0");
       const year = date.getFullYear();
 
-      return `${year}-${month}-${day}`;
+      return `${month}-${day}-${year}`;
     }
     try {
       userData.refOfferId = userData.refOfferId || 1;
@@ -1281,7 +1281,18 @@ export class DirectorRepository {
       id: refStId,
     };
     const token = generateToken(tokenData, true);
+    function formatDate(isoDate: any) {
+      const date = new Date(isoDate);
+      const day = String(date.getDate()).padStart(2, "0");
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const year = date.getFullYear();
+
+      return `${year}-${month}-${day}`;
+    }
     try {
+      userData.refStartAt = formatDate(userData.refStartAt);
+      userData.refEndAt = formatDate(userData.refEndAt);
+
       const params = [
         userData.refOfId,
         userData.refMin,
@@ -1289,7 +1300,9 @@ export class DirectorRepository {
         userData.refStartAt,
         userData.refEndAt,
       ];
+      console.log("params", params);
       const updateFeesResult = await executeQuery(editOffers, params);
+      console.log("updateFeesResult", updateFeesResult);
 
       return encrypt(
         {
@@ -1298,7 +1311,7 @@ export class DirectorRepository {
           token: token,
           data: updateFeesResult,
         },
-        false
+        true
       );
     } catch (error) {
       const results = {

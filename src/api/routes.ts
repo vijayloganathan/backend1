@@ -9,6 +9,7 @@ import {
   Director,
   userDashBoard,
   batchPrograms,
+  financeController
 } from "./controller";
 import { Logger } from "winston";
 import { decodeToken, validateToken } from "../helper/token";
@@ -524,7 +525,7 @@ export class DirectorRoutes implements IRoute {
           method: "POST",
           path: "/api/v1/director/deleteOfferStructure",
           config: {
-            // pre: [{ method: validateToken, assign: "token" }],
+            pre: [{ method: validateToken, assign: "token" }],
             handler: controller.deleteOfferStructure,
             description: "deleting the Offer Structure in the table",
             auth: false,
@@ -591,6 +592,26 @@ export class BatchProgram implements IRoute {
             auth: false,
           },
         },
+      ]);
+      resolve(true);
+    });
+  }
+}
+export class Finance implements IRoute {
+  public async register(server: any): Promise<any> {
+    return new Promise((resolve) => {
+      const UserPage = new financeController();
+      server.route([
+        // {
+        //   method: "GET",
+        //   path: "/api/v1/batch/birthday",
+        //   config: {
+        //     // pre: [{ method: validateToken, assign: "token" }],
+        //     handler: UserPage.userBirthdayBatch,
+        //     description: "User BirthDay Wish",
+        //     auth: false,
+        //   },
+        // },
       ]);
       resolve(true);
     });

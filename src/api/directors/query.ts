@@ -258,6 +258,7 @@ export const getOfferStructure = `SELECT
     o.*, 
     ofn."refOfferName" AS "Offer Type",
     CASE 
+        WHEN CURRENT_DATE < o."refStartAt" THEN 'yet to start'
         WHEN CURRENT_DATE BETWEEN o."refStartAt" AND o."refEndAt" THEN 'live'
         ELSE 'expire'
     END AS "status"

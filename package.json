@@ -3,11 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "scripts": {
-      "build": "tsc",
-      "start": "node dist/index.js",
-      "dev": "ts-node -r dotenv/config src/server.ts"
-    }
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node dist/index.js",
+    "dev": "ts-node -r dotenv/config src/server.ts"
   },
   "author": "",
   "license": "ISC",

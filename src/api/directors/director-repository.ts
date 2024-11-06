@@ -37,6 +37,17 @@ import {
   getMailId,
   getStaffUpdateList,
   fetchBranchList,
+  getFeesStructure,
+  getMemberList,
+  getCustTimeData,
+  checkFeesStructure,
+  editFeesStructure,
+  deleteFeesStructure,
+  getOfferStructure,
+  getOffersName,
+  insertNewOffers,
+  editOffers,
+  deleteOffers,
 } from "./query";
 import { encrypt } from "../../helper/encrypt";
 import { generateToken, decodeToken } from "../../helper/token";
@@ -593,7 +604,9 @@ export class DirectorRepository {
     decodedToken: number
   ): Promise<any> {
     const id = userData.refStId;
+    console.log("id", id);
     const refStId = decodedToken;
+    console.log("refStId", refStId);
     const tokenData = {
       id: refStId,
     };
@@ -601,6 +614,7 @@ export class DirectorRepository {
 
     try {
       let getList = await executeQuery(userUpdateApprovalList, [id]);
+      console.log("getList", getList);
 
       if (
         getList[0] &&
@@ -987,6 +1001,342 @@ export class DirectorRepository {
       return encrypt(results, true);
     } finally {
       client.release();
+    }
+  }
+  public async feesStructureV1(
+    userData: any,
+    decodedToken: number
+  ): Promise<any> {
+    const refStId = decodedToken;
+    const tokenData = {
+      id: refStId,
+    };
+    const token = generateToken(tokenData, true);
+    try {
+      userData.refBranchId = userData.refBranchId || 1;
+      const feesStructure = await executeQuery(getFeesStructure, [
+        userData.refBranchId,
+      ]);
+      const BranchList = await executeQuery(fetchBranchList, []);
+
+      return encrypt(
+        {
+          success: true,
+          message: "Fess Structure Data Is Passed Successfully",
+          token: token,
+          FessData: feesStructure,
+          Branch: BranchList,
+        },
+        true
+      );
+    } catch (error) {
+      const results = {
+        success: false,
+        message: "Error in Sending Fees Structure Data",
+        token: token,
+      };
+      return encrypt(results, true);
+    }
+  }
+  public async addFeesStructureV1(
+    userData: any,
+    decodedToken: number
+  ): Promise<any> {
+    const refStId = decodedToken;
+    const tokenData = {
+      id: refStId,
+    };
+    const token = generateToken(tokenData, true);
+    try {
+      const timeData = await executeQuery(getCustTimeData, []);
+      const memberList = await executeQuery(getMemberList, []);
+
+      return encrypt(
+        {
+          success: true,
+          message: "Fess Structure Data Is Passed Successfully",
+          token: token,
+          timeData: timeData,
+          memberList: memberList,
+        },
+        true
+      );
+    } catch (error) {
+      const results = {
+        success: false,
+        message: "Error in Sending Select fees Option Data",
+        token: token,
+      };
+      return encrypt(results, true);
+    }
+  }
+  public async addNewFeesStructureV1(
+    userData: any,
+    decodedToken: number
+  ): Promise<any> {
+    const refStId = decodedToken;
+    const tokenData = {
+      id: refStId,
+    };
+    const token = generateToken(tokenData, true);
+    try {
+      const params = [
+        userData.refBranchId,
+        userData.refMemberType,
+        userData.refSessionType,
+        userData.refFees,
+        userData.refGst,
+        userData.refTotal,
+      ];
+      const checkFeesResult = await executeQuery(checkFeesStructure, params);
+
+      if (checkFeesResult[0].ResultStatus == false) {
+        return encrypt(
+          {
+            success: false,
+            message: "The Fees is Already Exit",
+            token: token,
+            data: checkFeesResult,
+          },
+          true
+        );
+      } else {
+        return encrypt(
+          {
+            success: true,
+            message: "New Fees Is Added Successfully",
+            token: token,
+            data: checkFeesResult,
+          },
+          true
+        );
+      }
+    } catch (error) {
+      const results = {
+        success: false,
+        message: "Error in Adding New Fees",
+        token: token,
+      };
+      return encrypt(results, true);
+    }
+  }
+  public async editFeesStructureV1(
+    userData: any,
+    decodedToken: number
+  ): Promise<any> {
+    const refStId = decodedToken;
+    const tokenData = {
+      id: refStId,
+    };
+    const token = generateToken(tokenData, true);
+    try {
+      const params = [
+        userData.refFeId,
+        userData.refFees,
+        userData.refGst,
+        userData.refTotal,
+      ];
+      const updateFeesResult = await executeQuery(editFeesStructure, params);
+
+      return encrypt(
+        {
+          success: true,
+          message: "Fees Structure is Updated Successfully",
+          token: token,
+          data: updateFeesResult,
+        },
+        true
+      );
+    } catch (error) {
+      const results = {
+        success: false,
+        message: "Error in Updating Fees Structure",
+        token: token,
+      };
+      return encrypt(results, true);
+    }
+  }
+  public async deleteFeesStructureV1(
+    userData: any,
+    decodedToken: number
+  ): Promise<any> {
+    const refStId = decodedToken;
+    const tokenData = {
+      id: refStId,
+    };
+    const token = generateToken(tokenData, true);
+    try {
+      const params = [userData.refFeId];
+      const updateFeesResult = await executeQuery(deleteFeesStructure, params);
+
+      return encrypt(
+        {
+          success: true,
+          message: "Fees Structure is Deleted Successfully",
+          token: token,
+        },
+        true
+      );
+    } catch (error) {
+      const results = {
+        success: false,
+        message: "Error in Deleting Fees Structure",
+        token: token,
+      };
+      return encrypt(results, true);
+    }
+  }
+  public async offerStructureV1(
+    userData: any,
+    decodedToken: number
+  ): Promise<any> {
+    const refStId = decodedToken;
+    const tokenData = {
+      id: refStId,
+    };
+    const token = generateToken(tokenData, true);
+    function formatDate(isoDate: any) {
+      const date = new Date(isoDate);
+      const day = String(date.getDate()).padStart(2, "0");
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const year = date.getFullYear();
+
+      return `${year}-${month}-${day}`;
+    }
+    try {
+      userData.refOfferId = userData.refOfferId || 1;
+      const offersStructure = await executeQuery(getOfferStructure, [
+        userData.refOfferId,
+      ]);
+      for (let i = 0; i < offersStructure.length; i++) {
+        offersStructure[i].refStartAt = formatDate(
+          offersStructure[i].refStartAt
+        );
+        offersStructure[i].refEndAt = formatDate(offersStructure[i].refEndAt);
+      }
+      const offerName = await executeQuery(getOffersName, []);
+
+      return encrypt(
+        {
+          success: true,
+          message: "Offers Structure Data Is Passed Successfully",
+          token: token,
+          offersStructure: offersStructure,
+          offerName: offerName,
+        },
+        true
+      );
+    } catch (error) {
+      const results = {
+        success: false,
+        message: "Error in Sending Offers Structure Data",
+        token: token,
+      };
+      return encrypt(results, true);
+    }
+  }
+  public async addNewOffersStructureV1(
+    userData: any,
+    decodedToken: number
+  ): Promise<any> {
+    const refStId = decodedToken;
+    const tokenData = {
+      id: refStId,
+    };
+    const token = generateToken(tokenData, true);
+    try {
+      const params = [
+        userData.refOfferId,
+        userData.refMin,
+        userData.refOffer,
+        userData.refStartAt,
+        userData.refEndAt,
+      ];
+      const newOffersResult = await executeQuery(insertNewOffers, params);
+
+      return encrypt(
+        {
+          success: true,
+          message: "New Offer Is Added Successfully",
+          token: token,
+          data: newOffersResult,
+        },
+        true
+      );
+    } catch (error) {
+      const results = {
+        success: false,
+        message: "Error in Adding New offer",
+        token: token,
+      };
+      return encrypt(results, true);
+    }
+  }
+  public async editOfferStructureV1(
+    userData: any,
+    decodedToken: number
+  ): Promise<any> {
+    const refStId = decodedToken;
+    const tokenData = {
+      id: refStId,
+    };
+    const token = generateToken(tokenData, true);
+    try {
+      const params = [
+        userData.refOfId,
+        userData.refMin,
+        userData.refOffer,
+        userData.refStartAt,
+        userData.refEndAt,
+      ];
+      const updateFeesResult = await executeQuery(editOffers, params);
+
+      return encrypt(
+        {
+          success: true,
+          message: "Offers Structure is Updated Successfully",
+          token: token,
+          data: updateFeesResult,
+        },
+        false
+      );
+    } catch (error) {
+      const results = {
+        success: false,
+        message: "Error in Updating Offers Structure",
+        token: token,
+      };
+      return encrypt(results, true);
+    }
+  }
+  public async deleteOfferStructureV1(
+    userData: any,
+    decodedToken: number
+  ): Promise<any> {
+    const refStId = decodedToken;
+    const tokenData = {
+      id: refStId,
+    };
+    const token = generateToken(tokenData, true);
+    try {
+      const params = [userData.refOfId];
+      const updateFeesResult = await executeQuery(deleteOffers, params);
+
+      return encrypt(
+        {
+          success: true,
+          message: "Offers Structure is Deleted Successfully",
+          token: token,
+        },
+        true
+      );
+    } catch (error) {
+      const results = {
+        success: false,
+        message: "Error in Deleting Offers Structure",
+        token: token,
+      };
+      return encrypt(results, true);
     }
   }
 }

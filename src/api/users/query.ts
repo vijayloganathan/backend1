@@ -155,3 +155,7 @@ export const getUserData = `SELECT * FROM public."{{tableName}}" WHERE "refStId"
 export const getPresentHealthLabel = 'SELECT * FROM public."refHealthIssues"';
 
 export const updateNotification = `INSERT INTO public."refNotification" ("transId", "refRead") VALUES ($1, $2);`;
+
+export const TimeStamp = `SELECT CURRENT_TIMESTAMP;`;
+
+export const time = `SELECT CURRENT_TIME;`;

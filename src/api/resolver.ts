@@ -312,6 +312,84 @@ export class DirectorResolver {
       domain_code
     );
   }
+  public async feesStructureV1(user_data: any, domain_code: any): Promise<any> {
+    return await this.DirectorRepository.feesStructureV1(
+      user_data,
+      domain_code
+    );
+  }
+  public async addFeesStructureV1(
+    user_data: any,
+    domain_code: any
+  ): Promise<any> {
+    return await this.DirectorRepository.addFeesStructureV1(
+      user_data,
+      domain_code
+    );
+  }
+  public async addNewFeesStructureV1(
+    user_data: any,
+    domain_code: any
+  ): Promise<any> {
+    return await this.DirectorRepository.addNewFeesStructureV1(
+      user_data,
+      domain_code
+    );
+  }
+  public async editFeesStructureV1(
+    user_data: any,
+    domain_code: any
+  ): Promise<any> {
+    return await this.DirectorRepository.editFeesStructureV1(
+      user_data,
+      domain_code
+    );
+  }
+  public async deleteFeesStructureV1(
+    user_data: any,
+    domain_code: any
+  ): Promise<any> {
+    return await this.DirectorRepository.deleteFeesStructureV1(
+      user_data,
+      domain_code
+    );
+  }
+  public async offerStructureV1(
+    user_data: any,
+    domain_code: any
+  ): Promise<any> {
+    return await this.DirectorRepository.offerStructureV1(
+      user_data,
+      domain_code
+    );
+  }
+  public async addNewOffersStructureV1(
+    user_data: any,
+    domain_code: any
+  ): Promise<any> {
+    return await this.DirectorRepository.addNewOffersStructureV1(
+      user_data,
+      domain_code
+    );
+  }
+  public async editOfferStructureV1(
+    user_data: any,
+    domain_code: any
+  ): Promise<any> {
+    return await this.DirectorRepository.editOfferStructureV1(
+      user_data,
+      domain_code
+    );
+  }
+  public async deleteOfferStructureV1(
+    user_data: any,
+    domain_code: any
+  ): Promise<any> {
+    return await this.DirectorRepository.deleteOfferStructureV1(
+      user_data,
+      domain_code
+    );
+  }
 }
 export class BatchProgramResolver {
   public BatchRepository: any;

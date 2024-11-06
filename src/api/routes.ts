@@ -416,7 +416,7 @@ export class DirectorRoutes implements IRoute {
           config: {
             pre: [{ method: validateToken, assign: "token" }],
             handler: controller.userDataListApproval,
-            description: "Staff To Update Student Details",
+            description: "sending the list of data to approve ",
             auth: false,
           },
         },
@@ -426,7 +426,7 @@ export class DirectorRoutes implements IRoute {
           config: {
             pre: [{ method: validateToken, assign: "token" }],
             handler: controller.userDataUpdateApprovalBtn,
-            description: "Staff To Update Student Details",
+            description: "Approve User Data Update Request",
             auth: false,
           },
         },
@@ -436,7 +436,97 @@ export class DirectorRoutes implements IRoute {
           config: {
             pre: [{ method: validateToken, assign: "token" }],
             handler: controller.userDataUpdateRejectBtn,
-            description: "Staff To Update Student Details",
+            description: "Rejecting User Data Update Request",
+            auth: false,
+          },
+        },
+        {
+          method: "POST",
+          path: "/api/v1/director/feesStructure",
+          config: {
+            pre: [{ method: validateToken, assign: "token" }],
+            handler: controller.feesStructure,
+            description: "Sending Fees Structure",
+            auth: false,
+          },
+        },
+        {
+          method: "GET",
+          path: "/api/v1/director/addFeesStructure",
+          config: {
+            pre: [{ method: validateToken, assign: "token" }],
+            handler: controller.addFeesStructure,
+            description: "Sending labels values to add new Fees Structure",
+            auth: false,
+          },
+        },
+        {
+          method: "POST",
+          path: "/api/v1/director/addNewFeesStructure",
+          config: {
+            pre: [{ method: validateToken, assign: "token" }],
+            handler: controller.addNewFeesStructure,
+            description: "Adding new fees Structure in a table",
+            auth: false,
+          },
+        },
+        {
+          method: "POST",
+          path: "/api/v1/director/editFeesStructure",
+          config: {
+            pre: [{ method: validateToken, assign: "token" }],
+            handler: controller.editFeesStructure,
+            description: "Editing the fees Structure in the table",
+            auth: false,
+          },
+        },
+        {
+          method: "POST",
+          path: "/api/v1/director/deleteFeesStructure",
+          config: {
+            pre: [{ method: validateToken, assign: "token" }],
+            handler: controller.deleteFeesStructure,
+            description: "delete a fees Structure in a table",
+            auth: false,
+          },
+        },
+        {
+          method: "POST",
+          path: "/api/v1/director/offerStructure",
+          config: {
+            pre: [{ method: validateToken, assign: "token" }],
+            handler: controller.offerStructure,
+            description: "Sending offer Structure",
+            auth: false,
+          },
+        },
+        {
+          method: "POST",
+          path: "/api/v1/director/addNewOffersStructure",
+          config: {
+            pre: [{ method: validateToken, assign: "token" }],
+            handler: controller.addNewOffersStructure,
+            description: "add New Offers Details",
+            auth: false,
+          },
+        },
+        {
+          method: "POST",
+          path: "/api/v1/director/editOfferStructure",
+          config: {
+            pre: [{ method: validateToken, assign: "token" }],
+            handler: controller.editOfferStructure,
+            description: "Editing the Offer Structure in the table",
+            auth: false,
+          },
+        },
+        {
+          method: "POST",
+          path: "/api/v1/director/deleteOfferStructure",
+          config: {
+            // pre: [{ method: validateToken, assign: "token" }],
+            handler: controller.deleteOfferStructure,
+            description: "deleting the Offer Structure in the table",
             auth: false,
           },
         },

@@ -29,13 +29,8 @@ export class UserController {
       const domainCode = request.headers.domain_code || "";
       let entity;
 
-      // if (domainCode.includes("ubl")) {
       entity = await this.resolver.userLoginV1(request.payload);
-      // } else {
-      //   entity = await this.resolver.userLoginV2(request.payload);
-      // }
 
-      // Check entity response for success/failure
       if (entity.success) {
         return response.response(entity).code(200);
       }
@@ -1194,6 +1189,7 @@ export class Director {
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
     const decodedToken = request.plugins.token.id;
+    console.log("decodedToken", decodedToken);
     try {
       logger.info(`GET URL REQ => ${request.url.href}`);
       const domainCode = request.headers.domain_code || "";
@@ -1249,56 +1245,280 @@ export class Director {
         .code(500);
     }
   };
+  public feesStructure = async (
+    request: any,
+    response: Hapi.ResponseToolkit
+  ): Promise<any> => {
+    const decodedToken = request.plugins.token.id;
+    console.log("decodedToken", decodedToken);
+    try {
+      logger.info(`GET URL REQ => ${request.url.href}`);
+      const domainCode = request.headers.domain_code || "";
+      const entity = await this.resolver.feesStructureV1(
+        request.payload,
+        decodedToken
+      );
 
-  // public addEmployeeData = async (
-  //   request: any,
-  //   response: Hapi.ResponseToolkit
-  // ): Promise<any> => {
-  //   // const decodedToken = request.plugins.token.id;
+      if (entity.success) {
+        return response.response(entity).code(200);
+      }
+      return response.response(entity).code(200);
+    } catch (error) {
+      logger.error("Error in sending Fees Structure Data", error);
+      return response
+        .response({
+          success: false,
+          message:
+            error instanceof Error
+              ? error.message
+              : "An unknown error occurred",
+        })
+        .code(500);
+    }
+  };
+  public addFeesStructure = async (
+    request: any,
+    response: Hapi.ResponseToolkit
+  ): Promise<any> => {
+    const decodedToken = request.plugins.token.id;
+    try {
+      logger.info(`GET URL REQ => ${request.url.href}`);
+      const domainCode = request.headers.domain_code || "";
+      const entity = await this.resolver.addFeesStructureV1(
+        request.payload,
+        decodedToken
+      );
 
-  //   logger.info("Router-----store Register Form Data");
-  //   try {
-  //     logger.info(`GET URL REQ => ${request.url.href}`);
-  //     const domainCode = request.headers.domain_code || "";
+      if (entity.success) {
+        return response.response(entity).code(200);
+      }
+      return response.response(entity).code(200);
+    } catch (error) {
+      logger.error("Error in Adding New Fees Structure", error);
+      return response
+        .response({
+          success: false,
+          message:
+            error instanceof Error
+              ? error.message
+              : "An unknown error occurred",
+        })
+        .code(500);
+    }
+  };
+  public addNewFeesStructure = async (
+    request: any,
+    response: Hapi.ResponseToolkit
+  ): Promise<any> => {
+    const decodedToken = request.plugins.token.id;
+    try {
+      logger.info(`GET URL REQ => ${request.url.href}`);
+      const domainCode = request.headers.domain_code || "";
+      const entity = await this.resolver.addNewFeesStructureV1(
+        request.payload,
+        decodedToken
+      );
 
-  //     // If file is uploaded via form-data, it will be in request.payload
-  //     const payload = request.payload;
+      if (entity.success) {
+        return response.response(entity).code(200);
+      }
+      return response.response(entity).code(200);
+    } catch (error) {
+      logger.error("Error in Adding New Fees Structure", error);
+      return response
+        .response({
+          success: false,
+          message:
+            error instanceof Error
+              ? error.message
+              : "An unknown error occurred",
+        })
+        .code(500);
+    }
+  };
+  public editFeesStructure = async (
+    request: any,
+    response: Hapi.ResponseToolkit
+  ): Promise<any> => {
+    const decodedToken = request.plugins.token.id;
+    try {
+      logger.info(`GET URL REQ => ${request.url.href}`);
+      const domainCode = request.headers.domain_code || "";
+      const entity = await this.resolver.editFeesStructureV1(
+        request.payload,
+        decodedToken
+      );
 
-  //     // Assuming the file field is named 'file'
-  //     const file = payload.file;
+      if (entity.success) {
+        return response.response(entity).code(200);
+      }
+      return response.response(entity).code(200);
+    } catch (error) {
+      logger.error("Error in Editing New Fees Structure", error);
+      return response
+        .response({
+          success: false,
+          message:
+            error instanceof Error
+              ? error.message
+              : "An unknown error occurred",
+        })
+        .code(500);
+    }
+  };
+  public deleteFeesStructure = async (
+    request: any,
+    response: Hapi.ResponseToolkit
+  ): Promise<any> => {
+    const decodedToken = request.plugins.token.id;
+    try {
+      logger.info(`GET URL REQ => ${request.url.href}`);
+      const domainCode = request.headers.domain_code || "";
+      const entity = await this.resolver.deleteFeesStructureV1(
+        request.payload,
+        decodedToken
+      );
 
-  //     if (file) {
-  //       // Log the file details (can be stream or Buffer based on config)
-  //       logger.info(`Uploaded file: ${file.hapi.filename}`);
-  //       logger.info(`File type: ${file.hapi.headers["content-type"]}`);
-  //     }
+      if (entity.success) {
+        return response.response(entity).code(200);
+      }
+      return response.response(entity).code(200);
+    } catch (error) {
+      logger.error("Error in Deleting Fees Structure", error);
+      return response
+        .response({
+          success: false,
+          message:
+            error instanceof Error
+              ? error.message
+              : "An unknown error occurred",
+        })
+        .code(500);
+    }
+  };
+  public offerStructure = async (
+    request: any,
+    response: Hapi.ResponseToolkit
+  ): Promise<any> => {
+    const decodedToken = request.plugins.token.id;
+    try {
+      logger.info(`GET URL REQ => ${request.url.href}`);
+      const domainCode = request.headers.domain_code || "";
+      const entity = await this.resolver.offerStructureV1(
+        request.payload,
+        decodedToken
+      );
 
-  //     let entity;
+      if (entity.success) {
+        return response.response(entity).code(200);
+      }
+      return response.response(entity).code(200);
+    } catch (error) {
+      logger.error("Error in sending Offers Structure Data", error);
+      return response
+        .response({
+          success: false,
+          message:
+            error instanceof Error
+              ? error.message
+              : "An unknown error occurred",
+        })
+        .code(500);
+    }
+  };
+  public addNewOffersStructure = async (
+    request: any,
+    response: Hapi.ResponseToolkit
+  ): Promise<any> => {
+    const decodedToken = request.plugins.token.id;
+    // const decodedToken = 1;
+    try {
+      logger.info(`GET URL REQ => ${request.url.href}`);
+      const domainCode = request.headers.domain_code || "";
+      const entity = await this.resolver.addNewOffersStructureV1(
+        request.payload,
+        decodedToken
+      );
 
-  //     // Process the remaining form data
-  //     entity = await this.resolver.addEmployeeDataV1({
-  //       ...payload, // includes the rest of the form fields
-  //       file, // Pass the file if needed
-  //       // decodedToken
-  //     });
+      if (entity.success) {
+        return response.response(entity).code(200);
+      }
+      return response.response(entity).code(200);
+    } catch (error) {
+      logger.error("Error in Adding new  Offers Data", error);
+      return response
+        .response({
+          success: false,
+          message:
+            error instanceof Error
+              ? error.message
+              : "An unknown error occurred",
+        })
+        .code(500);
+    }
+  };
+  public editOfferStructure = async (
+    request: any,
+    response: Hapi.ResponseToolkit
+  ): Promise<any> => {
+    // const decodedToken = request.plugins.token.id;
+    const decodedToken = 1;
+    try {
+      logger.info(`GET URL REQ => ${request.url.href}`);
+      const domainCode = request.headers.domain_code || "";
+      const entity = await this.resolver.editOfferStructureV1(
+        request.payload,
+        decodedToken
+      );
 
-  //     if (entity.success) {
-  //       return response.response(entity).code(200);
-  //     }
-  //     return response.response(entity).code(200);
-  //   } catch (error) {
-  //     logger.error("Error in Adding New Employee", error);
-  //     return response
-  //       .response({
-  //         success: false,
-  //         message:
-  //           error instanceof Error
-  //             ? error.message
-  //             : "An unknown error occurred",
-  //       })
-  //       .code(500);
-  //   }
-  // };
+      if (entity.success) {
+        return response.response(entity).code(200);
+      }
+      return response.response(entity).code(200);
+    } catch (error) {
+      logger.error("Error in Editing Offer Structure", error);
+      return response
+        .response({
+          success: false,
+          message:
+            error instanceof Error
+              ? error.message
+              : "An unknown error occurred",
+        })
+        .code(500);
+    }
+  };
+  public deleteOfferStructure = async (
+    request: any,
+    response: Hapi.ResponseToolkit
+  ): Promise<any> => {
+    const decodedToken = request.plugins.token.id;
+    // const decodedToken = 1;
+    try {
+      logger.info(`GET URL REQ => ${request.url.href}`);
+      const domainCode = request.headers.domain_code || "";
+      const entity = await this.resolver.deleteOfferStructureV1(
+        request.payload,
+        decodedToken
+      );
+
+      if (entity.success) {
+        return response.response(entity).code(200);
+      }
+      return response.response(entity).code(200);
+    } catch (error) {
+      logger.error("Error in Deleting Offers Structure", error);
+      return response
+        .response({
+          success: false,
+          message:
+            error instanceof Error
+              ? error.message
+              : "An unknown error occurred",
+        })
+        .code(500);
+    }
+  };
 }
 export class userDashBoard {
   public resolver: any;

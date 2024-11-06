@@ -28,6 +28,8 @@ import {
   updateNotification,
   selectUserByrefStId,
   changePassword,
+  TimeStamp,
+  time,
 } from "./query";
 import { getUserData as rawGetUserDataQuery } from "./query";
 import { encrypt } from "../../helper/encrypt";
@@ -385,7 +387,7 @@ export class UserRepository {
             contentType: "image/jpeg",
           };
         } catch (err) {
-          console.error("Error retrieving profile file:", err);
+          // console.error("Error retrieving profile file:", err);
         }
       }
 

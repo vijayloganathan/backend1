@@ -912,7 +912,7 @@ export class StaffRepository {
         // refPanPath: Data.refPanPath,
         // refAadharPath: Data.refAadharPath,
         // refCertificationPath: Data.refCertificationPath,
-        refWorkingTime: Data.refWorkingTime,
+        // refWorkingTime: Data.refWorkingTime,
       };
 
       profileData = { ...profileData, EmployeeData };

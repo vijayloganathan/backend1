@@ -51,6 +51,7 @@ import {
 } from "./query";
 import { encrypt } from "../../helper/encrypt";
 import { generateToken, decodeToken } from "../../helper/token";
+import { generateCouponCode } from "../../helper/common";
 
 export class DirectorRepository {
   public async directorStaffPgV1(
@@ -1251,6 +1252,7 @@ export class DirectorRepository {
         userData.refOffer,
         userData.refStartAt,
         userData.refEndAt,
+        generateCouponCode(),
       ];
       const newOffersResult = await executeQuery(insertNewOffers, params);
 

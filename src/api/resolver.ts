@@ -3,7 +3,7 @@ import { ProfileRepository } from "./profile/profile-repository";
 import { StaffRepository } from "./staff/staff-repository";
 import { DirectorRepository } from "./directors/director-repository";
 import { BatchRepository } from "./batch/birthday-repository";
-import {FinanceRepository} from "./finance/finance-repository"
+import { FinanceRepository } from "./finance/finance-repository";
 
 export class Resolver {
   public userRepository: any;
@@ -408,16 +408,58 @@ export class BatchProgramResolver {
 }
 export class FinanceResolver {
   public FinanceRepository: any;
-  // constructor() {
-  //   this.FinanceRepository = new FinanceRepository();
-  // }
-  // public async BirthdayRepositoryV1(
-  //   user_data: any,
-  //   domain_code: any
-  // ): Promise<any> {
-  //   return await this.FinanceRepository.BirthdayRepositoryV1(
-  //     user_data,
-  //     domain_code
-  //   );
-  // }
+  constructor() {
+    this.FinanceRepository = new FinanceRepository();
+  }
+  public async studentDetailsV1(
+    user_data: any,
+    domain_code: any
+  ): Promise<any> {
+    return await this.FinanceRepository.studentDetailsV1(
+      user_data,
+      domain_code
+    );
+  }
+  public async studentProfileV1(
+    user_data: any,
+    domain_code: any
+  ): Promise<any> {
+    return await this.FinanceRepository.studentProfileV1(
+      user_data,
+      domain_code
+    );
+  }
+  public async studentFeesDetailsV1(
+    user_data: any,
+    domain_code: any
+  ): Promise<any> {
+    return await this.FinanceRepository.studentFeesDetailsV1(
+      user_data,
+      domain_code
+    );
+  }
+  public async verifyCouponV1(user_data: any, domain_code: any): Promise<any> {
+    return await this.FinanceRepository.verifyCouponV1(user_data, domain_code);
+  }
+  public async FeesPaidV1(user_data: any, domain_code: any): Promise<any> {
+    return await this.FinanceRepository.FeesPaidV1(user_data, domain_code);
+  }
+  public async invoiceDownloadV1(
+    user_data: any,
+    domain_code: any
+  ): Promise<any> {
+    return await this.FinanceRepository.invoiceDownloadV1(
+      user_data,
+      domain_code
+    );
+  }
+  public async userPaymentAuditPgV1(
+    user_data: any,
+    domain_code: any
+  ): Promise<any> {
+    return await this.FinanceRepository.userPaymentAuditPgV1(
+      user_data,
+      domain_code
+    );
+  }
 }

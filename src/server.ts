@@ -14,8 +14,13 @@ const init = async () => {
       host: process.env.HOST,
       port: process.env.PORT,
       routes: {
+        cors: {
+          origin: ["*"],
+          headers: ["Accept", "Authorization", "Content-Type", "If-None-Match"],
+          exposedHeaders: ["WWW-Authenticate", "Server-Authorization"],
+          credentials: true,
+        },
         security: true,
-        cors: true,
         payload: {
           maxBytes: 5242880,
         },

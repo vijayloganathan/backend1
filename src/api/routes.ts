@@ -9,7 +9,7 @@ import {
   Director,
   userDashBoard,
   batchPrograms,
-  financeController
+  financeController,
 } from "./controller";
 import { Logger } from "winston";
 import { decodeToken, validateToken } from "../helper/token";
@@ -602,16 +602,76 @@ export class Finance implements IRoute {
     return new Promise((resolve) => {
       const UserPage = new financeController();
       server.route([
-        // {
-        //   method: "GET",
-        //   path: "/api/v1/batch/birthday",
-        //   config: {
-        //     // pre: [{ method: validateToken, assign: "token" }],
-        //     handler: UserPage.userBirthdayBatch,
-        //     description: "User BirthDay Wish",
-        //     auth: false,
-        //   },
-        // },
+        {
+          method: "GET",
+          path: "/api/v1/finance/studentDetails",
+          config: {
+            pre: [{ method: validateToken, assign: "token" }],
+            handler: UserPage.studentDetails,
+            description: "send student details for the finance",
+            auth: false,
+          },
+        },
+        {
+          method: "POST",
+          path: "/api/v1/finance/studentProfile",
+          config: {
+            pre: [{ method: validateToken, assign: "token" }],
+            handler: UserPage.studentProfile,
+            description: "send student Profile details for the finance",
+            auth: false,
+          },
+        },
+        {
+          method: "POST",
+          path: "/api/v1/finance/studentFeesDetails",
+          config: {
+            pre: [{ method: validateToken, assign: "token" }],
+            handler: UserPage.studentFeesDetails,
+            description: "send student Fees details for the finance",
+            auth: false,
+          },
+        },
+        {
+          method: "POST",
+          path: "/api/v1/finance/verifyCoupon",
+          config: {
+            pre: [{ method: validateToken, assign: "token" }],
+            handler: UserPage.verifyCoupon,
+            description: "Verify coupon data",
+            auth: false,
+          },
+        },
+        {
+          method: "POST",
+          path: "/api/v1/finance/FeesPaid",
+          config: {
+            pre: [{ method: validateToken, assign: "token" }],
+            handler: UserPage.FeesPaid,
+            description: "Store The Fees Paid Data",
+            auth: false,
+          },
+        },
+        {
+          method: "POST",
+          path: "/api/v1/finance/invoiceDownload",
+          config: {
+            pre: [{ method: validateToken, assign: "token" }],
+            handler: UserPage.invoiceDownload,
+            description: "Request invoice Data to Download",
+            auth: false,
+          },
+        },
+        {
+          method: "POST",
+          path: "/api/v1/finance/userPaymentAuditPg",
+          config: {
+            // pre: [{ method: validateToken, assign: "token" }],
+            handler: UserPage.userPaymentAuditPg,
+            description: "Request User Payment Audit Page",
+            auth: false,
+          },
+        },
       ]);
       resolve(true);
     });

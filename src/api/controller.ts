@@ -1855,8 +1855,8 @@ export class financeController {
     request: any,
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
-    // const decodedToken = request.plugins.token.id;
-    const decodedToken = 1;
+    const decodedToken = request.plugins.token.id;
+    // const decodedToken = 1;
     try {
       logger.info(`GET URL REQ => ${request.url.href}`);
       const entity = await this.resolver.userPaymentAuditPgV1(

@@ -155,6 +155,7 @@ export class FinanceRepository {
     };
     const token = generateToken(tokenData, true);
     const couponData = userData.refCoupon;
+    console.log("couponData", couponData);
 
     try {
       let updateData = {
@@ -187,7 +188,7 @@ export class FinanceRepository {
         updateData.refStartDate,
         updateData.refEndDate
       );
-
+      console.log(couponData, updateData.refToAmt, monthCount);
       const couponDataResult = await executeQuery(verifyCoupon, [
         couponData,
         updateData.refToAmt,
@@ -322,8 +323,10 @@ export class FinanceRepository {
         userData.refOfferValue,
         userData.refOfferName,
       ];
+      console.log("Data", Data);
 
       const storeFees = await executeQuery(setFeesStored, Data);
+      console.log("storeFees", storeFees);
 
       if (storeFees.length < 0) {
         return encrypt(
@@ -419,7 +422,7 @@ export class FinanceRepository {
           token: token,
           data: filteredData,
         },
-        false
+        true
       );
     } catch (error) {
       const results = {

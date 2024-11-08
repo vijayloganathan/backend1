@@ -37,8 +37,6 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { generateToken, generateToken1 } from "../../helper/token";
 
-const JWT_SECRET = process.env.ACCESS_TOKEN || "ERROR";
-
 export class UserRepository {
   public async userLoginV1(user_data: any, domain_code?: any): Promise<any> {
     const params = [user_data.username];
@@ -56,9 +54,9 @@ export class UserRepository {
         const history = [
           2,
           new Date().toLocaleString(),
-          // getAdjustedTime(),
           user.refStId,
           "User",
+          "Login",
         ];
 
         const updateHistory = await executeQuery(updateHistoryQuery, history);
@@ -145,6 +143,7 @@ export class UserRepository {
           // getAdjustedTime(),
           user.refStId,
           "User",
+          "Password Changed",
         ];
 
         const updateHistory = await executeQuery(updateHistoryQuery, history);
@@ -250,6 +249,7 @@ export class UserRepository {
           // getAdjustedTime(),
           newUser.refStId,
           "user",
+          "User SignUp",
         ];
 
         const updateHistory = await executeQuery(updateHistoryQuery, history);
@@ -330,7 +330,6 @@ export class UserRepository {
       const refStId = decodedToken;
       const id = [refStId];
       const user = await executeQuery(selectUserData, id);
-
 
       const signinCount = await executeQuery(getSingInCount, id);
       const followUpCount = await executeQuery(getFollowUpCount, id);
@@ -454,7 +453,7 @@ export class UserRepository {
           token: token,
           data: refDashBoardData,
         },
-        false
+        true
       );
     } catch (error) {
       console.error("Error in Dashboard Data Passing:", error);

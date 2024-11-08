@@ -162,7 +162,7 @@ export class StaffRepository {
           token: token,
           data: refDashBoardData,
         },
-        false
+        true
       );
     } catch (error) {
       console.error("Error in Dashboard Data Passing:", error);

@@ -140,18 +140,18 @@ JOIN public."refUserTxnHistory" th
 WHERE th."transTypeId" = 1 
   AND u."refUtId" = 1;`;
 
-export const getRegisterCount = `WITH user_data AS (
-    SELECT DISTINCT ON (u."refSCustId") 
-        u.*, th."transTime"
-    FROM public.users u
-    JOIN public."refUserTxnHistory" th
-    ON CAST(u."refStId" AS INTEGER) = th."refStId"
-    WHERE u."refUtId" = 3
+export const getRegisterCount = `WITH user_latest_txn AS (
+    SELECT DISTINCT ON (th."refStId")
+        th.*,
+        TO_TIMESTAMP(th."transTime", 'DD/MM/YYYY, HH12:MI:SS am') AS parsed_trans_time
+    FROM public."refUserTxnHistory" th
+    WHERE th."transTypeId" = 2
+    ORDER BY th."refStId", th."transTypeId" DESC, th."transTime" DESC
 )
 SELECT 
-    COUNT(CASE WHEN u."transTime"::date = CURRENT_DATE THEN 1 END) AS count_today,
-    COUNT(CASE WHEN u."transTime"::date != CURRENT_DATE THEN 1 END) AS count_other_days
-FROM user_data u;
+    COUNT(CASE WHEN u.parsed_trans_time::date = CURRENT_DATE THEN 1 END) AS count_today,
+    COUNT(CASE WHEN u.parsed_trans_time::date = CURRENT_DATE - 1 THEN 1 END) AS count_other_days
+FROM user_latest_txn u;
 `;
 
 export const getUserStatusLabel = `SELECT * FROM public."refUserType"`;

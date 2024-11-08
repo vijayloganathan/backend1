@@ -180,6 +180,7 @@ export const passInvoiceData = `SELECT
   up."refOfferValue",
   up."refToAmtOf",
   up."refDate",
+  up."refExpiry",
   INITCAP(b."refBranchName") AS "refBranchName",
   u."refSCustId",
   u."refStFName",
@@ -212,5 +213,7 @@ ON
 WHERE 
   up."refOrderId" = $1;`;
 
-export const userPaymentAuditList = `SELECT "refOrderId","refDate","refExpiry" 
-FROM public."refPayment" WHERE "refStId"=$1`;
+export const userPaymentAuditList = `SELECT "refOrderId", "refDate", "refExpiry" 
+FROM public."refPayment" 
+WHERE "refStId" = $1 
+ORDER BY "refPaId" DESC;`;

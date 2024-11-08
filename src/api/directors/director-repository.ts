@@ -199,7 +199,7 @@ export class DirectorRepository {
       );
 
       const transId = 4,
-        transData = "Therapist Submit The response Successfully",
+        transData = "Therapist Approve The User",
         refUpdatedBy = "Therapist";
 
       const historyData = [

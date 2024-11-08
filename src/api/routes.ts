@@ -665,7 +665,7 @@ export class Finance implements IRoute {
           method: "POST",
           path: "/api/v1/finance/userPaymentAuditPg",
           config: {
-            // pre: [{ method: validateToken, assign: "token" }],
+            pre: [{ method: validateToken, assign: "token" }],
             handler: UserPage.userPaymentAuditPg,
             description: "Request User Payment Audit Page",
             auth: false,

@@ -28,8 +28,8 @@ export const insertUserCommunicationQuery = `
 `;
 export const updateHistoryQuery = `
   INSERT INTO public."refUserTxnHistory" (
-    "transTypeId", "transTime", "refStId","refUpdatedBy"
-  ) VALUES ($1, $2, $3, $4)
+    "transTypeId", "transTime", "refStId","refUpdatedBy","transData"
+  ) VALUES ($1, $2, $3, $4, $5)
   RETURNING *;
 `;
 
@@ -72,8 +72,8 @@ export const getSingInCount = `SELECT
     WHEN COUNT(*) = 0 
     THEN true 
     WHEN COUNT(*) = 1 
-      AND TO_CHAR(MAX(TO_TIMESTAMP("transTime", 'DD/MM/YYYY, HH12:MI:SS AM')), 'DD/MM/YYYY') = TO_CHAR(CURRENT_DATE::TIMESTAMP, 'DD/MM/YYYY') 
-      AND EXTRACT(EPOCH FROM (CURRENT_DATE::TIMESTAMP - MAX(TO_TIMESTAMP("transTime", 'DD/MM/YYYY, HH12:MI:SS AM')))) <= 50
+      AND TO_CHAR(MAX(TO_TIMESTAMP("transTime", 'DD/MM/YYYY, HH12:MI:SS AM')), 'DD/MM/YYYY') = TO_CHAR(CURRENT_DATE, 'DD/MM/YYYY') 
+      AND EXTRACT(EPOCH FROM (CURRENT_TIMESTAMP - MAX(TO_TIMESTAMP("transTime", 'DD/MM/YYYY, HH12:MI:SS AM')))) <= 30
     THEN true
     ELSE false 
   END as result

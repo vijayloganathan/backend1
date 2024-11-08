@@ -6,9 +6,9 @@ dotenv.config();
 // Create the pool once and reuse it throughout the application
 const pool = new Pool({
   user: process.env.DB_USER || "postgres",
-  host: process.env.DB_HOST || "localhost",
-  database: process.env.DB_NAME || "master_testing_db",
-  password: process.env.DB_PASSWORD || "vijay",
+  host: process.env.DB_HOST || "52.66.252.110",
+  database: process.env.DB_NAME || "ublis_db",
+  password: process.env.DB_PASSWORD || "ionhax",
   port: Number(process.env.DB_PORT) || 5432,
 });
 

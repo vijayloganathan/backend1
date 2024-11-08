@@ -17,10 +17,21 @@ export const ServerTime = (): Date => {
   return Time;
 };
 
-export const getAdjustedTime = (): Date => {
+export const getAdjustedTime = (): string => {
   const serverTime = new Date();
   serverTime.setMinutes(serverTime.getMinutes() + 330);
-  return serverTime;
+
+  const options: Intl.DateTimeFormatOptions = {
+    day: "numeric",
+    month: "numeric",
+    year: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+    second: "numeric",
+    hour12: true,
+  };
+
+  return new Intl.DateTimeFormat("en-IN", options).format(serverTime);
 };
 
 export function formatDate(isoDate: any) {

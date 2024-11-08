@@ -6,6 +6,7 @@ import { viewFile, deleteFile, storeFile } from "../../helper/storage";
 import path from "path";
 import { PoolClient } from "pg";
 import { sendEmail } from "../../helper/mail";
+import { getAdjustedTime } from "../../helper/common";
 import {
   staffDetailSend,
   updateDataApproval,
@@ -372,6 +373,7 @@ export class DirectorRepository {
         const history = [
           1,
           new Date().toLocaleString(),
+          // getAdjustedTime(),
           newUser.refStId,
           "Director",
         ];
@@ -768,6 +770,7 @@ export class DirectorRepository {
                   changes,
                   id,
                   new Date().toLocaleString(),
+                  // getAdjustedTime(),
                   "Front Office",
                 ];
 
@@ -908,6 +911,7 @@ export class DirectorRepository {
                   changes,
                   id,
                   new Date().toLocaleString(),
+                  // getAdjustedTime(),
                   "Front Office",
                 ];
 

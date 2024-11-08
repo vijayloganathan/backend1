@@ -55,7 +55,6 @@ export class UserRouters implements IRoute {
           config: {
             pre: [{ method: validateToken, assign: "token" }],
             handler: controller.validateUserV1,
-            // validate: validate.userSignUp,
             description: "Signup Checking",
             tags: ["api", "Users", "SignUp"],
             auth: false,

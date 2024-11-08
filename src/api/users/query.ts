@@ -56,11 +56,13 @@ export const changePassword = `UPDATE public."refUsersDomain"
 SET "refCustHashedPassword"=$1,"refCustPassword"=$2 
 WHERE "refStId"=$3;`;
 
-export const selectUserData = `SELECT u."refUtId",u."refStFName",u."refStLName",ud."refUserName",u."refProfilePath"
+export const selectUserData = `SELECT u."refUtId",u."refStFName",u."refStLName",ud."refUserName",u."refProfilePath",INITCAP(ut."refUserType") AS refUserType
 FROM public."users" u
 JOIN
 	public."refUsersDomain" ud
 ON u."refStId" = ud."refStId"
+JOIN public."refUserType" ut
+On CAST (u."refUtId" AS INTEGER) = ut."refUtId"
 WHERE u."refStId" = $1;`;
 
 export const getUserType = 'SELECT "refUtId" FROM  users WHERE "refStId"=$1;';
@@ -70,13 +72,14 @@ export const getSingInCount = `SELECT
     WHEN COUNT(*) = 0 
     THEN true 
     WHEN COUNT(*) = 1 
-      AND TO_CHAR(MAX(TO_TIMESTAMP("transTime", 'DD/MM/YYYY, HH12:MI:SS AM')), 'DD/MM/YYYY') = TO_CHAR(CURRENT_DATE, 'DD/MM/YYYY') 
-      AND EXTRACT(EPOCH FROM (CURRENT_TIMESTAMP - MAX(TO_TIMESTAMP("transTime", 'DD/MM/YYYY, HH12:MI:SS AM')))) <= 50
+      AND TO_CHAR(MAX(TO_TIMESTAMP("transTime", 'DD/MM/YYYY, HH12:MI:SS AM')), 'DD/MM/YYYY') = TO_CHAR(CURRENT_DATE::TIMESTAMP, 'DD/MM/YYYY') 
+      AND EXTRACT(EPOCH FROM (CURRENT_DATE::TIMESTAMP - MAX(TO_TIMESTAMP("transTime", 'DD/MM/YYYY, HH12:MI:SS AM')))) <= 50
     THEN true
     ELSE false 
   END as result
 FROM public."refUserTxnHistory"
-WHERE "refStId" = $1 AND "transTypeId" = 2;`;
+WHERE "refStId" = $1 AND "transTypeId" = 2;
+`;
 
 export const getFollowUpCount = `SELECT CASE 
     WHEN EXISTS (

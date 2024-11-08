@@ -70,7 +70,7 @@ export const feesEntry = `SELECT
         TO_CHAR(
             CASE 
                 WHEN up."refPaymentTo" IS NOT NULL THEN
-                    (CAST(up."refExpiry" AS DATE) + INTERVAL '1 month') -- Adding one month
+                    (CAST(up."refExpiry" || '-01' AS DATE) + INTERVAL '1 month')
                 ELSE CURRENT_DATE
             END, 'YYYY-MM'
         ), TO_CHAR(CURRENT_DATE, 'YYYY-MM')
@@ -79,7 +79,7 @@ export const feesEntry = `SELECT
         TO_CHAR(
             CASE 
                 WHEN up."refPaymentFrom" IS NOT NULL THEN
-                    (CAST(up."refExpiry" AS DATE) + INTERVAL '1 month') -- Adding one month
+                    (CAST(up."refExpiry" || '-01' AS DATE) + INTERVAL '1 month')
                 ELSE CURRENT_DATE
             END, 'YYYY-MM'
         ), TO_CHAR(CURRENT_DATE, 'YYYY-MM')
@@ -101,12 +101,12 @@ LEFT JOIN (
         up."refDate"
     FROM public."refPayment" up
     INNER JOIN (
-        SELECT "refStId", MAX("refDate") AS latest_entry
+        SELECT "refStId", MAX("refPaId") AS latest_entry
         FROM public."refPayment"
         GROUP BY "refStId"
     ) latest_up
     ON up."refStId" = latest_up."refStId"
-    AND up."refDate" = latest_up.latest_entry
+    AND up."refPaId" = latest_up.latest_entry
 ) up
     ON u."refStId" = up."refStId"
 LEFT JOIN public."refCustTime" ct
@@ -144,7 +144,10 @@ export const setFeesStored = `INSERT INTO public."refPayment" (
   "refToAmt", 
   "refFeesPaid", 
   "refGstPaid", 
-  "refCoupon"
+  "refCoupon",
+  "refToAmtOf",
+  "refOfferValue",
+  "refOfferType"
 ) 
 VALUES (
   $1,  -- refStId
@@ -159,17 +162,31 @@ VALUES (
   $10, -- refToAmt
   $11, -- refFeesPaid
   $12, -- refGstPaid
-  $13  -- refCoupon
-);`;
+  $13, -- refCoupon
+  $14, -- refToAmtOf
+  $15, -- refOfferValue
+  $16  -- refOfferType
+);
+`;
 
-
-export const passInvoiceData=`SELECT 
-  up.*, 
-  INITCAP(b."refBranchName"),
+export const passInvoiceData = `SELECT 
+  up."refOrderId",
+  up."refPaymentFrom",
+  up."refPaymentTo",
+  up."refFeesPaid",
+  up."refGstPaid",
+  up."refToAmt",
+  up."refOfferType",
+  up."refOfferValue",
+  up."refToAmtOf",
+  up."refDate",
+  INITCAP(b."refBranchName") AS "refBranchName",
   u."refSCustId",
   u."refStFName",
   u."refStLName",
-  uc."refCtMobile"
+  uc."refCtMobile",
+  ml."refTimeMembers",
+  ct."refCustTimeData"
 FROM 
   public."refPayment" up
 LEFT JOIN 
@@ -180,7 +197,20 @@ LEFT JOIN
   public.branch b
 ON 
   u."refBranchId" = b."refbranchId"
-  LEFT JOIN public."refUserCommunication" uc
-  ON CAST(u."refStId" AS INTEGER) = uc."refStId"
+LEFT JOIN 
+  public."refUserCommunication" uc
+ON 
+  u."refStId" = uc."refStId"
+LEFT JOIN 
+  public."refMembers" ml
+ON 
+  u."refSessionType" = ml."refTimeMembersID"
+LEFT JOIN 
+  public."refCustTime" ct
+ON 
+  u."refSessionMode" = ct."refCustTimeId"
 WHERE 
-  up."refOrderId" = $1;`
+  up."refOrderId" = $1;`;
+
+export const userPaymentAuditList = `SELECT "refOrderId","refDate","refExpiry" 
+FROM public."refPayment" WHERE "refStId"=$1`;

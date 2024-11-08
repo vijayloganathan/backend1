@@ -86,6 +86,7 @@ export class UserController {
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
     const decodedToken = request.plugins.token.id;
+    // const decodedToken = 35;
     logger.info("Router----- line 17");
     try {
       logger.info(`GET URL REQ => ${request.url.href}`);

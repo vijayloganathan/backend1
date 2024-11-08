@@ -4,6 +4,7 @@ import { PoolClient } from "pg";
 import path from "path";
 import { viewFile } from "../../helper/storage";
 import { reLabelText } from "../../helper/label";
+import { getAdjustedTime } from "../../helper/common";
 
 import {
   checkQuery,
@@ -28,8 +29,6 @@ import {
   updateNotification,
   selectUserByrefStId,
   changePassword,
-  TimeStamp,
-  time,
 } from "./query";
 import { getUserData as rawGetUserDataQuery } from "./query";
 import { encrypt } from "../../helper/encrypt";
@@ -43,33 +42,32 @@ const JWT_SECRET = process.env.ACCESS_TOKEN || "ERROR";
 export class UserRepository {
   public async userLoginV1(user_data: any, domain_code?: any): Promise<any> {
     const params = [user_data.username];
-    console.log("params", params);
-    const users = await executeQuery(selectUserByUsername, params); // Execute select query
+    const users = await executeQuery(selectUserByUsername, params);
 
     if (users.length > 0) {
       const user = users[0];
-      console.log("user ---------- line 48", user);
 
       // Verify the password
       const validPassword = await bcrypt.compare(
         user_data.password,
         user.refCustHashedPassword
       );
-      console.log("valid", validPassword);
       if (validPassword) {
         const history = [
           2,
-          new Date().toLocaleString(), // Using local date and time
+          new Date().toLocaleString(),
+          // getAdjustedTime(),
           user.refStId,
           "User",
         ];
 
         const updateHistory = await executeQuery(updateHistoryQuery, history);
+
         const refStId = [user.refStId];
         const userData = await executeQuery(selectUserData, refStId);
-        console.log("userData", userData);
 
         const signinCount = await executeQuery(getSingInCount, refStId);
+
         const followUpCount = await executeQuery(getFollowUpCount, refStId);
         const status2 =
           followUpCount.length > 0 ? followUpCount[0].status : null;
@@ -141,7 +139,13 @@ export class UserRepository {
           console.log("error in changing Password");
         }
 
-        const history = [19, new Date().toLocaleString(), user.refStId, "User"];
+        const history = [
+          19,
+          new Date().toLocaleString(),
+          // getAdjustedTime(),
+          user.refStId,
+          "User",
+        ];
 
         const updateHistory = await executeQuery(updateHistoryQuery, history);
 
@@ -242,7 +246,8 @@ export class UserRepository {
       ) {
         const history = [
           1,
-          new Date().toLocaleString(), // Using local date and time
+          new Date().toLocaleString(),
+          // getAdjustedTime(),
           newUser.refStId,
           "user",
         ];
@@ -325,6 +330,7 @@ export class UserRepository {
       const refStId = decodedToken;
       const id = [refStId];
       const user = await executeQuery(selectUserData, id);
+
 
       const signinCount = await executeQuery(getSingInCount, id);
       const followUpCount = await executeQuery(getFollowUpCount, id);
@@ -837,6 +843,7 @@ export class UserRepository {
                 tempChange,
                 refStId,
                 new Date().toLocaleString(),
+                // getAdjustedTime(),
                 refUtId,
               ];
               const queryResult = await client.query(

@@ -3,6 +3,8 @@ import { getUserData as rawGetUserDataQuery } from "./query";
 import { buildUpdateQuery, getChanges } from "../../helper/buildquery";
 import { PoolClient } from "pg";
 import { reLabelText } from "../../helper/label";
+import { getAdjustedTime } from "../../helper/common";
+
 import {
   fetchClientData,
   getPresentHealthLabel,
@@ -30,6 +32,7 @@ import {
   updateStaffAadhar,
   updateStaffCertification,
   getDocuments,
+  getTrailPaymentCount,
 } from "./query";
 import { encrypt, formatDate } from "../../helper/encrypt";
 import { generateToken, decodeToken } from "../../helper/token";
@@ -74,7 +77,13 @@ export class StaffRepository {
             refDashBoardData = { ...refDashBoardData, signUpCount };
           case "feedback":
             // console.log("This For Feedback");
-
+            break;
+          case "trail":
+            const trailCount = await executeQuery(getTrailPaymentCount, []);
+            refDashBoardData = { ...refDashBoardData, trailCount };
+            break;
+          case "settings":
+            // console.log("This For Feedback");
             break;
           case "transaction":
             // console.log("This for Transaction");
@@ -625,7 +634,6 @@ export class StaffRepository {
               }
 
               userData = { ...userData, olddata };
-              console.log("userData line ------------------565", userData);
               updatedData = userData.personalData;
               oldData = userData.olddata;
               break;
@@ -700,20 +708,13 @@ export class StaffRepository {
               break;
 
             case "DocumentsPath":
-              console.log(
-                "DocumentsPath line -----------------------------648",
-                userData.DocumentsPath
-              );
               transTypeId = 16;
               tableName = "refEmployeeData";
               getUserData = rawGetUserDataQuery.replace(
                 "{{tableName}}",
                 tableName
               );
-              console.log("getUserData", getUserData);
               newData = await executeQuery(getUserData, [id]);
-              console.log("id", id);
-              console.log("newData line -----------------658", newData);
 
               olddata = newData[0];
               userData = { ...userData, olddata };
@@ -725,8 +726,6 @@ export class StaffRepository {
               continue;
           }
 
-          console.log("updatedData", updatedData);
-          console.log("oldData", oldData);
           let temp1, temp2;
           temp1 = updatedData;
           temp2 = oldData;
@@ -753,7 +752,6 @@ export class StaffRepository {
           }
 
           const changes = getChanges(temp1, temp2);
-          console.log("changes line-----------------653", changes);
 
           for (const key in changes) {
             if (changes.hasOwnProperty(key)) {
@@ -770,6 +768,7 @@ export class StaffRepository {
                 tempChange,
                 id,
                 new Date().toLocaleString(),
+                // getAdjustedTime(),
                 "user",
               ];
               const queryResult = await client.query(
@@ -788,6 +787,7 @@ export class StaffRepository {
                 tempData,
                 tableName,
                 new Date().toLocaleString(),
+                // getAdjustedTime(),
                 queryResult.rows[0].transId,
               ];
 
@@ -1131,7 +1131,6 @@ export class StaffRepository {
         };
       } = {};
 
-      console.log("userData.DocumentsPath", userData.DocumentsPath);
       for (let i = 0; i < userData.DocumentsPath.length; i++) {
         const params = [userData.DocumentsPath[i].filePath, refStId];
         let labelName: string = userData.DocumentsPath[i].fileName;

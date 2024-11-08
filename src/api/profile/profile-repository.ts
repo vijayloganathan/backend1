@@ -15,6 +15,7 @@ import {
 import { encrypt } from "../../helper/encrypt";
 import { generateToken, generateToken1 } from "../../helper/token";
 import { PoolClient } from "pg"; // Assuming you're using pg library for PostgreSQL
+import { getAdjustedTime } from "../../helper/common";
 
 export class ProfileRepository {
   // STORING ADDRESS IN DB

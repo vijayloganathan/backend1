@@ -278,3 +278,32 @@ export const updateStaffCertification = `UPDATE public."refEmployeeData" SET "re
 RETURNING *;`;
 
 export const getDocuments = `SELECT * FROM public."refEmployeeData" WHERE "refStId"=$1`;
+
+export const getTrailPaymentCount = `WITH total_count AS (
+    SELECT COUNT(*) AS total
+    FROM public."users"
+    WHERE "refUtId" IN (3, 6)
+)
+SELECT 
+    rut."refUserType" AS user_type_label,
+    COUNT(u."refUtId") AS total_count,
+    COUNT(CASE 
+    WHEN DATE(th."transTime") = CURRENT_DATE THEN 1 
+    ELSE NULL 
+  END) AS "count_today",
+  COUNT(CASE 
+    WHEN DATE(th."transTime") != CURRENT_DATE THEN 1 
+    ELSE NULL 
+  END) AS "count_other_days"
+FROM 
+    public."users" u
+JOIN 
+    public."refUserType" rut ON u."refUtId" = rut."refUtId"
+JOIN 
+    total_count total ON true
+    JOIN public."refUserTxnHistory" th
+  ON CAST(u."refStId" AS INTEGER) = th."refStId"
+WHERE 
+    u."refUtId" IN (3, 6) AND th."transTypeId" IN (4,8)
+GROUP BY 
+    rut."refUserType";`;

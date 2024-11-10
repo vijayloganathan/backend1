@@ -16,7 +16,7 @@ const init = async () => {
       routes: {
         cors: {
           origin: [
-            "http://3.111.31.152",
+            "http://3.110.56.145",
             "http://localhost:5173",
             "http://www.ublis-landing-page.indhaaa.com",
           ], // Allowed origins

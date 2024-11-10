@@ -155,7 +155,6 @@ export class FinanceRepository {
     };
     const token = generateToken(tokenData, true);
     const couponData = userData.refCoupon;
-    console.log("couponData", couponData);
 
     try {
       let updateData = {
@@ -188,10 +187,9 @@ export class FinanceRepository {
         updateData.refStartDate,
         updateData.refEndDate
       );
-      console.log(couponData, updateData.refToAmt, monthCount);
       const couponDataResult = await executeQuery(verifyCoupon, [
         couponData,
-        updateData.refToAmt,
+        updateData.refFees,
         monthCount,
       ]);
 
@@ -206,14 +204,14 @@ export class FinanceRepository {
         switch (couponDataResult[0].refOfferId) {
           case 1: // Percentage discount
             const offerValue =
-              (updateData.refToAmt / 100) * couponDataResult[0].refOffer;
-            updateData.refToAmt = updateData.refToAmt - offerValue;
+              (updateData.refFees / 100) * couponDataResult[0].refOffer;
+            updateData.refFees = updateData.refFees - offerValue;
             updateData.refOfferValue = couponDataResult[0].refOffer;
             break;
 
           case 2: // Fixed amount discount
-            updateData.refToAmt =
-              updateData.refToAmt - couponDataResult[0].refOffer;
+            updateData.refFees =
+              updateData.refFees - couponDataResult[0].refOffer;
             updateData.refOfferValue = couponDataResult[0].refOffer;
             break;
 
@@ -226,7 +224,6 @@ export class FinanceRepository {
             const newYear = currentDate.getFullYear();
             const newMonth = currentDate.getMonth() + 1;
 
-            // Format the date as "YYYY-MM"
             updateData.refExDate = `${newYear}-${
               newMonth < 10 ? "0" + newMonth : newMonth
             }`;

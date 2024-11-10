@@ -18,8 +18,7 @@ import {
 } from "./query";
 import { encrypt } from "../../helper/encrypt";
 import { generateToken, decodeToken } from "../../helper/token";
-import { formatDate } from "../../helper/common";
-import { getAdjustedTime } from "../../helper/common";
+import { formatDate, getAdjustedTime, CurrentTime } from "../../helper/common";
 
 export class FinanceRepository {
   public async studentDetailsV1(
@@ -300,7 +299,15 @@ export class FinanceRepository {
 
     try {
       const countResult = await executeQuery(paymentCount, []);
-      let newOrderId = `ORD${(10000 + countResult[0].count + 1).toString()}`;
+      const currentTime = CurrentTime();
+      let newOrderId = currentTime
+        .replace(/[\/,:PAM]/g, "")
+        .replace(/\s+/g, "");
+      newOrderId = `${newOrderId}${(
+        10000 +
+        countResult[0].count +
+        1
+      ).toString()}`;
 
       let Data = [
         userData.refStId,
@@ -316,7 +323,7 @@ export class FinanceRepository {
         userData.refFeesPaid,
         userData.refGstPaid,
         userData.refCoupon,
-        userData.refToAmtOf,
+        userData.refFeesAmtOf,
         userData.refOfferValue,
         userData.refOfferName,
       ];

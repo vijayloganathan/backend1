@@ -358,6 +358,7 @@ export class ProfileRepository {
     try {
       const refStId = userData.refStId;
       const branchId = userData.branchId;
+      const refAge = userData.refAge;
 
       const MemberList = await executeQuery(BranchMemberList, [branchId]);
 

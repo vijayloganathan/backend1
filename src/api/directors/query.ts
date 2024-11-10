@@ -4,7 +4,7 @@ FULL JOIN public."refUserCommunication" uc
   ON CAST(u."refStId" AS INTEGER) = uc."refStId"
 FULL JOIN public."refUserAddress" ad
   ON CAST(u."refStId" AS INTEGER) = ad."refStId"
-WHERE u."refUtId" IN (4,8,10);`;
+WHERE u."refUtId" IN (4,8,10,11);`;
 
 export const getUserStatusLabel = `SELECT * FROM public."refUserType"`;
 
@@ -25,7 +25,7 @@ export const getUserTransaction = `
 SELECT * FROM public."refUserTxnHistory" WHERE "refStId"=$1
 ORDER BY "transTime"`;
 
-export const getUserTypeLabel = `SELECT * FROM public."refUserType" WHERE "refUtId" IN (4,7,8,10)`;
+export const getUserTypeLabel = `SELECT * FROM public."refUserType" WHERE "refUtId" IN (4,7,8,10,11)`;
 
 export const getCustomerCount = `SELECT COUNT(*) 
 FROM public.users

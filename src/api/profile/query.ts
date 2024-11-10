@@ -89,8 +89,12 @@ export const fetchBranchList = `SELECT * FROM public.branch;`;
 export const BranchMemberList = `SELECT rt."refTimeMembersID", rm."refTimeMembers"
 FROM public."refTiming" rt
 JOIN public."refMembers" rm
-ON CAST(rt."refTimeMembersID" AS integer) = rm."refTimeMembersID"
-WHERE rt."refbranchId" = $1
+  ON CAST(rt."refTimeMembersID" AS integer) = rm."refTimeMembersID"
+WHERE rt."refbranchId" = 1
+  AND (
+    ($1 <= 16 AND rt."refTimeMembersID" = 3)
+    OR ($1 > 16 AND rt."refTimeMembersID" != 3)
+  )
 GROUP BY rt."refTimeMembersID", rm."refTimeMembers";`;
 
 export const getSectionTimeData = `SELECT "refTimeId" ,"refTime","refTimeMode","refTimeDays" FROM public."refTiming" rt WHERE "refTimeMembersID"=$1`;

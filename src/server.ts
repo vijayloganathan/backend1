@@ -11,24 +11,38 @@ const init = async () => {
     DotEnv.config();
 
     const server = Hapi.server({
-      host: "0.0.0.0",
-      port: 6201,
+      host: process.env.HOST,
+      port: process.env.PORT,
       routes: {
         cors: {
-          origin: [
-            "http://3.110.56.145",
-            "http://localhost:5173",
-            "http://www.ublis-landing-page.indhaaa.com",
-          ], // Allowed origins
-          headers: ["Accept", "Authorization", "Content-Type", "If-None-Match"], // Allowed headers
-          exposedHeaders: ["WWW-Authenticate", "Server-Authorization"], // Exposed headers
-          credentials: true, // Allow credentials (cookies/auth headers)
+          origin: ["*"],
+          headers: ["Accept", "Authorization", "Content-Type", "If-None-Match"],
+          exposedHeaders: ["WWW-Authenticate", "Server-Authorization"],
+          credentials: true,
         },
+        security: true,
         payload: {
           maxBytes: 5242880,
         },
       },
     });
+
+    // const server = Hapi.server({
+    //   host: process.env.HOST,
+    //   port: process.env.PORT,
+    //   routes: {
+    //     cors: {
+    //       origin: ["*"],
+    //       headers: ["Accept", "Authorization", "Content-Type", "If-None-Match"],
+    //       exposedHeaders: ["WWW-Authenticate", "Server-Authorization"],
+    //       credentials: true,
+    //     },
+    //     security: true,
+    //     payload: {
+    //       maxBytes: 5242880,
+    //     },
+    //   },
+    // });
 
     // REGISTER HAPI ROUTES
     await Router.loadRoutes(server);

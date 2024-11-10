@@ -145,7 +145,7 @@ export const setFeesStored = `INSERT INTO public."refPayment" (
   "refFeesPaid", 
   "refGstPaid", 
   "refCoupon",
-  "refToAmtOf",
+  "refFeesAmtOf",
   "refOfferValue",
   "refOfferType"
 ) 
@@ -163,7 +163,7 @@ VALUES (
   $11, -- refFeesPaid
   $12, -- refGstPaid
   $13, -- refCoupon
-  $14, -- refToAmtOf
+  $14, -- refFeesAmtOf
   $15, -- refOfferValue
   $16  -- refOfferType
 );
@@ -178,7 +178,7 @@ export const passInvoiceData = `SELECT
   up."refToAmt",
   up."refOfferType",
   up."refOfferValue",
-  up."refToAmtOf",
+  up."refFeesAmtOf",
   up."refDate",
   up."refExpiry",
   INITCAP(b."refBranchName") AS "refBranchName",

@@ -358,9 +358,12 @@ export class ProfileRepository {
     try {
       const refStId = userData.refStId;
       const branchId = userData.branchId;
-      const refAge = userData.refAge;
+      const refAge = userData.refAge || 23;
 
-      const MemberList = await executeQuery(BranchMemberList, [branchId]);
+      const MemberList = await executeQuery(BranchMemberList, [
+        refAge,
+        branchId,
+      ]);
 
       const formattedMemberList = MemberList.reduce((acc, member) => {
         acc[member.refTimeMembersID] = member.refTimeMembers;

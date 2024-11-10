@@ -90,7 +90,7 @@ export const BranchMemberList = `SELECT rt."refTimeMembersID", rm."refTimeMember
 FROM public."refTiming" rt
 JOIN public."refMembers" rm
   ON CAST(rt."refTimeMembersID" AS integer) = rm."refTimeMembersID"
-WHERE rt."refbranchId" = 1
+WHERE rt."refbranchId" = $2
   AND (
     ($1 <= 16 AND rt."refTimeMembersID" = 3)
     OR ($1 > 16 AND rt."refTimeMembersID" != 3)

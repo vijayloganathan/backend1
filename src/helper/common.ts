@@ -58,3 +58,23 @@ export function formatDate(isoDate: any) {
 
   return `${year}-${month}-${day}`;
 }
+
+export const convertToFormattedDateTime = (input: string): string => {
+  // Parse the input date
+  const [date, time] = input.split(", ");
+  const [day, month, year] = date.split("/");
+  const [rawHours, minutes, seconds] = time.split(":");
+  const period = time.includes("PM") ? "PM" : "AM";
+
+  // Convert hours to 24-hour format
+  let hours = parseInt(rawHours, 10);
+  if (period === "PM" && hours < 12) {
+    hours += 12; // Convert PM hours to 24-hour format
+  }
+  if (period === "AM" && hours === 12) {
+    hours = 0; // Midnight edge case
+  }
+
+  // Format the output without separators
+  return `${day}${month}${year}${String(hours).padStart(2, "0")}${minutes}`;
+};

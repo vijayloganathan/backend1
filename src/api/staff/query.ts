@@ -123,35 +123,85 @@ JOIN public."refGeneralHealth" gh
 WHERE u."refUtId" IN (1,2,3, 5, 6) 
 ORDER BY u."refSCustId", u."refStId";`;
 
-export const getSignUpCount = `SELECT 
-  COUNT(CASE 
-    WHEN DATE(th."transTime") = CURRENT_DATE THEN 1 
-    ELSE NULL 
-  END) AS "count_today",
-  COUNT(CASE 
-    WHEN DATE(th."transTime") != CURRENT_DATE THEN 1 
-    ELSE NULL 
-  END) AS "count_other_days"
-FROM public.users u
-JOIN public."refUserCommunication" uc
-  ON CAST(u."refStId" AS INTEGER) = uc."refStId"
-JOIN public."refUserTxnHistory" th
-  ON CAST(u."refStId" AS INTEGER) = th."refStId"
-WHERE th."transTypeId" = 1 
-  AND u."refUtId" = 1;`;
+// export const getSignUpCount = `SELECT
+//   COUNT(CASE
+//     WHEN DATE(th."transTime") = CURRENT_DATE THEN 1
+//     ELSE NULL
+//   END) AS "count_today",
+//   COUNT(CASE
+//     WHEN DATE(th."transTime") != CURRENT_DATE THEN 1
+//     ELSE NULL
+//   END) AS "count_other_days"
+// FROM public.users u
+// JOIN public."refUserCommunication" uc
+//   ON CAST(u."refStId" AS INTEGER) = uc."refStId"
+// JOIN public."refUserTxnHistory" th
+//   ON CAST(u."refStId" AS INTEGER) = th."refStId"
+// WHERE th."transTypeId" = 1
+//   AND u."refUtId" = 1;`;
+export const getSignUpCount = `  SELECT 
+      SUM(count_today) AS "count_today",
+      SUM(count_previous_day) AS "count_other_days"
+  FROM (
+      SELECT 
+          u."refStId",
+          COUNT(DISTINCT CASE 
+              WHEN TO_TIMESTAMP(th."transTime", 'DD/MM/YYYY, HH:MI:SS PM')::date = TO_TIMESTAMP($1, 'DD/MM/YYYY, HH:MI:SS PM')::date 
+              THEN th."refStId" 
+              END) AS count_today,
 
-export const getRegisterCount = `WITH user_latest_txn AS (
-    SELECT DISTINCT ON (th."refStId")
-        th.*,
-        TO_TIMESTAMP(th."transTime", 'DD/MM/YYYY, HH12:MI:SS am') AS parsed_trans_time
-    FROM public."refUserTxnHistory" th
-    WHERE th."transTypeId" = 2
-    ORDER BY th."refStId", th."transTypeId" DESC, th."transTime" DESC
-)
-SELECT 
-    COUNT(CASE WHEN u.parsed_trans_time::date = CURRENT_DATE THEN 1 END) AS count_today,
-    COUNT(CASE WHEN u.parsed_trans_time::date = CURRENT_DATE - 1 THEN 1 END) AS count_other_days
-FROM user_latest_txn u;
+          COUNT(DISTINCT CASE 
+              WHEN TO_TIMESTAMP(th."transTime", 'DD/MM/YYYY, HH:MI:SS PM')::date <> TO_TIMESTAMP($1, 'DD/MM/YYYY, HH:MI:SS PM')::date 
+              THEN th."refStId" 
+              END) AS count_previous_day
+      FROM public."refUserTxnHistory" th
+      JOIN public.users u
+      ON CAST(th."refStId" AS INTEGER) = u."refStId"
+      WHERE u."refUtId" = 1 
+        AND th."transTypeId" IN (1, 2)
+      GROUP BY u."refStId"
+  ) AS subquery;`;
+
+// export const getRegisterCount = `WITH user_latest_txn AS (
+//     SELECT DISTINCT ON (th."refStId")
+//         th.*,
+//         TO_TIMESTAMP(th."transTime", 'DD/MM/YYYY, HH12:MI:SS am') AS parsed_trans_time
+//     FROM public."refUserTxnHistory" th
+//     WHERE th."transTypeId" = 2
+//     ORDER BY th."refStId", th."transTypeId" DESC, th."transTime" DESC
+// )
+// SELECT
+//     COUNT(CASE WHEN u.parsed_trans_time::date = CURRENT_DATE THEN 1 END) AS count_today,
+//     COUNT(CASE WHEN u.parsed_trans_time::date = CURRENT_DATE - 1 THEN 1 END) AS count_other_days
+// FROM user_latest_txn u;
+// `;
+// export const getRegisterCount = `SELECT
+//     COUNT(CASE WHEN TO_TIMESTAMP("transTime", 'DD/MM/YYYY, HH:MI:SS PM')::date = TO_TIMESTAMP($1, 'DD/MM/YYYY, HH:MI:SS PM')::date THEN 1 END) AS count_today,
+//     COUNT(CASE WHEN TO_TIMESTAMP("transTime", 'DD/MM/YYYY, HH:MI:SS PM')::date = (TO_TIMESTAMP($1, 'DD/MM/YYYY, HH:MI:SS PM') - INTERVAL '1 day')::date THEN 1 END) AS count_other_days
+// FROM public."refUserTxnHistory" AS u
+// WHERE "transId" = (
+//     SELECT "transId"
+//     FROM public."refUserTxnHistory"
+//     WHERE "refStId" = u."refStId"
+//     ORDER BY TO_TIMESTAMP("transTime", 'DD/MM/YYYY, HH:MI:SS PM') DESC
+//     LIMIT 1
+// )
+// AND "transTypeId" = 3;
+// `;
+export const getRegisterCount = `SELECT 
+    COUNT(CASE WHEN TO_TIMESTAMP("transTime", 'DD/MM/YYYY, HH:MI:SS PM')::date = TO_TIMESTAMP($1, 'DD/MM/YYYY, HH:MI:SS PM')::date THEN 1 END) AS count_today,
+    COUNT(CASE WHEN TO_TIMESTAMP("transTime", 'DD/MM/YYYY, HH:MI:SS PM')::date = (TO_TIMESTAMP($1, 'DD/MM/YYYY, HH:MI:SS PM') - INTERVAL '1 day')::date THEN 1 END) AS count_other_days
+FROM public."refUserTxnHistory" AS u
+JOIN public.users us
+ON CAST (u."refStId" AS INTEGER) = us."refStId"
+WHERE "transId" = (
+    SELECT "transId"
+    FROM public."refUserTxnHistory"
+    WHERE "refStId" = u."refStId"
+    ORDER BY TO_TIMESTAMP("transTime", 'DD/MM/YYYY, HH:MI:SS PM') DESC
+    LIMIT 1
+) 
+AND u."transTypeId"=3 AND us."refUtId"=2;
 `;
 
 export const getUserStatusLabel = `SELECT * FROM public."refUserType"`;

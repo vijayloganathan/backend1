@@ -38,6 +38,7 @@ import { encrypt, formatDate } from "../../helper/encrypt";
 import { generateToken, decodeToken } from "../../helper/token";
 import { viewFile } from "../../helper/storage";
 import path from "path";
+import { CurrentTime } from "../../helper/common";
 
 export class StaffRepository {
   public async staffDashBoardV1(
@@ -50,7 +51,9 @@ export class StaffRepository {
       const userType = await executeQuery(getUserType, [refStId]);
       const refUserType = userType[0];
       let refDashBoardData = {};
-      const staffRestriction = await executeQuery(getStaffRestriction, [7]);
+      const staffRestriction = await executeQuery(getStaffRestriction, [
+        refUserType.refUtId,
+      ]);
       const restrictionLabel = staffRestriction.reduce((acc, item, index) => {
         acc[index + 1] = item.columnName; // Use index + 1 for 1-based keys
         return acc;
@@ -64,7 +67,9 @@ export class StaffRepository {
             refDashBoardData = { ...refDashBoardData, userTypeCount };
             break;
           case "registered":
-            const registerCount = await executeQuery(getRegisterCount, []);
+            const registerCount = await executeQuery(getRegisterCount, [
+              CurrentTime(),
+            ]);
             refDashBoardData = { ...refDashBoardData, registerCount };
             const registerSampleData = await executeQuery(
               getRecentFormData,
@@ -73,7 +78,9 @@ export class StaffRepository {
             refDashBoardData = { ...refDashBoardData, registerSampleData };
 
           case "signedup":
-            const signUpCount = await executeQuery(getSignUpCount, []);
+            const signUpCount = await executeQuery(getSignUpCount, [
+              CurrentTime(),
+            ]);
             refDashBoardData = { ...refDashBoardData, signUpCount };
           case "feedback":
             // console.log("This For Feedback");
@@ -162,7 +169,7 @@ export class StaffRepository {
           token: token,
           data: refDashBoardData,
         },
-        true
+        false
       );
     } catch (error) {
       console.error("Error in Dashboard Data Passing:", error);

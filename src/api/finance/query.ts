@@ -217,3 +217,12 @@ export const userPaymentAuditList = `SELECT "refOrderId", "refDate", "refExpiry"
 FROM public."refPayment" 
 WHERE "refStId" = $1 
 ORDER BY "refPaId" DESC;`;
+
+export const refUtIdUpdate = `Update public.users SET "refUtId"=5 WHERE "refStId"=$1;`;
+
+export const updateHistoryQuery = `
+  INSERT INTO public."refUserTxnHistory" (
+    "transTypeId", "transTime", "refStId","refUpdatedBy","transData"
+  ) VALUES ($1, $2, $3, $4, $5)
+  RETURNING *;
+`;

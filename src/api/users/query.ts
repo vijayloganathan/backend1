@@ -67,18 +67,34 @@ WHERE u."refStId" = $1;`;
 
 export const getUserType = 'SELECT "refUtId" FROM  users WHERE "refStId"=$1;';
 
+// export const getSingInCount = `SELECT
+//   CASE
+//     WHEN COUNT(*) = 0
+//     THEN true
+//     WHEN COUNT(*) = 1
+//       AND TO_CHAR(MAX(TO_TIMESTAMP("transTime", 'DD/MM/YYYY, HH12:MI:SS AM')), 'DD/MM/YYYY') = TO_CHAR($1::timestamp, 'DD/MM/YYYY')
+//       AND EXTRACT(EPOCH FROM ($1::timestamp - MAX(TO_TIMESTAMP("transTime", 'DD/MM/YYYY, HH12:MI:SS AM')))) <= 30
+//     THEN true
+//     ELSE false
+//   END as result
+// FROM public."refUserTxnHistory"
+// WHERE "refStId" = $2 AND "transTypeId" = 2;
+
+// `;
 export const getSingInCount = `SELECT 
-  CASE 
-    WHEN COUNT(*) = 0 
-    THEN true 
-    WHEN COUNT(*) = 1 
-      AND TO_CHAR(MAX(TO_TIMESTAMP("transTime", 'DD/MM/YYYY, HH12:MI:SS AM')), 'DD/MM/YYYY') = TO_CHAR(CURRENT_DATE, 'DD/MM/YYYY') 
-      AND EXTRACT(EPOCH FROM (CURRENT_TIMESTAMP - MAX(TO_TIMESTAMP("transTime", 'DD/MM/YYYY, HH12:MI:SS AM')))) <= 30
-    THEN true
-    ELSE false 
-  END as result
-FROM public."refUserTxnHistory"
-WHERE "refStId" = $1 AND "transTypeId" = 2;
+    CASE 
+        WHEN ABS(EXTRACT(EPOCH FROM (TO_TIMESTAMP(th."transTime", 'DD/MM/YYYY, HH:MI:SS PM') - TO_TIMESTAMP($1, 'DD/MM/YYYY, HH:MI:SS PM')))) <= 40 
+        THEN true
+        ELSE false
+    END AS result
+FROM public."refUserTxnHistory" th
+JOIN public.users u
+ON CAST(th."refStId" AS INTEGER) = u."refStId"
+WHERE th."transTypeId" = 2 
+  AND th."refStId" = $2
+ORDER BY TO_TIMESTAMP(th."transTime", 'DD/MM/YYYY, HH:MI:SS PM') DESC
+LIMIT 1;
+
 `;
 
 export const getFollowUpCount = `SELECT CASE 

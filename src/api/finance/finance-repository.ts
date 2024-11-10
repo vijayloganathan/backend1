@@ -15,10 +15,17 @@ import {
   setFeesStored,
   passInvoiceData,
   userPaymentAuditList,
+  refUtIdUpdate,
+  updateHistoryQuery,
 } from "./query";
 import { encrypt } from "../../helper/encrypt";
 import { generateToken, decodeToken } from "../../helper/token";
-import { formatDate, getAdjustedTime, CurrentTime } from "../../helper/common";
+import {
+  formatDate,
+  getAdjustedTime,
+  CurrentTime,
+  convertToFormattedDateTime,
+} from "../../helper/common";
 
 export class FinanceRepository {
   public async studentDetailsV1(
@@ -296,18 +303,14 @@ export class FinanceRepository {
       bId: branchId,
     };
     const token = generateToken(tokenData, true);
+    const client: PoolClient = await getClient();
 
     try {
+      await client.query("BEGIN");
       const countResult = await executeQuery(paymentCount, []);
       const currentTime = CurrentTime();
-      let newOrderId = currentTime
-        .replace(/[\/,:PAM]/g, "")
-        .replace(/\s+/g, "");
-      newOrderId = `${newOrderId}${(
-        10000 +
-        countResult[0].count +
-        1
-      ).toString()}`;
+      let newOrderId = convertToFormattedDateTime(currentTime);
+      newOrderId = `${newOrderId}${(10000 + countResult[0].count).toString()}`;
 
       let Data = [
         userData.refStId,
@@ -329,10 +332,21 @@ export class FinanceRepository {
       ];
       console.log("Data", Data);
 
-      const storeFees = await executeQuery(setFeesStored, Data);
-      console.log("storeFees", storeFees);
+      const storeFees = await client.query(setFeesStored, Data);
+      const refUtIdUpdateResult = await client.query(refUtIdUpdate, [
+        userData.refStId,
+      ]);
 
-      if (storeFees.length < 0) {
+      const history = [
+        7,
+        CurrentTime(),
+        userData.refStId,
+        "Front Office",
+        "Payment Success",
+      ];
+      const updateHistory = await client.query(updateHistoryQuery, history);
+
+      if (!storeFees && !refUtIdUpdateResult && !updateHistory) {
         return encrypt(
           {
             success: false,
@@ -342,6 +356,8 @@ export class FinanceRepository {
           true
         );
       }
+
+      await client.query("COMMIT");
 
       return encrypt(
         {
@@ -353,12 +369,25 @@ export class FinanceRepository {
         true
       );
     } catch (error) {
+      await client.query("ROLLBACK");
+
+      const history = [
+        18,
+        CurrentTime(),
+        userData.refStId,
+        "Front Office",
+        "Payment Failed",
+      ];
+      const updateHistory = await executeQuery(updateHistoryQuery, history);
+
       const results = {
         success: false,
         message: "Error in passing Fees Data",
         token: token,
       };
       return encrypt(results, true);
+    } finally {
+      client.release();
     }
   }
   public async invoiceDownloadV1(

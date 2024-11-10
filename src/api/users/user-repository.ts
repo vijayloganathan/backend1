@@ -4,7 +4,7 @@ import { PoolClient } from "pg";
 import path from "path";
 import { viewFile } from "../../helper/storage";
 import { reLabelText } from "../../helper/label";
-import { getAdjustedTime } from "../../helper/common";
+import { getAdjustedTime, CurrentTime } from "../../helper/common";
 
 import {
   checkQuery,
@@ -63,8 +63,13 @@ export class UserRepository {
 
         const refStId = [user.refStId];
         const userData = await executeQuery(selectUserData, refStId);
+        console.log("CurrentTime", CurrentTime());
 
-        const signinCount = await executeQuery(getSingInCount, refStId);
+        const signinCount = await executeQuery(getSingInCount, [
+          CurrentTime(),
+          user.refStId,
+        ]);
+        console.log("signinCount", signinCount);
 
         const followUpCount = await executeQuery(getFollowUpCount, refStId);
         const status2 =
@@ -330,8 +335,13 @@ export class UserRepository {
       const refStId = decodedToken;
       const id = [refStId];
       const user = await executeQuery(selectUserData, id);
+      console.log("CurrentTime", CurrentTime());
 
-      const signinCount = await executeQuery(getSingInCount, id);
+      const signinCount = await executeQuery(getSingInCount, [
+        CurrentTime(),
+        refStId,
+      ]);
+      console.log("signinCount", signinCount);
       const followUpCount = await executeQuery(getFollowUpCount, id);
       const status2 = followUpCount.length > 0 ? followUpCount[0].status : null;
 

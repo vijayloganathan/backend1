@@ -60,21 +60,23 @@ export function formatDate(isoDate: any) {
 }
 
 export const convertToFormattedDateTime = (input: string): string => {
-  // Parse the input date
   const [date, time] = input.split(", ");
   const [day, month, year] = date.split("/");
   const [rawHours, minutes, seconds] = time.split(":");
   const period = time.includes("PM") ? "PM" : "AM";
 
-  // Convert hours to 24-hour format
   let hours = parseInt(rawHours, 10);
   if (period === "PM" && hours < 12) {
-    hours += 12; // Convert PM hours to 24-hour format
+    hours += 12;
   }
   if (period === "AM" && hours === 12) {
-    hours = 0; // Midnight edge case
+    hours = 0;
   }
 
-  // Format the output without separators
-  return `${day}${month}${year}${String(hours).padStart(2, "0")}${minutes}`;
+  const shortYear = year.slice(-2);
+
+  return `${day}${month}${shortYear}${String(hours).padStart(
+    2,
+    "0"
+  )}${minutes}`;
 };

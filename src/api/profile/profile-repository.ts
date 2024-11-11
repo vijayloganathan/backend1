@@ -164,7 +164,6 @@ export class ProfileRepository {
       );
 
       if (!userResult2.rowCount) {
-        console.log();
 
         throw new Error(
           "Failed to insert Communication  data into the refUserCommunication table."
@@ -270,7 +269,6 @@ export class ProfileRepository {
       };
       return encrypt(results, true);
     } catch (error) {
-      console.log("error");
       await client.query("ROLLBACK");
 
       const results = {

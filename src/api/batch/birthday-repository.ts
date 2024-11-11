@@ -15,9 +15,7 @@ export class BatchRepository {
     try {
       const getData = await executeQuery(getBirthdayData, []);
       if (getData.length > 0) {
-        console.log("getData.length", getData.length);
         for (let i = 0; i < getData.length; i++) {
-          console.log("getData mailID", getData[i].refCtEmail);
           const main = async () => {
             const mailOptions = {
               to: getData[i].refCtEmail,
@@ -59,11 +57,8 @@ export class BatchRepository {
   public async WeedingWishRepositoryV1(): Promise<any> {
     try {
       const getData = await executeQuery(getWeedingData, []);
-      console.log("getData", getData);
       if (getData.length > 0) {
-        console.log("getData.length", getData.length);
         for (let i = 0; i < getData.length; i++) {
-          console.log("getData mailID", getData[i].refCtEmail);
           const main = async () => {
             const mailOptions = {
               to: getData[i].refCtEmail,

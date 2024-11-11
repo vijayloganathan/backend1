@@ -330,7 +330,6 @@ export class FinanceRepository {
         userData.refOfferValue,
         userData.refOfferName,
       ];
-      console.log("Data", Data);
 
       const storeFees = await client.query(setFeesStored, Data);
       const refUtIdUpdateResult = await client.query(refUtIdUpdate, [

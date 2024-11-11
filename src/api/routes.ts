@@ -180,7 +180,7 @@ export class StaffRoutes implements IRoute {
           method: "GET",
           path: "/api/v1/staff/dashBoard",
           config: {
-            // pre: [{ method: validateToken, assign: "token" }],
+            pre: [{ method: validateToken, assign: "token" }],
             handler: controller.staffDashBoard,
             description: "Front Office Dashboard",
             auth: false,
@@ -357,7 +357,7 @@ export class DirectorRoutes implements IRoute {
           method: "POST",
           path: "/api/v1/director/addProfileImage",
           config: {
-            pre: [{ method: validateToken, assign: "token" }],
+            // pre: [{ method: validateToken, assign: "token" }],
             handler: controller.addEmployeeData,
             description: "Add Profile Image ",
             tags: ["api", "Users"],

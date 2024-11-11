@@ -235,7 +235,7 @@ GROUP BY
 export const getStaffCount = `WITH total_count AS (
     SELECT COUNT(*) AS total
     FROM public."users"
-    WHERE "refUtId" IN (4,8,10)
+    WHERE "refUtId" IN (4,8,10,11)
 )
 SELECT 
     rut."refUserType" AS user_type_label,
@@ -248,7 +248,7 @@ JOIN
 JOIN 
     total_count total ON true
 WHERE 
-    u."refUtId" IN (4,8,10)
+    u."refUtId" IN (4,8,10,11)
 GROUP BY 
     rut."refUserType", total.total;`;
 
@@ -270,10 +270,10 @@ FROM public.users u
 JOIN (
     SELECT DISTINCT ON (th."refStId") *
     FROM public."refUserTxnHistory" th
-    WHERE th."transTime"::DATE = CURRENT_DATE
+    WHERE th."transTime"::DATE = $2
     ORDER BY th."refStId", th."transTime" DESC
 ) th ON CAST(u."refStId" AS INTEGER) = th."refStId"
-WHERE u."refUtId" = 2
+WHERE u."refUtId" = $1
 LIMIT 5;
 `;
 

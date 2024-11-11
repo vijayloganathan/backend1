@@ -52,7 +52,7 @@ import {
 } from "./query";
 import { encrypt } from "../../helper/encrypt";
 import { generateToken, decodeToken } from "../../helper/token";
-import { generateCouponCode } from "../../helper/common";
+import { generateCouponCode, formatDate } from "../../helper/common";
 
 export class DirectorRepository {
   public async directorStaffPgV1(
@@ -91,7 +91,6 @@ export class DirectorRepository {
       return encrypt(results, true);
     }
   }
-
   public async userDataV1(userData: any, decodedToken: number): Promise<any> {
     const staffId = decodedToken;
     const Id = userData.refStId;
@@ -293,7 +292,6 @@ export class DirectorRepository {
       const userCount = parseInt(userCountResult[0].count, 10);
 
       let newCustomerId = `UBYS${(10000 + userCount + 1).toString()}`;
-      console.log("newCustomerId", newCustomerId);
 
       const params = [
         userData.refFName,
@@ -410,7 +408,6 @@ export class DirectorRepository {
       );
     }
   }
-
   public async addEmployeeDataV1(
     userData: any,
     decodedToken: any
@@ -491,14 +488,6 @@ export class DirectorRepository {
     };
     const token = generateToken(tokenData, true);
 
-    function formatDate(isoDate: any) {
-      const date = new Date(isoDate);
-      const day = String(date.getDate()).padStart(2, "0");
-      const month = String(date.getMonth() + 1).padStart(2, "0");
-      const year = date.getFullYear();
-
-      return `${year}-${month}-${day}`;
-    }
     try {
       const getList = await executeQuery(getUpDateList, []);
       for (let i = 0; i < getList.length; i++) {
@@ -535,14 +524,6 @@ export class DirectorRepository {
     };
     const token = generateToken(tokenData, true);
 
-    function formatDate(isoDate: any) {
-      const date = new Date(isoDate);
-      const day = String(date.getDate()).padStart(2, "0");
-      const month = String(date.getMonth() + 1).padStart(2, "0");
-      const year = date.getFullYear();
-
-      return `${year}-${month}-${day}`;
-    }
     try {
       const getList = await executeQuery(getStaffUpdateList, []);
       for (let i = 0; i < getList.length; i++) {
@@ -607,9 +588,7 @@ export class DirectorRepository {
     decodedToken: number
   ): Promise<any> {
     const id = userData.refStId;
-    console.log("id", id);
     const refStId = decodedToken;
-    console.log("refStId", refStId);
     const tokenData = {
       id: refStId,
     };
@@ -617,28 +596,28 @@ export class DirectorRepository {
 
     try {
       let getList = await executeQuery(userUpdateApprovalList, [id]);
-      console.log("getList", getList);
+      for (let i = 0; i < getList.length; i++) {
+        if (
+          getList[i] &&
+          getList[i].refChanges &&
+          (getList[i].refChanges.label === "Aadhar Card " ||
+            getList[i].refChanges.label === "Pan Card" ||
+            getList[i].refChanges.label === "Certification")
+        ) {
+          const filePath = getList[i].refChanges.data?.newValue;
+          if (filePath) {
+            const fileBuffer = await viewFile(filePath);
+            const fileBase64 = fileBuffer.toString("base64");
 
-      if (
-        getList[0] &&
-        getList[0].refChanges &&
-        (getList[0].refChanges.label === "Aadhar Card " ||
-          getList[0].refChanges.label === "Pan Card" ||
-          getList[0].refChanges.label === "Certification")
-      ) {
-        const filePath = getList[0].refChanges.data?.newValue;
-        if (filePath) {
-          const fileBuffer = await viewFile(filePath);
-          const fileBase64 = fileBuffer.toString("base64");
+            const documentData = {
+              filename: path.basename(filePath),
+              content: fileBase64,
+              contentType: "application/pdf",
+              label: getList[i].refChanges.label,
+            };
 
-          const documentData = {
-            filename: path.basename(filePath),
-            content: fileBase64,
-            contentType: "application/pdf",
-            label: getList[0].refChanges.label,
-          };
-
-          getList[0].refChanges.data.newValue = documentData;
+            getList[i].refChanges.data.newValue = documentData;
+          }
         }
       }
 
@@ -662,7 +641,6 @@ export class DirectorRepository {
       );
     }
   }
-
   public async userUpdateAuditListReadV1(
     userData: any,
     decodedToken: number
@@ -720,10 +698,8 @@ export class DirectorRepository {
     const token = generateToken(tokenData, true);
     try {
       let mailId = await executeQuery(getMailId, [id]);
-      console.log("mailId", mailId);
       let changeData: any[] = [];
       mailId = mailId[0].refCtEmail;
-      console.log(" ", mailId);
       for (let i = 0; i < userAppId.length; i++) {
         const tempData = await executeQuery(getTempData, [userAppId[i]]);
         const transTypeId = tempData[0].transTypeId;
@@ -733,10 +709,8 @@ export class DirectorRepository {
             const tableName: string = tempData[0].refTable;
 
             const updatedData = tempData[0].refData;
-            console.log("updatedData", updatedData);
 
             const changes = tempData[0].refChanges;
-            console.log("changes", changes);
 
             const identifier = { column: "refStId", value: id };
 
@@ -869,7 +843,6 @@ export class DirectorRepository {
       client.release();
     }
   }
-
   public async userDataUpdateRejectBtnV1(
     userData: any,
     decodedToken: number
@@ -1257,6 +1230,7 @@ export class DirectorRepository {
         userData.refStartAt,
         userData.refEndAt,
         generateCouponCode(),
+        userData.refContent,
       ];
       const newOffersResult = await executeQuery(insertNewOffers, params);
 
@@ -1305,6 +1279,7 @@ export class DirectorRepository {
         userData.refOffer,
         userData.refStartAt,
         userData.refEndAt,
+        userData.refContent,
       ];
       console.log("params", params);
       const updateFeesResult = await executeQuery(editOffers, params);

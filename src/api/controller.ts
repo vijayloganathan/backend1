@@ -457,13 +457,13 @@ export class FrontDesk {
     request: any,
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
-    // const decodedToken = request.plugins.token.id;
+    const decodedToken = request.plugins.token.id;
     try {
       logger.info(`GET URL REQ => ${request.url.href}`);
       const domainCode = request.headers.domain_code || "";
       const entity = await this.resolver.staffDashBoardV1(
-        request.payload
-        // decodedToken
+        request.payload,
+        decodedToken
       );
 
       if (entity.success) {
@@ -987,32 +987,28 @@ export class Director {
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
     const decodedToken = request.plugins.token.id;
+    // const decodedToken = 3;
 
     logger.info("Router-----store Register Form Data");
     try {
       logger.info(`GET URL REQ => ${request.url.href}`);
       const domainCode = request.headers.domain_code || "";
 
-      // If file is uploaded via form-data, it will be in request.payload
       const payload = request.payload;
 
-      // Assuming the file field is named 'file'
       const file = payload.file;
 
       let filePath: string | undefined;
 
       if (file) {
-        // Log the file details
         logger.info(`Uploaded file: ${file.hapi.filename}`);
         logger.info(`File type: ${file.hapi.headers["content-type"]}`);
 
-        // Store the file and get the path
         filePath = await storeFile(file);
       } else {
         logger.warn("No file uploaded.");
       }
 
-      // Process the remaining form data
       const entity = await this.resolver.addEmployeeDataV1({
         ...payload, // includes the rest of the form fields
         filePath, // Pass the stored file path if needed
@@ -1191,7 +1187,6 @@ export class Director {
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
     const decodedToken = request.plugins.token.id;
-    console.log("decodedToken", decodedToken);
     try {
       logger.info(`GET URL REQ => ${request.url.href}`);
       const domainCode = request.headers.domain_code || "";
@@ -1252,7 +1247,6 @@ export class Director {
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
     const decodedToken = request.plugins.token.id;
-    console.log("decodedToken", decodedToken);
     try {
       logger.info(`GET URL REQ => ${request.url.href}`);
       const domainCode = request.headers.domain_code || "";
@@ -1633,7 +1627,6 @@ export class batchPrograms {
   ): Promise<any> => {
     // const decodedToken = request.plugins.token.id;
     try {
-      console.log("--------------------------------------------------");
       logger.info(`GET URL REQ => ${request.url.href}`);
       const domainCode = request.headers.domain_code || "";
       const entity = await this.resolver.BirthdayRepositoryV1(

@@ -42,12 +42,12 @@ import { CurrentTime } from "../../helper/common";
 
 export class StaffRepository {
   public async staffDashBoardV1(
-    userData: any
-    // decodedToken: number
+    userData: any,
+    decodedToken: number
   ): Promise<any> {
     try {
-      // const refStId = decodedToken;
-      const refStId = 1;
+      const time = CurrentTime();
+      const refStId = decodedToken;
       const userType = await executeQuery(getUserType, [refStId]);
       const refUserType = userType[0];
       let refDashBoardData = {};
@@ -71,10 +71,10 @@ export class StaffRepository {
               CurrentTime(),
             ]);
             refDashBoardData = { ...refDashBoardData, registerCount };
-            const registerSampleData = await executeQuery(
-              getRecentFormData,
-              []
-            );
+            const registerSampleData = await executeQuery(getRecentFormData, [
+              2,
+              time,
+            ]);
             refDashBoardData = { ...refDashBoardData, registerSampleData };
 
           case "signedup":
@@ -88,6 +88,23 @@ export class StaffRepository {
           case "trail":
             const trailCount = await executeQuery(getTrailPaymentCount, []);
             refDashBoardData = { ...refDashBoardData, trailCount };
+            let trailSampleData = await executeQuery(getRecentFormData, [
+              3,
+              time,
+            ]);
+            // trailSampleData.push({ label: "Trail Data" });
+
+            refDashBoardData = { ...refDashBoardData, trailSampleData };
+            let paymentPendingSampleData = await executeQuery(
+              getRecentFormData,
+              [6, time]
+            );
+            // paymentPendingSampleData.push({ label: "Payment Pending" });
+
+            refDashBoardData = {
+              ...refDashBoardData,
+              paymentPendingSampleData,
+            };
             break;
           case "settings":
             // console.log("This For Feedback");
@@ -117,14 +134,12 @@ export class StaffRepository {
           case "therapistuserdata":
             const therapistUserDataCount = await executeQuery(
               getRegisterCount,
-              []
+              [CurrentTime()]
             );
             refDashBoardData = { ...refDashBoardData, therapistUserDataCount };
             break;
           default:
-            console.log("userTypeName", userTypeName);
 
-            console.log("Some Miss Match Restiction Passed");
             break;
         }
       }
@@ -169,47 +184,14 @@ export class StaffRepository {
           token: token,
           data: refDashBoardData,
         },
-        false
+        true
       );
     } catch (error) {
       console.error("Error in Dashboard Data Passing:", error);
       throw error;
     }
   }
-  public async staffDashBoardV11(userData: any): Promise<any> {
-    try {
-      const refStId = userData.refStID;
 
-      const staffRestriction = await executeQuery(getStaffRestriction, []);
-      const signUpCount = await executeQuery(getSignUpCount, []);
-      const registerCount = await executeQuery(getRegisterCount, []);
-
-      const dashBoardData = {
-        signupCount: signUpCount,
-        registerCount: registerCount,
-      };
-
-      const tokenData = {
-        // id: refStId,
-        id: 6,
-      };
-
-      const token = generateToken(tokenData, true);
-
-      return encrypt(
-        {
-          success: true,
-          message: "Front Desk DashBoard Data Passed Successfully",
-          token: token,
-          data: dashBoardData,
-        },
-        true
-      );
-    } catch (error) {
-      console.error("Error in userRegisterPageDataV1:", error);
-      throw error;
-    }
-  }
   public async staffStudentApprovalV1(
     userData: any,
     decodedToken: number
@@ -550,7 +532,7 @@ export class StaffRepository {
   ): Promise<any> {
     const client: PoolClient = await getClient();
     let id;
-    const staffId = decodedToken;
+    const staffId = userData.decodedToken;
     if (userData.refStId == undefined || userData.refStId == null) {
       id = staffId;
     } else {
@@ -770,14 +752,7 @@ export class StaffRepository {
                 [key]: changes[key].newValue,
               };
 
-              const parasHistory = [
-                16,
-                tempChange,
-                id,
-                new Date().toLocaleString(),
-                // getAdjustedTime(),
-                "user",
-              ];
+              const parasHistory = [16, tempChange, id, CurrentTime(), "user"];
               const queryResult = await client.query(
                 updateHistoryQuery1,
                 parasHistory
@@ -793,8 +768,7 @@ export class StaffRepository {
                 tempChange,
                 tempData,
                 tableName,
-                new Date().toLocaleString(),
-                // getAdjustedTime(),
+                CurrentTime(),
                 queryResult.rows[0].transId,
               ];
 

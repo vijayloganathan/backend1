@@ -276,10 +276,10 @@ WHERE
 export const getOffersName = `SELECT "refOfferId","refOfferName" FROM public."refOfName"`;
 
 export const insertNewOffers = `INSERT INTO public."refOffers"
-("refOfferId","refMin","refOffer","refStartAt","refEndAt","refCoupon") VALUES ($1,$2,$3,$4,$5,$6) RETURNING *;`;
+("refOfferId","refMin","refOffer","refStartAt","refEndAt","refCoupon","refContent") VALUES ($1,$2,$3,$4,$5,$6,$7) RETURNING *;`;
 
 export const editOffers = `UPDATE public."refOffers"
-SET "refMin"=$2,"refOffer"=$3,"refStartAt"=$4,"refEndAt"=$5
+SET "refMin"=$2,"refOffer"=$3,"refStartAt"=$4,"refEndAt"=$5,"refContent"=$6
 WHERE "refOfId"=$1
 RETURNING *;`;
 

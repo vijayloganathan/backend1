@@ -357,7 +357,7 @@ export class DirectorRoutes implements IRoute {
           method: "POST",
           path: "/api/v1/director/addProfileImage",
           config: {
-            // pre: [{ method: validateToken, assign: "token" }],
+            pre: [{ method: validateToken, assign: "token" }],
             handler: controller.addEmployeeData,
             description: "Add Profile Image ",
             tags: ["api", "Users"],

@@ -1,6 +1,6 @@
 import { generateToken, decodeToken } from "../../helper/token";
 import { encrypt } from "../../helper/encrypt";
-import { mms } from "../../helper/twilio/mms";
+// import { mms } from "../../helper/twilio/mms";
 
 export class TestingRepository {
   public async TestingV1(userData: any, decodedToken: number): Promise<any> {
@@ -10,8 +10,8 @@ export class TestingRepository {
     };
     const token = generateToken(tokenData, true);
     try {
-      const mmsResult = mms();
-      console.log("mmsResult", mmsResult);
+      // const mmsResult = mms();
+      // console.log("mmsResult", mmsResult);
       const results = {
         success: true,
         message: "Testing Success",

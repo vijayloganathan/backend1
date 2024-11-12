@@ -11,6 +11,7 @@ import {
   staffDetailSend,
   updateDataApproval,
   updateDataRejection,
+  sendTrialApprovalMail,
 } from "../../helper/mailcontent";
 
 import {
@@ -197,6 +198,27 @@ export class DirectorRepository {
         studentId
       );
 
+      const mailIdResult = await executeQuery(getMailId, [userData.refStId]);
+
+      const main = async () => {
+        const mailOptions = {
+          to: mailIdResult[0].refCtEmail,
+          subject: "Director Approve To Access Trail Section",
+          html: sendTrialApprovalMail(
+            updateUserTypeResult[0].refStFName,
+            updateUserTypeResult[0].refStLName
+          ),
+        };
+
+        try {
+          await sendEmail(mailOptions);
+        } catch (error) {
+          console.error("Failed to send email:", error);
+        }
+      };
+
+      main().catch(console.error);
+
       const transId = 4,
         transData = "Therapist Approve The User",
         refUpdatedBy = "Therapist";
@@ -354,7 +376,7 @@ export class DirectorRepository {
         const main = async () => {
           const mailOptions = {
             to: userData.refEmail, // Replace with the recipient's email
-            subject: "Director Add U As An Employee In Ublis Yoga", // Subject of the email
+            subject: "The Director has added you to Ublis Yoga Private Limited", // Subject of the email
             html: staffDetailSend(domainResult[0].refCustId, password),
           };
 

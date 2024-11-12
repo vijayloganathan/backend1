@@ -76,7 +76,6 @@ export class StaffRepository {
               time,
             ]);
             refDashBoardData = { ...refDashBoardData, registerSampleData };
-
           case "signedup":
             const signUpCount = await executeQuery(getSignUpCount, [
               CurrentTime(),
@@ -139,7 +138,6 @@ export class StaffRepository {
             refDashBoardData = { ...refDashBoardData, therapistUserDataCount };
             break;
           default:
-
             break;
         }
       }
@@ -530,9 +528,11 @@ export class StaffRepository {
     userData: any,
     decodedToken: number
   ): Promise<any> {
+    console.log("userData", userData);
     const client: PoolClient = await getClient();
     let id;
-    const staffId = userData.decodedToken;
+    const staffId = userData.decodedToken || decodedToken;
+    console.log("staffId", staffId);
     if (userData.refStId == undefined || userData.refStId == null) {
       id = staffId;
     } else {
@@ -541,12 +541,15 @@ export class StaffRepository {
     let tokenData = {
       id: staffId,
     };
+    console.log("id", id);
+
     const token = generateToken(tokenData, true);
 
     try {
       await client.query("BEGIN");
       for (const section in userData) {
         if (userData.hasOwnProperty(section)) {
+          console.log("section", section);
           let tableName: string;
           let updatedData, transTypeId, newData, olddata, getUserData, oldData;
           switch (section) {
@@ -682,6 +685,7 @@ export class StaffRepository {
               break;
 
             case "employeeData":
+              console.log("----------------------------------- line 686");
               transTypeId = 16;
               tableName = "refEmployeeData";
               getUserData = rawGetUserDataQuery.replace(
@@ -691,9 +695,13 @@ export class StaffRepository {
               newData = await executeQuery(getUserData, [id]);
 
               olddata = newData[0];
+              console.log("olddata", olddata);
               userData = { ...userData, olddata };
+              console.log("userData", userData);
               updatedData = userData.employeeData;
+              console.log("updatedData", updatedData);
               oldData = userData.olddata;
+              console.log("oldData", oldData);
               break;
 
             case "DocumentsPath":
@@ -712,10 +720,12 @@ export class StaffRepository {
               break;
 
             default:
+              console.log("here");
               continue;
           }
 
           let temp1, temp2;
+
           temp1 = updatedData;
           temp2 = oldData;
           if (oldData.refPerHealthId && updatedData.refPerHealthId) {
@@ -739,8 +749,11 @@ export class StaffRepository {
             temp2.refPerHealthId = JSON.stringify(labelsOldData);
             temp1.refPerHealthId = JSON.stringify(labelsUpdatedData);
           }
+          console.log("temp2", temp2);
+          console.log("temp1", temp1);
 
           const changes = getChanges(temp1, temp2);
+          console.log("changes", changes);
 
           for (const key in changes) {
             if (changes.hasOwnProperty(key)) {
@@ -990,108 +1003,7 @@ export class StaffRepository {
       return encrypt(results, true);
     }
   }
-  // public async addEmployeeDocumentV1(
-  //   userData: any,
-  //   decodedToken: any
-  // ): Promise<any> {
-  //   const refStId = userData.decodedToken;
-  //   const tokenData = {
-  //     id: refStId,
-  //   };
-  //   const token = generateToken(tokenData, true);
 
-  //   try {
-  //     let employeeDocuments: {
-  //       [key: string]: {
-  //         filename: string;
-  //         content: string;
-  //         contentType: string;
-  //         label: string;
-  //       };
-  //     } = {};
-
-  //     for (let i = 0; i < userData.DocumentsPath.length; i++) {
-  //       const params = [userData.DocumentsPath[i].filePath, refStId];
-  //       let labelName: string = userData.DocumentsPath[i].fileName;
-  //       let Result;
-
-  //       switch (labelName) {
-  //         case "panCard":
-  //           Result = await executeQuery(updateStaffPan, params);
-  //           break;
-  //         case "aadharCard":
-  //           Result = await executeQuery(updateStaffAadhar, params);
-  //           break;
-  //         case "certification":
-  //           Result = await executeQuery(updateStaffCertification, params);
-  //           break;
-  //         default:
-  //           Result = [];
-  //       }
-  //     }
-
-  //     const documentsFile = await executeQuery(getDocuments, [refStId]);
-  //     if (documentsFile.length > 0) {
-  //       for (let i = 0; i < 3; i++) {
-  //         let labelName: string | undefined;
-  //         let Result: string | undefined;
-
-  //         switch (i) {
-  //           case 0:
-  //             Result = documentsFile[0].refPanPath;
-  //             labelName = "panCard";
-  //             break;
-  //           case 1:
-  //             Result = documentsFile[0].refAadharPath;
-  //             labelName = "aadharCard";
-  //             break;
-  //           case 2:
-  //             Result = documentsFile[0].refCertificationPath;
-  //             labelName = "certification";
-  //             break;
-  //         }
-
-  //         if (labelName && Result) {
-  //           try {
-  //             const fileBuffer = await viewFile(Result);
-  //             const fileBase64 = fileBuffer.toString("base64");
-  //             const data = {
-  //               filename: path.basename(Result),
-  //               content: fileBase64,
-  //               contentType: "application/pdf",
-  //               label: labelName,
-  //             };
-  //             employeeDocuments[labelName] = data;
-  //           } catch (err) {
-  //             console.error("Error retrieving profile file:", err);
-  //           }
-  //         }
-  //       }
-  //     }
-
-  //     const profileFile = { employeeDocuments };
-
-  //     return encrypt(
-  //       {
-  //         success: true,
-  //         message: "File Stored Successfully",
-  //         token: token,
-  //         profileFile,
-  //       },
-  //       true
-  //     );
-  //   } catch (error) {
-  //     console.error("Error in Storing The Staff Documents:", error);
-  //     return encrypt(
-  //       {
-  //         success: false,
-  //         message: "Error in Storing The Staff Documents",
-  //         token: token,
-  //       },
-  //       true
-  //     );
-  //   }
-  // }
   public async addEmployeeDocumentV1(
     userData: any,
     decodedToken: any

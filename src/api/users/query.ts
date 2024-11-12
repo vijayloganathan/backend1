@@ -81,20 +81,28 @@ export const getUserType = 'SELECT "refUtId" FROM  users WHERE "refStId"=$1;';
 // WHERE "refStId" = $2 AND "transTypeId" = 2;
 
 // `;
-export const getSingInCount = `SELECT 
+export const getSingInCount = `WITH transaction_count AS (
+    SELECT COUNT(*) AS count
+    FROM public."refUserTxnHistory"
+    WHERE "transTypeId" = 2 
+      AND "refStId" = $2
+)
+SELECT 
+    tc.count,
+    ABS(EXTRACT(EPOCH FROM (TO_TIMESTAMP(th."transTime", 'DD/MM/YYYY, HH:MI:SS PM') - TO_TIMESTAMP($1, 'DD/MM/YYYY, HH:MI:SS PM')))) AS time_difference,
     CASE 
-        WHEN ABS(EXTRACT(EPOCH FROM (TO_TIMESTAMP(th."transTime", 'DD/MM/YYYY, HH:MI:SS PM') - TO_TIMESTAMP($1, 'DD/MM/YYYY, HH:MI:SS PM')))) <= 40 
-        THEN true
+        WHEN tc.count > 1 THEN false
+        WHEN ABS(EXTRACT(EPOCH FROM (TO_TIMESTAMP(th."transTime", 'DD/MM/YYYY, HH:MI:SS PM') - TO_TIMESTAMP($1, 'DD/MM/YYYY, HH:MI:SS PM')))) <= 40 THEN true
         ELSE false
     END AS result
 FROM public."refUserTxnHistory" th
 JOIN public.users u
 ON CAST(th."refStId" AS INTEGER) = u."refStId"
+CROSS JOIN transaction_count tc
 WHERE th."transTypeId" = 2 
   AND th."refStId" = $2
 ORDER BY TO_TIMESTAMP(th."transTime", 'DD/MM/YYYY, HH:MI:SS PM') DESC
 LIMIT 1;
-
 `;
 
 export const getFollowUpCount = `SELECT CASE 

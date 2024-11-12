@@ -10,6 +10,7 @@ import {
   userDashBoard,
   batchPrograms,
   financeController,
+  TestingController,
 } from "./controller";
 import { Logger } from "winston";
 import { decodeToken, validateToken } from "../helper/token";
@@ -668,6 +669,26 @@ export class Finance implements IRoute {
             pre: [{ method: validateToken, assign: "token" }],
             handler: UserPage.userPaymentAuditPg,
             description: "Request User Payment Audit Page",
+            auth: false,
+          },
+        },
+      ]);
+      resolve(true);
+    });
+  }
+}
+export class Testing implements IRoute {
+  public async register(server: any): Promise<any> {
+    return new Promise((resolve) => {
+      const UserPage = new TestingController();
+      server.route([
+        {
+          method: "GET",
+          path: "/api/v1/test",
+          config: {
+            // pre: [{ method: validateToken, assign: "token" }],
+            handler: UserPage.testing,
+            description: "For testing",
             auth: false,
           },
         },

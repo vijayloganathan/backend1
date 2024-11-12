@@ -132,7 +132,7 @@ JOIN
 LEFT JOIN
     public.branch b ON u."refBranchId" = b."refbranchId"
 WHERE
-    notif."refRead" = false AND ( u."refUtId" = 5 OR u."refUtId" = 6 )
+    notif."refRead" = false AND ( u."refUtId" IN (1,2,3,5,6))
 GROUP BY
     u."refStId", u."refSCustId", u."refStFName", u."refStLName", b."refBranchName",
     CASE
@@ -167,7 +167,7 @@ LEFT JOIN
     public.branch b ON u."refBranchId" = b."refbranchId"
 WHERE
     notif."refRead" = false 
-    AND u."refUtId" NOT IN (5, 6)
+    AND u."refUtId" NOT IN (1, 2, 3, 5, 6)
 GROUP BY
     u."refStId", u."refSCustId", u."refStFName", u."refStLName", b."refBranchName",
     CASE

@@ -7,6 +7,7 @@ import {
   DirectorResolver,
   BatchProgramResolver,
   FinanceResolver,
+  TestingResolver,
 } from "./resolver";
 import logger from "../helper/logger";
 import { decodeToken } from "../helper/token";
@@ -204,7 +205,6 @@ export class UserController {
     }
   };
 }
-
 export class UserProfileController {
   public resolver: any;
 
@@ -445,7 +445,6 @@ export class UserProfileController {
     }
   };
 }
-
 export class FrontDesk {
   public resolver: any;
 
@@ -669,6 +668,7 @@ export class FrontDesk {
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
     const decodedToken = request.plugins.token.id;
+    console.log("decodedToken", decodedToken);
     try {
       logger.info(`GET URL REQ => ${request.url.href}`);
       const domainCode = request.headers.domain_code || "";
@@ -764,7 +764,7 @@ export class FrontDesk {
           continue;
         }
 
-        const filePath = await storeFile(doc.file);
+        const filePath = await storeFile(doc.file, 2);
         DocumentsPath[doc.name] = filePath; // Store in DocumentsPath object with fileName as key
       }
 
@@ -792,7 +792,6 @@ export class FrontDesk {
     }
   };
 }
-
 export class Director {
   public resolver: any;
 
@@ -956,6 +955,8 @@ export class Director {
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
     const decodedToken = request.plugins.token.id;
+    // const decodedToken = 5;
+
     try {
       logger.info(`GET URL REQ => ${request.url.href}`);
       const domainCode = request.headers.domain_code || "";
@@ -1004,7 +1005,7 @@ export class Director {
         logger.info(`Uploaded file: ${file.hapi.filename}`);
         logger.info(`File type: ${file.hapi.headers["content-type"]}`);
 
-        filePath = await storeFile(file);
+        filePath = await storeFile(file, 1);
       } else {
         logger.warn("No file uploaded.");
       }
@@ -1863,6 +1864,44 @@ export class financeController {
       return response.response(entity).code(200);
     } catch (error) {
       logger.error("Error in Requesting User Payment Audit Data ", error);
+      return response
+        .response({
+          success: false,
+          message:
+            error instanceof Error
+              ? error.message
+              : "An unknown error occurred",
+        })
+        .code(500);
+    }
+  };
+}
+export class TestingController {
+  public resolver: any;
+
+  constructor() {
+    this.resolver = new TestingResolver();
+  }
+
+  public testing = async (
+    request: any,
+    response: Hapi.ResponseToolkit
+  ): Promise<any> => {
+    // const decodedToken = request.plugins.token.id;
+    const decodedToken = 1;
+    try {
+      logger.info(`GET URL REQ => ${request.url.href}`);
+      const entity = await this.resolver.TestingV1(
+        request.payload,
+        decodedToken
+      );
+
+      if (entity.success) {
+        return response.response(entity).code(200);
+      }
+      return response.response(entity).code(200);
+    } catch (error) {
+      logger.error("error in Testing Controller", error);
       return response
         .response({
           success: false,

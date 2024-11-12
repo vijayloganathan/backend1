@@ -28,15 +28,31 @@ const generateUniqueFilename = (originalName: string): string => {
 };
 
 // Function to store a file
-export const storeFile = async (file: HapiFile): Promise<string> => {
-  const uploadDir = path.join(process.cwd(), "./src/assets/documents");
+export const storeFile = async (
+  file: HapiFile,
+  uploadType: number // Renamed from `path` to `uploadType` for clarity
+): Promise<string> => {
+  let uploadDir: string;
+
+  // Determine the directory based on the uploadType value
+  if (uploadType === 1) {
+    uploadDir = path.join(process.cwd(), "./src/assets/Profile");
+  } else {
+    uploadDir = path.join(
+      process.cwd(),
+      "./src/assets/Certification & Id Proofs"
+    );
+  }
+
   const uniqueFilename = generateUniqueFilename(file.hapi.filename);
   const uploadPath = path.join(uploadDir, uniqueFilename);
 
+  // Create the directory if it doesn't exist
   if (!fs.existsSync(uploadDir)) {
     fs.mkdirSync(uploadDir, { recursive: true });
   }
 
+  // Create a writable stream for the file
   const fileStream = fs.createWriteStream(uploadPath);
 
   return new Promise((resolve, reject) => {
@@ -45,11 +61,11 @@ export const storeFile = async (file: HapiFile): Promise<string> => {
     readableFileStream.pipe(fileStream);
 
     readableFileStream.on("end", () => {
-      resolve(uploadPath);
+      resolve(uploadPath); // Resolve the promise with the path of the uploaded file
     });
 
     readableFileStream.on("error", (err: Error) => {
-      reject(err);
+      reject(err); // Reject the promise if there's an error
     });
   });
 };

@@ -60,7 +60,7 @@ export function staffDetailSend(id: number, password: string) {
         <p>Your username is: <strong>${id}</strong></p>
         <p>Your password is: <strong>${password}</strong></p>
         <p>Please complete all the documentation and personal data updates on our website by logging in using your username and password.</p>
-        <a href="https://yourwebsite.com/login" class="button">Login Here</a>
+        <a href="http://43.204.98.66/" class="button">Login Here</a>
     </div>
     <div class="footer">
         <p>Thank you,</p>
@@ -289,6 +289,69 @@ export function sendAnniversaryWish(firstName: string, lastName: string) {
             <p>Best wishes,<br>Ublis Yoga Team</p>
           </div>
           <div class="footer">&copy; 2024 Ublis Yoga. All rights reserved.</div>
+          <div class="confetti">
+            ${Array.from({ length: 15 }, () => `<span></span>`).join("")}
+          </div>
+        </div>
+      </body>
+      </html>`;
+  return mail;
+}
+
+export function sendTrialApprovalMail(firstName: string, lastName: string) {
+  const name = `${firstName} ${lastName}`;
+  const mail = `<!DOCTYPE html>
+      <html lang="en">
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Trial Approval Notification</title>
+        <style>
+          body { font-family: Arial, sans-serif; background-color: #fff9f3; color: #333; margin: 0; padding: 0; }
+          .container { max-width: 600px; margin: 20px auto; background-color: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); position: relative; overflow: hidden; }
+          .header { background-color: #ff8c00; padding: 15px; text-align: center; border-radius: 8px 8px 0 0; color: #ffffff; }
+          .header h1 { margin: 0; font-size: 24px; }
+          .content { padding: 20px; text-align: center; }
+          .content p { font-size: 16px; line-height: 1.6; }
+          .name { font-size: 20px; font-weight: bold; color: #ff4500; }
+          .trial-details { margin-top: 20px; font-size: 18px; color: #333; font-weight: bold; }
+          .footer { text-align: center; padding: 10px; font-size: 14px; color: #666; }
+          .button { display: inline-block; margin: 20px 0; padding: 10px 20px; font-size: 16px; color: #ffffff; background-color: #ff4500; text-decoration: none; border-radius: 4px; }
+          .button:hover { background-color: #e04a00; }
+          .confetti { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; overflow: hidden; }
+          .confetti span { position: absolute; width: 8px; height: 8px; background-color: #ff8c00; border-radius: 50%; animation: fall 5s infinite ease-in-out; }
+
+          /* Keyframes for confetti */
+          @keyframes fall {
+            0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+          }
+
+          /* Random confetti positions */
+          ${Array.from(
+            { length: 15 },
+            (_, i) => `
+            .confetti span:nth-child(${i + 1}) { left: ${
+              Math.random() * 100
+            }%; animation-delay: ${Math.random() * 2}s; }
+          `
+          ).join("")}
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <div class="header">
+            <h1>Congratulations! You're Approved for a Trial</h1>
+          </div>
+          <div class="content">
+            <p class="name">Dear ${name},</p>
+            <p>We are excited to inform you that the Ublis Yoga Private Limited team has approved your request for a one-day free trial session.</p>
+            <p class="trial-details">You can access your free trial session in the upcoming days. Stay tuned for more details!</p>
+            <a href="http://43.204.98.66/" class="button">View Trial Details</a>
+            <p>We look forward to seeing you soon and helping you start your journey towards a healthier, balanced life.</p>
+            <p>Best regards,<br>Ublis Yoga Team</p>
+          </div>
+          <div class="footer">&copy; 2024 Ublis Yoga Private Limited. All rights reserved.</div>
           <div class="confetti">
             ${Array.from({ length: 15 }, () => `<span></span>`).join("")}
           </div>

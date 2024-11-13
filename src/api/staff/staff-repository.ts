@@ -47,6 +47,7 @@ export class StaffRepository {
   ): Promise<any> {
     try {
       const time = CurrentTime();
+      console.log("time", time);
       const refStId = decodedToken;
       const userType = await executeQuery(getUserType, [refStId]);
       const refUserType = userType[0];
@@ -61,6 +62,8 @@ export class StaffRepository {
       refDashBoardData = { ...refDashBoardData, restrictionLabel };
       for (let i = 0; i < staffRestriction.length; i++) {
         const userTypeName = staffRestriction[i].columnName;
+
+        console.log("CurrentTime() \n\n\n line ------------66", CurrentTime());
         switch (userTypeName) {
           case "users":
             const userTypeCount = await executeQuery(getUserCount, []);
@@ -77,6 +80,7 @@ export class StaffRepository {
             ]);
             refDashBoardData = { ...refDashBoardData, registerSampleData };
           case "signedup":
+            console.log("CurrentTime()", CurrentTime());
             const signUpCount = await executeQuery(getSignUpCount, [
               CurrentTime(),
             ]);
@@ -259,7 +263,7 @@ export class StaffRepository {
         transId,
         transData,
         userData.refStId,
-        new Date().toLocaleString(),
+        CurrentTime(),
         refUpdatedBy,
       ];
 
@@ -323,7 +327,7 @@ export class StaffRepository {
         transId,
         transData,
         userData.refStId,
-        new Date().toLocaleString(),
+        CurrentTime(),
         refUpdatedBy,
       ];
 
@@ -442,7 +446,7 @@ export class StaffRepository {
         transId,
         transData,
         userData.refStId,
-        new Date().toLocaleString(),
+        CurrentTime(),
         refUpdatedBy,
       ];
 

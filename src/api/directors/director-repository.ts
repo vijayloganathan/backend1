@@ -13,6 +13,7 @@ import {
   updateDataRejection,
   sendTrialApprovalMail,
 } from "../../helper/mailcontent";
+import { CurrentTime } from "../../helper/common";
 
 import {
   queryStaffDetails,
@@ -227,7 +228,7 @@ export class DirectorRepository {
         transId,
         transData,
         userData.refStId,
-        new Date().toLocaleString(),
+        CurrentTime(),
         refUpdatedBy,
       ];
 
@@ -392,7 +393,7 @@ export class DirectorRepository {
 
         const history = [
           1,
-          new Date().toLocaleString(),
+          CurrentTime(),
           // getAdjustedTime(),
           newUser.refStId,
           "Director",
@@ -765,7 +766,7 @@ export class DirectorRepository {
                   transTypeId,
                   changes,
                   id,
-                  new Date().toLocaleString(),
+                  CurrentTime(),
                   // getAdjustedTime(),
                   "Front Office",
                 ];
@@ -905,7 +906,7 @@ export class DirectorRepository {
                   transTypeId,
                   changes,
                   id,
-                  new Date().toLocaleString(),
+                  CurrentTime(),
                   // getAdjustedTime(),
                   "Front Office",
                 ];

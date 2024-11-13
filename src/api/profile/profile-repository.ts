@@ -16,6 +16,7 @@ import { encrypt } from "../../helper/encrypt";
 import { generateToken, generateToken1 } from "../../helper/token";
 import { PoolClient } from "pg"; // Assuming you're using pg library for PostgreSQL
 import { getAdjustedTime } from "../../helper/common";
+import {CurrentTime} from "../../helper/common"
 
 export class ProfileRepository {
   // STORING ADDRESS IN DB
@@ -248,7 +249,7 @@ export class ProfileRepository {
         transTypeId,
         transData,
         userData.refStId,
-        new Date().toLocaleString(),
+        CurrentTime(),
         refUpdatedBy,
       ];
 

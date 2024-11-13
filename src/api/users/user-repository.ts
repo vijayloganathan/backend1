@@ -51,13 +51,8 @@ export class UserRepository {
         user.refCustHashedPassword
       );
       if (validPassword) {
-        const history = [
-          2,
-          new Date().toLocaleString(),
-          user.refStId,
-          "User",
-          "Login",
-        ];
+        console.log("CurrentTime() line -----------54", CurrentTime());
+        const history = [2, CurrentTime(), user.refStId, "User", "Login"];
 
         const updateHistory = await executeQuery(updateHistoryQuery, history);
 
@@ -139,10 +134,11 @@ export class UserRepository {
         if (result.length > 0) {
           console.log("error in changing Password");
         }
+        console.log("CurrentTime() line -----------137", CurrentTime());
 
         const history = [
           19,
-          new Date().toLocaleString(),
+          CurrentTime(),
           // getAdjustedTime(),
           user.refStId,
           "User",
@@ -246,9 +242,11 @@ export class UserRepository {
         domainResult.length > 0 &&
         communicationResult.length > 0
       ) {
+        console.log("CurrentTime() line -----------245", CurrentTime());
+
         const history = [
           1,
-          new Date().toLocaleString(),
+          CurrentTime(),
           // getAdjustedTime(),
           newUser.refStId,
           "user",
@@ -333,6 +331,7 @@ export class UserRepository {
       const refStId = decodedToken;
       const id = [refStId];
       const user = await executeQuery(selectUserData, id);
+      console.log("CurrentTime() line -----------334", CurrentTime());
 
       const signinCount = await executeQuery(getSingInCount, [
         CurrentTime(),
@@ -842,12 +841,13 @@ export class UserRepository {
                 data: changes[key],
                 label: reLabelText(key),
               };
+              console.log("CurrentTime() line -----------844", CurrentTime());
 
               const parasHistory = [
                 transTypeId,
                 tempChange,
                 refStId,
-                new Date().toLocaleString(),
+                CurrentTime(),
                 // getAdjustedTime(),
                 refUtId,
               ];

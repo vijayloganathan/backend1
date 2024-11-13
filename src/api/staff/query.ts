@@ -114,11 +114,11 @@ export const getFollowUpLabel = `
 export const getDataForUserManagement = `
 SELECT DISTINCT ON (u."refSCustId") * 
 FROM public.users u
-JOIN public."refUserCommunication" uc
+LEFT JOIN public."refUserCommunication" uc
   ON CAST(u."refStId" AS INTEGER) = uc."refStId"
-JOIN public."refUserAddress" ad
+LEFT JOIN public."refUserAddress" ad
   ON CAST(u."refStId" AS INTEGER) = ad."refStId"
-JOIN public."refGeneralHealth" gh
+LEFT JOIN public."refGeneralHealth" gh
   ON CAST(u."refStId" AS INTEGER) = gh."refStId"
 WHERE u."refUtId" IN (1,2,3, 5, 6) 
 ORDER BY u."refSCustId", u."refStId";`;

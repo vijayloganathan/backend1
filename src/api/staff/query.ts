@@ -270,7 +270,7 @@ FROM public.users u
 JOIN (
     SELECT DISTINCT ON (th."refStId") *
     FROM public."refUserTxnHistory" th
-    WHERE th."transTime"::DATE = $2
+    WHERE TO_TIMESTAMP(th."transTime", 'DD/MM/YYYY, HH:MI:SS PM')::DATE = TO_TIMESTAMP($2, 'DD/MM/YYYY, HH:MI:SS PM')::DATE
     ORDER BY th."refStId", th."transTime" DESC
 ) th ON CAST(u."refStId" AS INTEGER) = th."refStId"
 WHERE u."refUtId" = $1

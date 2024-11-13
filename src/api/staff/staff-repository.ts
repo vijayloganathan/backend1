@@ -46,8 +46,6 @@ export class StaffRepository {
     decodedToken: number
   ): Promise<any> {
     try {
-      const time = CurrentTime();
-      console.log("time", time);
       const refStId = decodedToken;
       const userType = await executeQuery(getUserType, [refStId]);
       const refUserType = userType[0];
@@ -60,47 +58,48 @@ export class StaffRepository {
         return acc;
       }, {});
       refDashBoardData = { ...refDashBoardData, restrictionLabel };
+
       for (let i = 0; i < staffRestriction.length; i++) {
         const userTypeName = staffRestriction[i].columnName;
 
-        console.log("CurrentTime() \n\n\n line ------------66", CurrentTime());
         switch (userTypeName) {
-          case "users":
+          case "Users":
             const userTypeCount = await executeQuery(getUserCount, []);
             refDashBoardData = { ...refDashBoardData, userTypeCount };
+
             break;
-          case "registered":
+          case "Registered":
             const registerCount = await executeQuery(getRegisterCount, [
               CurrentTime(),
             ]);
             refDashBoardData = { ...refDashBoardData, registerCount };
             const registerSampleData = await executeQuery(getRecentFormData, [
               2,
-              time,
+              CurrentTime(),
             ]);
             refDashBoardData = { ...refDashBoardData, registerSampleData };
-          case "signedup":
-            console.log("CurrentTime()", CurrentTime());
+          case "Signedup":
             const signUpCount = await executeQuery(getSignUpCount, [
               CurrentTime(),
             ]);
             refDashBoardData = { ...refDashBoardData, signUpCount };
-          case "feedback":
+
+          case "Feedback":
             // console.log("This For Feedback");
             break;
-          case "trail":
+          case "Trail":
             const trailCount = await executeQuery(getTrailPaymentCount, []);
             refDashBoardData = { ...refDashBoardData, trailCount };
             let trailSampleData = await executeQuery(getRecentFormData, [
               3,
-              time,
+              CurrentTime(),
             ]);
             // trailSampleData.push({ label: "Trail Data" });
 
             refDashBoardData = { ...refDashBoardData, trailSampleData };
             let paymentPendingSampleData = await executeQuery(
               getRecentFormData,
-              [6, time]
+              [6, CurrentTime()]
             );
             // paymentPendingSampleData.push({ label: "Payment Pending" });
 
@@ -109,37 +108,39 @@ export class StaffRepository {
               paymentPendingSampleData,
             };
             break;
-          case "settings":
+          case "Settings":
             // console.log("This For Feedback");
             break;
-          case "transaction":
+          case "Transaction":
             // console.log("This for Transaction");
             break;
-          case "payroll":
+          case "Payroll":
             // console.log("This For payRoll");
             break;
-          case "staff":
+          case "Staff":
             const staffCount = await executeQuery(getStaffCount, []);
             refDashBoardData = { ...refDashBoardData, staffCount };
+
             break;
-          case "report":
+          case "Report":
             // console.log("this For report");
             break;
-          case "blogs":
+          case "Blogs":
             // console.log("This For Blog");
             break;
-          case "notes":
+          case "Notes":
             // console.log("This For Notes");
             break;
-          case "restrictions":
+          case "Restrictions":
             // console.log("This for therapist user data");
             break;
-          case "therapistuserdata":
+          case "Therapistuserdata":
             const therapistUserDataCount = await executeQuery(
               getRegisterCount,
               [CurrentTime()]
             );
             refDashBoardData = { ...refDashBoardData, therapistUserDataCount };
+
             break;
           default:
             break;
@@ -532,11 +533,9 @@ export class StaffRepository {
     userData: any,
     decodedToken: number
   ): Promise<any> {
-    console.log("userData", userData);
     const client: PoolClient = await getClient();
     let id;
     const staffId = userData.decodedToken || decodedToken;
-    console.log("staffId", staffId);
     if (userData.refStId == undefined || userData.refStId == null) {
       id = staffId;
     } else {
@@ -545,7 +544,6 @@ export class StaffRepository {
     let tokenData = {
       id: staffId,
     };
-    console.log("id", id);
 
     const token = generateToken(tokenData, true);
 
@@ -553,7 +551,6 @@ export class StaffRepository {
       await client.query("BEGIN");
       for (const section in userData) {
         if (userData.hasOwnProperty(section)) {
-          console.log("section", section);
           let tableName: string;
           let updatedData, transTypeId, newData, olddata, getUserData, oldData;
           switch (section) {
@@ -753,11 +750,8 @@ export class StaffRepository {
             temp2.refPerHealthId = JSON.stringify(labelsOldData);
             temp1.refPerHealthId = JSON.stringify(labelsUpdatedData);
           }
-          console.log("temp2", temp2);
-          console.log("temp1", temp1);
 
           const changes = getChanges(temp1, temp2);
-          console.log("changes", changes);
 
           for (const key in changes) {
             if (changes.hasOwnProperty(key)) {
@@ -910,7 +904,7 @@ export class StaffRepository {
         // refPanPath: Data.refPanPath,
         // refAadharPath: Data.refAadharPath,
         // refCertificationPath: Data.refCertificationPath,
-        // refWorkingTime: Data.refWorkingTime,
+        // refWorkingTime: Data.refWorkingCurrentTime(),
       };
 
       profileData = { ...profileData, EmployeeData };

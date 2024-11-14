@@ -317,7 +317,7 @@ export class FinanceRepository {
         userData.refPaymentMode,
         userData.refPaymentFrom,
         refStId,
-        getAdjustedTime(),
+        CurrentTime(),
         userData.refExpiry,
         newOrderId,
         null,
@@ -332,6 +332,7 @@ export class FinanceRepository {
       ];
 
       const storeFees = await client.query(setFeesStored, Data);
+      console.log("storeFees", storeFees);
       const refUtIdUpdateResult = await client.query(refUtIdUpdate, [
         userData.refStId,
       ]);

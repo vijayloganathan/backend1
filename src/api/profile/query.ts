@@ -57,7 +57,8 @@ export const insertCommunicationData = `
 SET 
   "refCtWhatsapp" = $2,
   "refCtMobile"=$3,
-  "refCtEmail"=$4
+  "refCtEmail"=$4,
+  "refUcPreference"=$5
 WHERE "refStId" = $1
 RETURNING *;
 `;
@@ -71,6 +72,8 @@ JOIN "refUsersDomain" rud
 ON u."refStId" = CAST(rud."refStId" AS INTEGER)
 WHERE u."refStId" = $1;
 `;
+
+export const fetchCommunicationRef = `SELECT * FROM public."refCommType" `;
 
 export const fetchPresentHealthProblem = `
   SELECT "refHealthId", "refHealth"

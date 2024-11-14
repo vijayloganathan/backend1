@@ -11,12 +11,13 @@ import {
   BranchMemberList,
   getSectionTimeData,
   getCustTime,
+  fetchCommunicationRef,
 } from "./query";
 import { encrypt } from "../../helper/encrypt";
 import { generateToken, generateToken1 } from "../../helper/token";
 import { PoolClient } from "pg"; // Assuming you're using pg library for PostgreSQL
 import { getAdjustedTime } from "../../helper/common";
-import {CurrentTime} from "../../helper/common"
+import { CurrentTime } from "../../helper/common";
 
 export class ProfileRepository {
   // STORING ADDRESS IN DB
@@ -114,6 +115,8 @@ export class ProfileRepository {
     decodedToken: number
   ): Promise<any> {
     const client: PoolClient = await getClient(); // Get the database client
+    const token = { id: userData.refStId };
+    const TokenData = generateToken1(token, true);
     try {
       // Start the transaction
       await client.query("BEGIN");
@@ -157,6 +160,7 @@ export class ProfileRepository {
         userData.personalData.ref_su_Whatsapp, //2
         userData.personalData.ref_su_phoneno, //3
         userData.personalData.ref_su_mailid, //4
+        userData.personalData.ref_su_communicationPreference, //5
       ];
 
       const userResult2 = await client.query(
@@ -165,7 +169,6 @@ export class ProfileRepository {
       );
 
       if (!userResult2.rowCount) {
-
         throw new Error(
           "Failed to insert Communication  data into the refUserCommunication table."
         );
@@ -262,11 +265,10 @@ export class ProfileRepository {
       // Commit the transaction if all queries succeeded
       await client.query("COMMIT");
 
-      const token = { id: userData.refStId };
       const results = {
         success: true,
         message: "All data stored successfully",
-        token: generateToken1(token, true),
+        token: TokenData,
       };
       return encrypt(results, true);
     } catch (error) {
@@ -283,16 +285,25 @@ export class ProfileRepository {
   }
 
   public async userRegisterPageDataV1(userData: any): Promise<any> {
+    const refStId = parseInt(userData.refStId, 10);
+    const tokenData = {
+      id: refStId,
+    };
+
+    const token = generateToken1(tokenData, true);
     try {
-      const refStId = parseInt(userData.refStId, 10);
       if (isNaN(refStId)) {
         throw new Error("Invalid refStId. Must be a number. repository");
       }
 
       const params = [refStId];
       const profileResult = await executeQuery(fetchProfileData, params);
+      const refCommunicationResult = await executeQuery(
+        fetchCommunicationRef,
+        []
+      );
 
-      if (!profileResult.length) {
+      if (!profileResult.length || !refCommunicationResult.length) {
         throw new Error("Profile data not found for refStId: " + refStId);
       }
 
@@ -331,26 +342,27 @@ export class ProfileRepository {
         ProfileData: profileData,
         presentHealthProblem: presentHealthProblem,
         branchList: branchList,
+        CommunicationLabel: refCommunicationResult,
       };
-
-      const tokenData = {
-        id: refStId,
-      };
-
-      const token = generateToken1(tokenData, true);
 
       return encrypt(
         {
           success: true,
-          message: "userRegisterPageData",
+          message: "user Register Page Data is passing successfully",
           data: registerData,
           token: token,
         },
         true
       );
     } catch (error) {
-      console.error("Error in userRegisterPageDataV1:", error);
-      throw error;
+      return encrypt(
+        {
+          success: false,
+          message: "error in user Register Page Data passing",
+          token: token,
+        },
+        true
+      );
     }
   }
   public async userMemberListV1(userData: any): Promise<any> {

@@ -324,7 +324,7 @@ export class DirectorRepository {
         userData.refUserType,
         userData.refPanCard,
         userData.refAadharCard,
-        userData.refBranchId,
+        userData.refbranchId,
       ];
 
       const userResult = await executeQuery(insertUserQuery, params);

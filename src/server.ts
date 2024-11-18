@@ -20,6 +20,8 @@ const init = async () => {
             "http://localhost:5173",
             "http://43.204.98.66",
             "http://65.2.69.27",
+            "https://testinguserpage.vercel.app/",
+            "https://ublis-landing-testing.vercel.app/",
           ], // Allowed origins
           headers: ["Accept", "Authorization", "Content-Type", "If-None-Match"], // Allowed headers
           exposedHeaders: ["WWW-Authenticate", "Server-Authorization"], // Exposed headers

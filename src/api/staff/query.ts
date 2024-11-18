@@ -355,29 +355,29 @@ export const getDocuments = `SELECT * FROM public."refEmployeeData" WHERE "refSt
 //     FROM public."users"
 //     WHERE "refUtId" IN (3, 6)
 // )
-// SELECT 
+// SELECT
 //     rut."refUserType" AS user_type_label,
 //     COUNT(u."refUtId") AS total_count,
-//     COUNT(CASE 
-//         WHEN DATE(TO_TIMESTAMP(th."transTime", 'DD/MM/YYYY, HH12:MI:SS am')) = CURRENT_DATE THEN 1 
-//         ELSE NULL 
+//     COUNT(CASE
+//         WHEN DATE(TO_TIMESTAMP(th."transTime", 'DD/MM/YYYY, HH12:MI:SS am')) = CURRENT_DATE THEN 1
+//         ELSE NULL
 //     END) AS "count_today",
-//     COUNT(CASE 
-//         WHEN DATE(TO_TIMESTAMP(th."transTime", 'DD/MM/YYYY, HH12:MI:SS am')) != CURRENT_DATE THEN 1 
-//         ELSE NULL 
+//     COUNT(CASE
+//         WHEN DATE(TO_TIMESTAMP(th."transTime", 'DD/MM/YYYY, HH12:MI:SS am')) != CURRENT_DATE THEN 1
+//         ELSE NULL
 //     END) AS "count_other_days"
-// FROM 
+// FROM
 //     public."users" u
-// JOIN 
+// JOIN
 //     public."refUserType" rut ON u."refUtId" = rut."refUtId"
-// JOIN 
+// JOIN
 //     total_count total ON true
-// JOIN 
+// JOIN
 //     public."refUserTxnHistory" th ON CAST(u."refStId" AS INTEGER) = th."refStId"
-// WHERE 
-//     u."refUtId" IN (3, 6) 
+// WHERE
+//     u."refUtId" IN (3, 6)
 //     AND th."transTypeId" IN (4, 8)
-// GROUP BY 
+// GROUP BY
 //     rut."refUserType";`;
 export const getTrailPaymentCount = `SELECT 
     COUNT(CASE 
@@ -389,7 +389,7 @@ export const getTrailPaymentCount = `SELECT
         WHEN DATE(TO_TIMESTAMP(th."transTime", 'DD/MM/YYYY, HH12:MI:SS am')) < DATE(TO_TIMESTAMP($1, 'DD/MM/YYYY, HH12:MI:SS am')) 
         THEN 1 
         ELSE NULL 
-    END) AS "count_previous_days"
+    END) AS "count_other_days"
 FROM 
     public."users" u
 JOIN 

@@ -188,20 +188,41 @@ export const getSignUpCount = `  SELECT
 // )
 // AND "transTypeId" = 3;
 // `;
+// export const getRegisterCount = `SELECT
+//     COUNT(CASE WHEN TO_TIMESTAMP("transTime", 'DD/MM/YYYY, HH:MI:SS PM')::date = TO_TIMESTAMP($1, 'DD/MM/YYYY, HH:MI:SS PM')::date THEN 1 END) AS count_today,
+//     COUNT(CASE WHEN TO_TIMESTAMP("transTime", 'DD/MM/YYYY, HH:MI:SS PM')::date = (TO_TIMESTAMP($1, 'DD/MM/YYYY, HH:MI:SS PM') - INTERVAL '1 day')::date THEN 1 END) AS count_other_days
+// FROM public."refUserTxnHistory" AS u
+// JOIN public.users us
+// ON CAST (u."refStId" AS INTEGER) = us."refStId"
+// WHERE "transId" = (
+//     SELECT "transId"
+//     FROM public."refUserTxnHistory"
+//     WHERE "refStId" = u."refStId"
+//     ORDER BY TO_TIMESTAMP("transTime", 'DD/MM/YYYY, HH:MI:SS PM') DESC
+//     LIMIT 1
+// )
+// AND u."transTypeId"=3 AND us."refUtId"=2;
+// `;
 export const getRegisterCount = `SELECT 
-    COUNT(CASE WHEN TO_TIMESTAMP("transTime", 'DD/MM/YYYY, HH:MI:SS PM')::date = TO_TIMESTAMP($1, 'DD/MM/YYYY, HH:MI:SS PM')::date THEN 1 END) AS count_today,
-    COUNT(CASE WHEN TO_TIMESTAMP("transTime", 'DD/MM/YYYY, HH:MI:SS PM')::date = (TO_TIMESTAMP($1, 'DD/MM/YYYY, HH:MI:SS PM') - INTERVAL '1 day')::date THEN 1 END) AS count_other_days
-FROM public."refUserTxnHistory" AS u
-JOIN public.users us
-ON CAST (u."refStId" AS INTEGER) = us."refStId"
-WHERE "transId" = (
-    SELECT "transId"
-    FROM public."refUserTxnHistory"
-    WHERE "refStId" = u."refStId"
-    ORDER BY TO_TIMESTAMP("transTime", 'DD/MM/YYYY, HH:MI:SS PM') DESC
-    LIMIT 1
-) 
-AND u."transTypeId"=3 AND us."refUtId"=2;
+    COUNT(CASE 
+        WHEN DATE(TO_TIMESTAMP(th."transTime", 'DD/MM/YYYY, HH12:MI:SS am')) = DATE(TO_TIMESTAMP($1, 'DD/MM/YYYY, HH12:MI:SS am')) 
+        THEN 1 
+        ELSE NULL 
+    END) AS "count_today",
+    COUNT(CASE 
+        WHEN DATE(TO_TIMESTAMP(th."transTime", 'DD/MM/YYYY, HH12:MI:SS am')) < DATE(TO_TIMESTAMP($1, 'DD/MM/YYYY, HH12:MI:SS am')) 
+        THEN 1 
+        ELSE NULL 
+    END) AS "count_previous_days"
+FROM 
+    public."users" u
+JOIN 
+    public."refUserTxnHistory" th
+ON 
+    CAST(th."refStId" AS INTEGER) = u."refStId"
+WHERE 
+    u."refUtId" = 2 
+    AND th."transTypeId" = 3;
 `;
 
 export const getUserStatusLabel = `SELECT * FROM public."refUserType"`;

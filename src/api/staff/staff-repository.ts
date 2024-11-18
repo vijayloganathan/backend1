@@ -88,7 +88,9 @@ export class StaffRepository {
             // console.log("This For Feedback");
             break;
           case "Trail":
-            const trailCount = await executeQuery(getTrailPaymentCount, []);
+            const trailCount = await executeQuery(getTrailPaymentCount, [
+              CurrentTime(),
+            ]);
             refDashBoardData = { ...refDashBoardData, trailCount };
             let trailSampleData = await executeQuery(getRecentFormData, [
               3,

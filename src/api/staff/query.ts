@@ -350,32 +350,52 @@ RETURNING *;`;
 
 export const getDocuments = `SELECT * FROM public."refEmployeeData" WHERE "refStId"=$1`;
 
-export const getTrailPaymentCount = `WITH total_count AS (
-    SELECT COUNT(*) AS total
-    FROM public."users"
-    WHERE "refUtId" IN (3, 6)
-)
-SELECT 
-    rut."refUserType" AS user_type_label,
-    COUNT(u."refUtId") AS total_count,
+// export const getTrailPaymentCount = `WITH total_count AS (
+//     SELECT COUNT(*) AS total
+//     FROM public."users"
+//     WHERE "refUtId" IN (3, 6)
+// )
+// SELECT 
+//     rut."refUserType" AS user_type_label,
+//     COUNT(u."refUtId") AS total_count,
+//     COUNT(CASE 
+//         WHEN DATE(TO_TIMESTAMP(th."transTime", 'DD/MM/YYYY, HH12:MI:SS am')) = CURRENT_DATE THEN 1 
+//         ELSE NULL 
+//     END) AS "count_today",
+//     COUNT(CASE 
+//         WHEN DATE(TO_TIMESTAMP(th."transTime", 'DD/MM/YYYY, HH12:MI:SS am')) != CURRENT_DATE THEN 1 
+//         ELSE NULL 
+//     END) AS "count_other_days"
+// FROM 
+//     public."users" u
+// JOIN 
+//     public."refUserType" rut ON u."refUtId" = rut."refUtId"
+// JOIN 
+//     total_count total ON true
+// JOIN 
+//     public."refUserTxnHistory" th ON CAST(u."refStId" AS INTEGER) = th."refStId"
+// WHERE 
+//     u."refUtId" IN (3, 6) 
+//     AND th."transTypeId" IN (4, 8)
+// GROUP BY 
+//     rut."refUserType";`;
+export const getTrailPaymentCount = `SELECT 
     COUNT(CASE 
-        WHEN DATE(TO_TIMESTAMP(th."transTime", 'DD/MM/YYYY, HH12:MI:SS am')) = CURRENT_DATE THEN 1 
+        WHEN DATE(TO_TIMESTAMP(th."transTime", 'DD/MM/YYYY, HH12:MI:SS am')) = DATE(TO_TIMESTAMP($1, 'DD/MM/YYYY, HH12:MI:SS am')) 
+        THEN 1 
         ELSE NULL 
     END) AS "count_today",
     COUNT(CASE 
-        WHEN DATE(TO_TIMESTAMP(th."transTime", 'DD/MM/YYYY, HH12:MI:SS am')) != CURRENT_DATE THEN 1 
+        WHEN DATE(TO_TIMESTAMP(th."transTime", 'DD/MM/YYYY, HH12:MI:SS am')) < DATE(TO_TIMESTAMP($1, 'DD/MM/YYYY, HH12:MI:SS am')) 
+        THEN 1 
         ELSE NULL 
-    END) AS "count_other_days"
+    END) AS "count_previous_days"
 FROM 
     public."users" u
 JOIN 
-    public."refUserType" rut ON u."refUtId" = rut."refUtId"
-JOIN 
-    total_count total ON true
-JOIN 
-    public."refUserTxnHistory" th ON CAST(u."refStId" AS INTEGER) = th."refStId"
+    public."refUserTxnHistory" th
+ON 
+    CAST(th."refStId" AS INTEGER) = u."refStId"
 WHERE 
-    u."refUtId" IN (3, 6) 
-    AND th."transTypeId" IN (4, 8)
-GROUP BY 
-    rut."refUserType";`;
+    u."refUtId" = 3 
+    AND th."transTypeId" = 4;`;

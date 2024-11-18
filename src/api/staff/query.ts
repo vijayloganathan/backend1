@@ -213,7 +213,7 @@ export const getRegisterCount = `SELECT
         WHEN DATE(TO_TIMESTAMP(th."transTime", 'DD/MM/YYYY, HH12:MI:SS am')) < DATE(TO_TIMESTAMP($1, 'DD/MM/YYYY, HH12:MI:SS am')) 
         THEN 1 
         ELSE NULL 
-    END) AS "count_previous_days"
+    END) AS "count_other_days"
 FROM 
     public."users" u
 JOIN 

@@ -473,3 +473,12 @@ export class TestingResolver {
     return await this.TestingRepository.TestingV1(user_data, domain_code);
   }
 }
+export class NoteResolver {
+  public NoteResolver: any;
+  constructor() {
+    this.NoteResolver = new TestingRepository();
+  }
+  public async addNotesV1(user_data: any, domain_code: any): Promise<any> {
+    return await this.NoteResolver.addNotesV1(user_data, domain_code);
+  }
+}

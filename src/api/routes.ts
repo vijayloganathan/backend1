@@ -11,6 +11,7 @@ import {
   batchPrograms,
   financeController,
   TestingController,
+  NotesController,
 } from "./controller";
 import { Logger } from "winston";
 import { decodeToken, validateToken } from "../helper/token";
@@ -689,6 +690,26 @@ export class Testing implements IRoute {
             // pre: [{ method: validateToken, assign: "token" }],
             handler: UserPage.testing,
             description: "For testing",
+            auth: false,
+          },
+        },
+      ]);
+      resolve(true);
+    });
+  }
+}
+export class Notes implements IRoute {
+  public async register(server: any): Promise<any> {
+    return new Promise((resolve) => {
+      const UserPage = new NotesController();
+      server.route([
+        {
+          method: "GET",
+          path: "/api/v1/Notes/addNotes",
+          config: {
+            // pre: [{ method: validateToken, assign: "token" }],
+            handler: UserPage.addNotes,
+            description: "Adding New Notes",
             auth: false,
           },
         },

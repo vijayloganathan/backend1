@@ -8,6 +8,7 @@ import {
   BatchProgram,
   Finance,
   Testing,
+  Notes,
 } from "./api/routes";
 // import StaffRoutes from "./api/staff/routes";
 
@@ -21,5 +22,6 @@ export default class Router {
     await new BatchProgram().register(server);
     await new Finance().register(server);
     await new Testing().register(server);
+    await new Notes().register(server);
   }
 }

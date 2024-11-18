@@ -338,22 +338,23 @@ SELECT
     rut."refUserType" AS user_type_label,
     COUNT(u."refUtId") AS total_count,
     COUNT(CASE 
-    WHEN DATE(th."transTime") = CURRENT_DATE THEN 1 
-    ELSE NULL 
-  END) AS "count_today",
-  COUNT(CASE 
-    WHEN DATE(th."transTime") != CURRENT_DATE THEN 1 
-    ELSE NULL 
-  END) AS "count_other_days"
+        WHEN DATE(TO_TIMESTAMP(th."transTime", 'DD/MM/YYYY, HH12:MI:SS am')) = CURRENT_DATE THEN 1 
+        ELSE NULL 
+    END) AS "count_today",
+    COUNT(CASE 
+        WHEN DATE(TO_TIMESTAMP(th."transTime", 'DD/MM/YYYY, HH12:MI:SS am')) != CURRENT_DATE THEN 1 
+        ELSE NULL 
+    END) AS "count_other_days"
 FROM 
     public."users" u
 JOIN 
     public."refUserType" rut ON u."refUtId" = rut."refUtId"
 JOIN 
     total_count total ON true
-    JOIN public."refUserTxnHistory" th
-  ON CAST(u."refStId" AS INTEGER) = th."refStId"
+JOIN 
+    public."refUserTxnHistory" th ON CAST(u."refStId" AS INTEGER) = th."refStId"
 WHERE 
-    u."refUtId" IN (3, 6) AND th."transTypeId" IN (4,8)
+    u."refUtId" IN (3, 6) 
+    AND th."transTypeId" IN (4, 8)
 GROUP BY 
     rut."refUserType";`;

@@ -851,11 +851,13 @@ export class StaffRepository {
   ): Promise<any> {
     const client: PoolClient = await getClient();
     let refStId;
-    if (decodeToken == null) {
+    if (userData.refStId == null) {
       refStId = decodedToken;
     } else {
       refStId = userData.refStId;
     }
+
+    console.log("refStId", refStId);
 
     let tokenData = {
       id: decodedToken,

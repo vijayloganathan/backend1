@@ -1952,4 +1952,83 @@ export class NotesController {
         .code(500);
     }
   };
+  public notesPdf = async (
+    request: any,
+    response: Hapi.ResponseToolkit
+  ): Promise<any> => {
+    // const decodedToken = request.plugins.token.id;
+    const decodedToken = 3;
+
+    logger.info("Router-----store Notes Pdf");
+    try {
+      logger.info(`GET URL REQ => ${request.url.href}`);
+
+      const payload = request.payload;
+
+      const file = payload.file;
+
+      let filePath: string | undefined;
+
+      if (file) {
+        logger.info(`Uploaded file: ${file.hapi.filename}`);
+        logger.info(`File type: ${file.hapi.headers["content-type"]}`);
+
+        filePath = await storeFile(file, 2);
+      } else {
+        logger.warn("No file uploaded.");
+      }
+
+      const entity = await this.resolver.addNotesPdfV1({
+        ...payload, // includes the rest of the form fields
+        filePath, // Pass the stored file path if needed
+        decodedToken, // decodedToken
+      });
+
+      if (entity.success) {
+        return response.response(entity).code(200);
+      }
+      return response.response(entity).code(200);
+    } catch (error) {
+      logger.error("Error in Adding New Employee", error);
+      return response
+        .response({
+          success: false,
+          message:
+            error instanceof Error
+              ? error.message
+              : "An unknown error occurred",
+        })
+        .code(500);
+    }
+  };
+  public deleteNotes = async (
+    request: any,
+    response: Hapi.ResponseToolkit
+  ): Promise<any> => {
+    // const decodedToken = request.plugins.token.id;
+    const decodedToken = 1;
+    try {
+      logger.info(`GET URL REQ => ${request.url.href}`);
+      const entity = await this.resolver.deleteNotesV1(
+        request.payload,
+        decodedToken
+      );
+
+      if (entity.success) {
+        return response.response(entity).code(200);
+      }
+      return response.response(entity).code(200);
+    } catch (error) {
+      logger.error("error in Adding New Notes", error);
+      return response
+        .response({
+          success: false,
+          message:
+            error instanceof Error
+              ? error.message
+              : "An unknown error occurred",
+        })
+        .code(500);
+    }
+  };
 }

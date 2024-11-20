@@ -3,20 +3,20 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-const pool = new Pool({
-  user: process.env.DB_USER || "postgres",
-  host: process.env.DB_HOST || "43.204.236.66",
-  database: process.env.DB_NAME || "ublis",
-  password: process.env.DB_PASSWORD || "1967",
-  port: Number(process.env.DB_PORT) || 5432,
-});
 // const pool = new Pool({
 //   user: process.env.DB_USER || "postgres",
-//   host: process.env.DB_HOST || "localhost",
-//   database: process.env.DB_NAME || "master_testing_db",
-//   password: process.env.DB_PASSWORD || "vijay",
+//   host: process.env.DB_HOST || "43.204.236.66",
+//   database: process.env.DB_NAME || "ublis",
+//   password: process.env.DB_PASSWORD || "1967",
 //   port: Number(process.env.DB_PORT) || 5432,
 // });
+const pool = new Pool({
+  user: process.env.DB_USER || "postgres",
+  host: process.env.DB_HOST || "localhost",
+  database: process.env.DB_NAME || "master_testing_db",
+  password: process.env.DB_PASSWORD || "vijay",
+  port: Number(process.env.DB_PORT) || 5432,
+});
 
 // Helper function to execute a query
 export const executeQuery = async (

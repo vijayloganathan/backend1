@@ -411,14 +411,18 @@ export class ProfileRepository {
       const custTime = await executeQuery(getCustTime, []);
 
       const formattedSectionTime = sectionTimeList.reduce((acc, member) => {
-        acc[member.refTimeId] =
-          member.refTime +
-          "  |  " +
-          member.refTimeMode +
-          "  |  " +
-          member.refTimeDays;
+        acc[member.order] = {
+          formattedString:
+            member.refTime +
+            "  |  " +
+            member.refTimeMode +  
+            "  |  " +
+            member.refTimeDays,
+          refTimeId: member.refTimeId,
+        };
         return acc;
       }, {});
+
       const formattedCustTime = custTime.reduce((acc, member) => {
         acc[member.refCustTimeId] = member.refCustTimeData;
         return acc;

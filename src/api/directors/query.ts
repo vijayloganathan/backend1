@@ -179,18 +179,31 @@ ORDER BY
     u."refStId";
 `;
 
-export const userUpdateAuditData = `SELECT 
-    th."transId", th."transTypeId", tt."transTypeText",th."transData", th."transTime", th."refStId", th."refUpdatedBy", u."refSCustId"
+// export const userUpdateAuditData = `SELECT
+//     th."transId", th."transTypeId", tt."transTypeText",th."transData", th."transTime", th."refStId", th."refUpdatedBy", u."refSCustId"
+// FROM
+//     public."refUserTxnHistory" th
+// LEFT JOIN
+//     public."refNotification" rn ON CAST(th."transId" AS INTEGER) = rn."transId"
+// JOIN
+//     public."users" u ON CAST(th."refStId" AS INTEGER) = u."refStId"
+// JOIN
+//     public."transType" tt ON th."transTypeId" = tt."transTypeId"
+// WHERE
+//     th."transTypeId" IN (9, 10, 11, 12, 13, 14, 15) AND (rn."refRead" IS NULL OR rn."refRead" != true)AND u."refStId" = $1
+// ORDER BY
+//     th."transId" ASC;`;
+export const userUpdateAuditData = `SELECT
+th."transId", th."transTypeId", tt."transTypeText",th."transData", th."transTime", th."refStId", th."refUpdatedBy", u."refSCustId"
 FROM 
-    public."refUserTxnHistory" th
-LEFT JOIN 
-    public."refNotification" rn ON CAST(th."transId" AS INTEGER) = rn."transId"
-JOIN 
-    public."users" u ON CAST(th."refStId" AS INTEGER) = u."refStId"
-JOIN 
-    public."transType" tt ON th."transTypeId" = tt."transTypeId"
-WHERE 
-    th."transTypeId" IN (9, 10, 11, 12, 13, 14, 15) AND (rn."refRead" IS NULL OR rn."refRead" != true)AND u."refStId" = $1
+public."refNotification" rn
+LEFT JOIN public."refUserTxnHistory" th
+ON CAST (rn."transId" AS INTEGER) = th."transId"
+LEFT JOIN public.users u
+ON CAST (th."refStId" AS INTEGER) = u."refStId"
+LEFT JOIN public."transType" tt 
+ON CAST (th."transTypeId" AS INTEGER) = tt."transTypeId"
+WHERE u."refStId"=$1 AND rn."refRead" is not true AND th."transTypeId" IN (9,10,11,12,13,15)
 ORDER BY 
     th."transId" ASC;`;
 

@@ -111,8 +111,24 @@ export const getFollowUpLabel = `
   FROM public."refuserfollowuptype"; 
 `;
 
+// export const getDataForUserManagement = `
+// SELECT DISTINCT ON (u."refSCustId") * 
+// FROM public.users u
+// LEFT JOIN public."refUserCommunication" uc
+//   ON CAST(u."refStId" AS INTEGER) = uc."refStId"
+// LEFT JOIN public."refUserAddress" ad
+//   ON CAST(u."refStId" AS INTEGER) = ad."refStId"
+// LEFT JOIN public."refGeneralHealth" gh
+//   ON CAST(u."refStId" AS INTEGER) = gh."refStId"
+// WHERE u."refUtId" IN (1,2,3, 5, 6) 
+// ORDER BY u."refSCustId", u."refStId";`;
 export const getDataForUserManagement = `
-SELECT DISTINCT ON (u."refSCustId") * 
+SELECT DISTINCT ON (u."refSCustId") 
+    u.*,
+    uc.*,
+    ad.*,
+    gh.*,
+    u."refStId" AS "refStId"
 FROM public.users u
 LEFT JOIN public."refUserCommunication" uc
   ON CAST(u."refStId" AS INTEGER) = uc."refStId"
@@ -120,7 +136,7 @@ LEFT JOIN public."refUserAddress" ad
   ON CAST(u."refStId" AS INTEGER) = ad."refStId"
 LEFT JOIN public."refGeneralHealth" gh
   ON CAST(u."refStId" AS INTEGER) = gh."refStId"
-WHERE u."refUtId" IN (1,2,3, 5, 6) 
+WHERE u."refUtId" IN (1, 2, 3, 5, 6)
 ORDER BY u."refSCustId", u."refStId";`;
 
 // export const getSignUpCount = `SELECT
@@ -399,3 +415,55 @@ ON
 WHERE 
     u."refUtId" = 3 
     AND th."transTypeId" = 4;`;
+
+export const getStudentChangesCount = `WITH ApproveCTE AS (
+    SELECT COUNT(*) AS "ApproveCount"
+    FROM public."refTempUserData" tu
+    LEFT JOIN public."users" u
+    ON CAST(tu."refStId" AS INTEGER) = u."refStId"
+    LEFT JOIN public."refUserTxnHistory" th
+    ON CAST(tu."refTransId" AS INTEGER) = th."transId"
+    WHERE (tu."refStatus" != 'approve' OR tu."refStatus" IS NULL) 
+      AND u."refUtId" IN (1,2,3,5,6) 
+      AND th."transTypeId" = 16
+),
+StudentReadCTE AS (
+    SELECT COUNT(*) AS "Student_Read"
+    FROM public."refNotification" rn
+    LEFT JOIN public."refUserTxnHistory" th
+    ON CAST(rn."transId" AS INTEGER) = th."transId"
+    LEFT JOIN public."users" u
+    ON CAST(th."refStId" AS INTEGER) = u."refStId"
+    WHERE rn."refRead" IS NOT TRUE 
+      AND u."refUtId" IN (1,2,3,5,6) 
+      AND th."transTypeId" IN (9,10,11,12,13)
+)
+SELECT 
+    (SELECT "ApproveCount" FROM ApproveCTE) AS "ApproveCount",
+    (SELECT "Student_Read" FROM StudentReadCTE) AS "Student_Read";`;
+
+export const getEmployeeChangesCount = `WITH ApproveCTE AS (
+    SELECT COUNT(*) AS "ApproveCount"
+    FROM public."refTempUserData" tu
+    LEFT JOIN public."users" u
+    ON CAST(tu."refStId" AS INTEGER) = u."refStId"
+    LEFT JOIN public."refUserTxnHistory" th
+    ON CAST(tu."refTransId" AS INTEGER) = th."transId"
+    WHERE (tu."refStatus" != 'approve' OR tu."refStatus" IS NULL) 
+      AND u."refUtId" IN (4,7,8,10,11) 
+      AND th."transTypeId" = 16
+),
+StudentReadCTE AS (
+    SELECT COUNT(*) AS "Student_Read"
+    FROM public."refNotification" rn
+    LEFT JOIN public."refUserTxnHistory" th
+    ON CAST(rn."transId" AS INTEGER) = th."transId"
+    LEFT JOIN public."users" u
+    ON CAST(th."refStId" AS INTEGER) = u."refStId"
+    WHERE rn."refRead" IS NOT TRUE 
+      AND u."refUtId" IN (4,7,8,10,11) 
+      AND th."transTypeId" IN (9,10,11,12,13)
+)
+SELECT 
+    (SELECT "ApproveCount" FROM ApproveCTE) AS "ApproveCount",
+    (SELECT "Student_Read" FROM StudentReadCTE) AS "Employee_Read";`;

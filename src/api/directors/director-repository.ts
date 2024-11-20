@@ -675,6 +675,7 @@ export class DirectorRepository {
     const token = generateToken(tokenData, true);
     try {
       for (let i = 0; i < userData.transId.length; i++) {
+        console.log("userData.transId[i]", userData.transId[i]);
         const getList = await executeQuery(userAuditDataRead, [
           true,
           refStId,

@@ -100,6 +100,21 @@ WHERE rt."refbranchId" = $2
   )
 GROUP BY rt."refTimeMembersID", rm."refTimeMembers";`;
 
-export const getSectionTimeData = `SELECT "refTimeId" ,"refTime","refTimeMode","refTimeDays" FROM public."refTiming" rt WHERE "refTimeMembersID"=$1`;
+// export const getSectionTimeData = `SELECT "refTimeId" ,"refTime","refTimeMode","refTimeDays" FROM public."refTiming" rt WHERE "refTimeMembersID"=$1`;
+export const getSectionTimeData = `SELECT 
+    ROW_NUMBER() OVER (ORDER BY to_timestamp(substring("refTime" from '^[0-9:]+ [APM]+'), 'HH12:MI AM')) AS "order",
+    "refTimeId", 
+    "refTime",
+    "refTimeMode",
+    "refTimeDays"
+FROM 
+    public."refTiming" rt
+WHERE 
+    "refTimeMembersID" = $1
+ORDER BY 
+    to_timestamp(
+        substring("refTime" from '^[0-9:]+ [APM]+'), 
+        'HH12:MI AM'
+    ) ASC;`;
 
 export const getCustTime = `SELECT * FROM public."refCustTime"`;

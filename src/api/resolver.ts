@@ -5,6 +5,7 @@ import { DirectorRepository } from "./directors/director-repository";
 import { BatchRepository } from "./batch/birthday-repository";
 import { FinanceRepository } from "./finance/finance-repository";
 import { TestingRepository } from "./testing/testing-repository";
+import { NotesRepository } from "./notes/notes-repository";
 
 export class Resolver {
   public userRepository: any;
@@ -476,9 +477,15 @@ export class TestingResolver {
 export class NoteResolver {
   public NoteResolver: any;
   constructor() {
-    this.NoteResolver = new TestingRepository();
+    this.NoteResolver = new NotesRepository();
   }
   public async addNotesV1(user_data: any, domain_code: any): Promise<any> {
     return await this.NoteResolver.addNotesV1(user_data, domain_code);
+  }
+  public async addNotesPdfV1(user_data: any, domain_code: any): Promise<any> {
+    return await this.NoteResolver.addNotesPdfV1(user_data, domain_code);
+  }
+  public async deleteNotesV1(user_data: any, domain_code: any): Promise<any> {
+    return await this.NoteResolver.deleteNotesV1(user_data, domain_code);
   }
 }

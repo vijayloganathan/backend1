@@ -841,7 +841,6 @@ export class UserRepository {
                 data: changes[key],
                 label: reLabelText(key),
               };
-              console.log("CurrentTime() line -----------844", CurrentTime());
 
               const parasHistory = [
                 transTypeId,
@@ -859,6 +858,7 @@ export class UserRepository {
                 throw new Error("Failed to update the History.");
               }
               const paramsNotification = [queryResult.rows[0].transId, false];
+              console.log("paramsNotification", paramsNotification);
               const notificationResult = await client.query(
                 updateNotification,
                 paramsNotification

@@ -704,11 +704,37 @@ export class Notes implements IRoute {
       const UserPage = new NotesController();
       server.route([
         {
-          method: "GET",
+          method: "POST",
           path: "/api/v1/Notes/addNotes",
           config: {
-            // pre: [{ method: validateToken, assign: "token" }],
+            pre: [{ method: validateToken, assign: "token" }],
             handler: UserPage.addNotes,
+            description: "Adding New Notes",
+            auth: false,
+          },
+        },
+        {
+          method: "POST",
+          path: "/api/v1/notes/storeNotes",
+          config: {
+            pre: [{ method: validateToken, assign: "token" }],
+            handler: UserPage.notesPdf,
+            description: "store Notes Pdf",
+            auth: false,
+            payload: {
+              maxBytes: 10485760,
+              output: "stream",
+              parse: true,
+              multipart: true,
+            },
+          },
+        },
+        {
+          method: "POST",
+          path: "/api/v1/Notes/deleteNotes",
+          config: {
+            pre: [{ method: validateToken, assign: "token" }],
+            handler: UserPage.deleteNotes,
             description: "Adding New Notes",
             auth: false,
           },

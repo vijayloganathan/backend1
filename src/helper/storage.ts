@@ -37,6 +37,8 @@ export const storeFile = async (
   // Determine the directory based on the uploadType value
   if (uploadType === 1) {
     uploadDir = path.join(process.cwd(), "./src/assets/Profile");
+  } else if (uploadType === 2) {
+    uploadDir = path.join(process.cwd(), "./src/assets/Notes");
   } else {
     uploadDir = path.join(
       process.cwd(),

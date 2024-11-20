@@ -33,6 +33,8 @@ import {
   updateStaffCertification,
   getDocuments,
   getTrailPaymentCount,
+  getEmployeeChangesCount,
+  getStudentChangesCount,
 } from "./query";
 import { encrypt, formatDate } from "../../helper/encrypt";
 import { generateToken, decodeToken } from "../../helper/token";
@@ -83,7 +85,6 @@ export class StaffRepository {
               CurrentTime(),
             ]);
             refDashBoardData = { ...refDashBoardData, signUpCount };
-
           case "Feedback":
             // console.log("This For Feedback");
             break;
@@ -123,6 +124,24 @@ export class StaffRepository {
             const staffCount = await executeQuery(getStaffCount, []);
             refDashBoardData = { ...refDashBoardData, staffCount };
 
+            break;
+          case "Audit":
+            const getStudentChangesCountResult = await executeQuery(
+              getStudentChangesCount,
+              []
+            );
+            refDashBoardData = {
+              ...refDashBoardData,
+              getStudentChangesCountResult,
+            };
+            const getEmployeeChangesCountResult = await executeQuery(
+              getEmployeeChangesCount,
+              []
+            );
+            refDashBoardData = {
+              ...refDashBoardData,
+              getEmployeeChangesCountResult,
+            };
             break;
           case "Report":
             // console.log("this For report");
@@ -715,7 +734,6 @@ export class StaffRepository {
                 tableName
               );
               newData = await executeQuery(getUserData, [id]);
-
               olddata = newData[0];
               userData = { ...userData, olddata };
               updatedData = userData.DocumentsPath;
@@ -723,7 +741,6 @@ export class StaffRepository {
               break;
 
             default:
-              console.log("here");
               continue;
           }
 
@@ -752,9 +769,7 @@ export class StaffRepository {
             temp2.refPerHealthId = JSON.stringify(labelsOldData);
             temp1.refPerHealthId = JSON.stringify(labelsUpdatedData);
           }
-
           const changes = getChanges(temp1, temp2);
-
           for (const key in changes) {
             if (changes.hasOwnProperty(key)) {
               const tempChange = {
@@ -835,9 +850,15 @@ export class StaffRepository {
     decodedToken: number
   ): Promise<any> {
     const client: PoolClient = await getClient();
-    const refStId = decodedToken;
+    let refStId;
+    if (decodeToken == null) {
+      refStId = decodedToken;
+    } else {
+      refStId = userData.refStId;
+    }
+
     let tokenData = {
-      id: refStId,
+      id: decodedToken,
     };
     const token = generateToken(tokenData, true);
 
@@ -922,24 +943,31 @@ export class StaffRepository {
 
       const documentsFile = await executeQuery(getDocuments, [refStId]);
       if (documentsFile.length > 0) {
+        console.log("line ------------ 941\n");
         for (let i = 0; i < 3; i++) {
           let labelName: string | undefined;
           let Result: string | undefined;
 
           switch (i) {
             case 0:
+              console.log(" line -------------- 948 \n");
               Result = documentsFile[0].refPanPath;
               labelName = "panCard";
               break;
             case 1:
+              console.log(" line -------------- 953 \n");
+
               Result = documentsFile[0].refAadharPath;
               labelName = "AadharCard";
               break;
             case 2:
+              console.log(" line -------------- 959 \n");
+
               Result = documentsFile[0].refCertificationPath;
               labelName = "Certification";
               break;
           }
+          console.log("Result line ----------------- 964 \n", Result);
 
           if (labelName && Result) {
             // Ensure labelName and Result are defined
@@ -952,6 +980,7 @@ export class StaffRepository {
                 contentType: "application/pdf",
                 label: labelName,
               };
+              console.log("data line ------------------ 977 \n", data);
               employeeDocuments[labelName] = data;
             } catch (err) {
               console.error("Error retrieving profile file:", err);

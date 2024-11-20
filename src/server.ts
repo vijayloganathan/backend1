@@ -22,6 +22,8 @@ const init = async () => {
             "http://65.2.69.27",
             "http://3.109.210.24",
             "http://13.201.189.174",
+            "http://13.203.75.83",
+            "http://65.0.138.25"
           ], // Allowed origins
           headers: ["Accept", "Authorization", "Content-Type", "If-None-Match"], // Allowed headers
           exposedHeaders: ["WWW-Authenticate", "Server-Authorization"], // Exposed headers

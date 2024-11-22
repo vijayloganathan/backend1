@@ -47,10 +47,18 @@ RETURNING "refStId";
 
 `;
 
+// export const insertUserDomainQuery = `
+//   INSERT INTO public."refUsersDomain" (
+//     "refStId", "refCustId","refUserName", "refCustPassword","refCustHashedPassword"
+//   ) VALUES ($1, $2, $3, $4,$5)
+//   RETURNING *;
+// `;
+
 export const insertUserDomainQuery = `
   INSERT INTO public."refUsersDomain" (
-    "refStId", "refCustId","refUserName", "refCustPassword","refCustHashedPassword"
-  ) VALUES ($1, $2, $3, $4,$5)
+    "refStId", "refCustId","refUserName", "refCustPassword", 
+    "refCustHashedPassword","refCustPrimEmail"
+  ) VALUES ($1, $2, $3, $4, $5,$6)
   RETURNING *;
 `;
 
@@ -243,6 +251,22 @@ export const getMemberList = `SELECT * FROM public."refMembers"`;
 
 export const getCustTimeData = `SELECT * FROM public."refCustTime"`;
 
+// export const checkFeesStructure = `WITH existing_row AS (
+//     SELECT *, FALSE AS "ResultStatus"
+//     FROM public."refFeesStructure"
+//     WHERE "refBranchId" = $1
+//       AND "refMemberList" = $2
+//       AND "refSessionType" = $3
+// ),
+// inserted_row AS (
+//     INSERT INTO public."refFeesStructure" ("refBranchId", "refMemberList", "refSessionType", "refFees", "refGst", "refFeTotal")
+//     SELECT $1, $2, $3, $4, $5, $6
+//     WHERE NOT EXISTS (SELECT 1 FROM existing_row)
+//     RETURNING *, TRUE AS "ResultStatus"
+// )
+// SELECT * FROM existing_row
+// UNION ALL
+// SELECT * FROM inserted_row;`;
 export const checkFeesStructure = `WITH existing_row AS (
     SELECT *, FALSE AS "ResultStatus" 
     FROM public."refFeesStructure"
@@ -251,8 +275,8 @@ export const checkFeesStructure = `WITH existing_row AS (
       AND "refSessionType" = $3
 ),
 inserted_row AS (
-    INSERT INTO public."refFeesStructure" ("refBranchId", "refMemberList", "refSessionType", "refFees", "refGst", "refFeTotal")
-    SELECT $1, $2, $3, $4, $5, $6  
+    INSERT INTO public."refFeesStructure" ("refBranchId", "refMemberList", "refSessionType", "refFees", "refGst", "refFeTotal","refAmtPerDay")
+    SELECT $1, $2, $3, $4, $5, $6 , $7
     WHERE NOT EXISTS (SELECT 1 FROM existing_row)
     RETURNING *, TRUE AS "ResultStatus"
 )
@@ -260,13 +284,35 @@ SELECT * FROM existing_row
 UNION ALL
 SELECT * FROM inserted_row;`;
 
+// export const editFeesStructure = `UPDATE public."refFeesStructure"
+// SET "refFees" = $2, "refGst" = $3, "refFeTotal" = $4
+// WHERE "refFeId" = $1
+// RETURNING *;`;
 export const editFeesStructure = `UPDATE public."refFeesStructure"
-SET "refFees" = $2, "refGst" = $3, "refFeTotal" = $4
+SET "refFees" = $2, "refGst" = $3, "refFeTotal" = $4, "refAmtPerDay"=$5
 WHERE "refFeId" = $1
 RETURNING *;`;
 
 export const deleteFeesStructure = `DELETE FROM public."refFeesStructure" WHERE "refFeId"=$1;`;
 
+// export const getOfferStructure = `SELECT
+//     o.*,
+//     ofn."refOfferName" AS "Offer Type",
+//     CASE
+//         WHEN CURRENT_DATE < o."refStartAt" THEN 'yet to start'
+//         WHEN CURRENT_DATE BETWEEN o."refStartAt" AND o."refEndAt" THEN 'live'
+//         ELSE 'expire'
+//     END AS "status"
+// FROM
+//     public."refOffers" o
+// JOIN
+//     public."refOfName" ofn
+// ON
+//     CAST(o."refOfferId" AS INTEGER) = ofn."refOfferId"
+// WHERE
+//     o."refOfferId" = $1;
+
+// `;
 export const getOfferStructure = `SELECT 
     o.*, 
     ofn."refOfferName" AS "Offer Type",
@@ -282,14 +328,17 @@ JOIN
 ON 
     CAST(o."refOfferId" AS INTEGER) = ofn."refOfferId"
 WHERE 
-    o."refOfferId" = $1;
+    o."refOfferId" = $1 AND "refBranchId"=$2;
 
 `;
 
 export const getOffersName = `SELECT "refOfferId","refOfferName" FROM public."refOfName"`;
 
+export const validateCouponCode = `SELECT * FROM public."refOffers"
+WHERE "refCoupon"=$1;`;
+
 export const insertNewOffers = `INSERT INTO public."refOffers"
-("refOfferId","refMin","refOffer","refStartAt","refEndAt","refCoupon","refContent") VALUES ($1,$2,$3,$4,$5,$6,$7) RETURNING *;`;
+("refOfferId","refMin","refOffer","refStartAt","refEndAt","refCoupon","refContent","refBranchId") VALUES ($1,$2,$3,$4,$5,$6,$7,$8) RETURNING *;`;
 
 export const editOffers = `UPDATE public."refOffers"
 SET "refMin"=$2,"refOffer"=$3,"refStartAt"=$4,"refEndAt"=$5,"refContent"=$6

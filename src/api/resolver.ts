@@ -6,6 +6,7 @@ import { BatchRepository } from "./batch/birthday-repository";
 import { FinanceRepository } from "./finance/finance-repository";
 import { TestingRepository } from "./testing/testing-repository";
 import { NotesRepository } from "./notes/notes-repository";
+import { SettingsRepository } from "./settings/settings-repository";
 
 export class Resolver {
   public userRepository: any;
@@ -41,6 +42,9 @@ export class Resolver {
     domain_code: any
   ): Promise<any> {
     return await this.userRepository.validateUserNameV1(user_data, domain_code);
+  }
+  public async validateEmailV1(user_data: any, domain_code: any): Promise<any> {
+    return await this.userRepository.validateEmailV1(user_data, domain_code);
   }
 
   public async userDashBoardDataV1(
@@ -374,6 +378,15 @@ export class DirectorResolver {
       domain_code
     );
   }
+  public async validateCouponCodeV1(
+    user_data: any,
+    domain_code: any
+  ): Promise<any> {
+    return await this.DirectorRepository.validateCouponCodeV1(
+      user_data,
+      domain_code
+    );
+  }
   public async editOfferStructureV1(
     user_data: any,
     domain_code: any
@@ -487,5 +500,41 @@ export class NoteResolver {
   }
   public async deleteNotesV1(user_data: any, domain_code: any): Promise<any> {
     return await this.NoteResolver.deleteNotesV1(user_data, domain_code);
+  }
+}
+export class SettingsResolver {
+  public SettingsRepository: any;
+  constructor() {
+    this.SettingsRepository = new SettingsRepository();
+  }
+  public async SectionDataV1(user_data: any, domain_code: any): Promise<any> {
+    return await this.SettingsRepository.SectionDataV1(user_data, domain_code);
+  }
+  public async branchV1(user_data: any, domain_code: any): Promise<any> {
+    return await this.SettingsRepository.branchV1(user_data, domain_code);
+  }
+  public async addSectionPageV1(
+    user_data: any,
+    domain_code: any
+  ): Promise<any> {
+    return await this.SettingsRepository.addSectionPageV1(
+      user_data,
+      domain_code
+    );
+  }
+  public async addNewSectionV1(user_data: any, domain_code: any): Promise<any> {
+    return await this.SettingsRepository.addNewSectionV1(
+      user_data,
+      domain_code
+    );
+  }
+  public async editSectionDataV1(
+    user_data: any,
+    domain_code: any
+  ): Promise<any> {
+    return await this.SettingsRepository.editSectionDataV1(
+      user_data,
+      domain_code
+    );
   }
 }

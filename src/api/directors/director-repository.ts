@@ -51,6 +51,7 @@ import {
   insertNewOffers,
   editOffers,
   deleteOffers,
+  validateCouponCode,
 } from "./query";
 import { encrypt } from "../../helper/encrypt";
 import { generateToken, decodeToken } from "../../helper/token";
@@ -352,6 +353,7 @@ export class DirectorRepository {
         newCustomerId,
         password,
         hashedPassword,
+        userData.refEmail,
       ];
 
       const domainResult = await executeQuery(
@@ -675,7 +677,6 @@ export class DirectorRepository {
     const token = generateToken(tokenData, true);
     try {
       for (let i = 0; i < userData.transId.length; i++) {
-        console.log("userData.transId[i]", userData.transId[i]);
         const getList = await executeQuery(userAuditDataRead, [
           true,
           refStId,
@@ -1089,6 +1090,7 @@ export class DirectorRepository {
         userData.refFees,
         userData.refGst,
         userData.refTotal,
+        userData.refAmtPerDay,
       ];
       const checkFeesResult = await executeQuery(checkFeesStructure, params);
 
@@ -1137,6 +1139,7 @@ export class DirectorRepository {
         userData.refFees,
         userData.refGst,
         userData.refTotal,
+        userData.refAmtPerDay,
       ];
       const updateFeesResult = await executeQuery(editFeesStructure, params);
 
@@ -1207,9 +1210,12 @@ export class DirectorRepository {
     }
     try {
       userData.refOfferId = userData.refOfferId || 1;
-      const offersStructure = await executeQuery(getOfferStructure, [
-        userData.refOfferId,
-      ]);
+      let branchId = userData.refBranchId || 1;
+      const params = [userData.refOfferId, branchId];
+
+      const offersStructure = await executeQuery(getOfferStructure, params);
+      const BranchList = await executeQuery(fetchBranchList, []);
+
       for (let i = 0; i < offersStructure.length; i++) {
         offersStructure[i].refStartAt = formatDate(
           offersStructure[i].refStartAt
@@ -1225,6 +1231,7 @@ export class DirectorRepository {
           token: token,
           offersStructure: offersStructure,
           offerName: offerName,
+          BranchList: BranchList,
         },
         true
       );
@@ -1245,6 +1252,7 @@ export class DirectorRepository {
     const tokenData = {
       id: refStId,
     };
+
     const token = generateToken(tokenData, true);
     try {
       const params = [
@@ -1253,8 +1261,9 @@ export class DirectorRepository {
         userData.refOffer,
         userData.refStartAt,
         userData.refEndAt,
-        generateCouponCode(),
+        userData.refCouponCode,
         userData.refContent,
+        userData.refBranchId || 1,
       ];
       const newOffersResult = await executeQuery(insertNewOffers, params);
 
@@ -1271,6 +1280,50 @@ export class DirectorRepository {
       const results = {
         success: false,
         message: "Error in Adding New offer",
+        token: token,
+      };
+      return encrypt(results, true);
+    }
+  }
+  public async validateCouponCodeV1(
+    userData: any,
+    decodedToken: number
+  ): Promise<any> {
+    const refStId = decodedToken;
+    const tokenData = {
+      id: refStId,
+    };
+    const token = generateToken(tokenData, true);
+    try {
+      const params = [userData.CouponCode];
+      const couponCodeValidateResult = await executeQuery(
+        validateCouponCode,
+        params
+      );
+
+      if (couponCodeValidateResult[0]) {
+        return encrypt(
+          {
+            success: false,
+            message: "Coupon Code Already Exit",
+            token: token,
+          },
+          true
+        );
+      } else {
+        return encrypt(
+          {
+            success: true,
+            message: "Coupon Code is Unique",
+            token: token,
+          },
+          true
+        );
+      }
+    } catch (error) {
+      const results = {
+        success: false,
+        message: "Error in Validating Coupon Code",
         token: token,
       };
       return encrypt(results, true);
@@ -1305,9 +1358,7 @@ export class DirectorRepository {
         userData.refEndAt,
         userData.refContent,
       ];
-      console.log("params", params);
       const updateFeesResult = await executeQuery(editOffers, params);
-      console.log("updateFeesResult", updateFeesResult);
 
       return encrypt(
         {

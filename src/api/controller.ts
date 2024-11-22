@@ -9,6 +9,7 @@ import {
   FinanceResolver,
   TestingResolver,
   NoteResolver,
+  SettingsResolver,
 } from "./resolver";
 import logger from "../helper/logger";
 import { decodeToken } from "../helper/token";
@@ -197,6 +198,30 @@ export class UserController {
       return response.response(entity).code(200); // Bad Request if failed
     } catch (error) {
       logger.error("Error in Validate User Name:", error);
+      return response
+        .response({
+          success: false,
+          message: "An unknown error occurred",
+        })
+        .code(500);
+    }
+  };
+  public validateEmail = async (
+    request: Hapi.Request,
+    response: Hapi.ResponseToolkit
+  ): Promise<any> => {
+    logger.info("Router - sign up page");
+    try {
+      const domainCode = request.headers.domain_code || "";
+      let entity;
+      entity = await this.resolver.validateEmailV1(request.payload);
+
+      if (entity.success) {
+        return response.response(entity).code(201); // Created
+      }
+      return response.response(entity).code(200); // Bad Request if failed
+    } catch (error) {
+      logger.error("Error in Validating The Email Address", error);
       return response
         .response({
           success: false,
@@ -1455,6 +1480,37 @@ export class Director {
         .code(500);
     }
   };
+  public validateCouponCode = async (
+    request: any,
+    response: Hapi.ResponseToolkit
+  ): Promise<any> => {
+    const decodedToken = request.plugins.token.id;
+    // const decodedToken = 1;
+    try {
+      logger.info(`GET URL REQ => ${request.url.href}`);
+      const domainCode = request.headers.domain_code || "";
+      const entity = await this.resolver.validateCouponCodeV1(
+        request.payload,
+        decodedToken
+      );
+
+      if (entity.success) {
+        return response.response(entity).code(200);
+      }
+      return response.response(entity).code(200);
+    } catch (error) {
+      logger.error("Error in Validating The Coupon COde", error);
+      return response
+        .response({
+          success: false,
+          message:
+            error instanceof Error
+              ? error.message
+              : "An unknown error occurred",
+        })
+        .code(500);
+    }
+  };
   public editOfferStructure = async (
     request: any,
     response: Hapi.ResponseToolkit
@@ -1877,14 +1933,14 @@ export class financeController {
     }
   };
 }
-export class TestingController {
+export class SettingsController {
   public resolver: any;
 
   constructor() {
-    this.resolver = new TestingResolver();
+    this.resolver = new SettingsResolver();
   }
 
-  public testing = async (
+  public SectionData = async (
     request: any,
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
@@ -1892,7 +1948,7 @@ export class TestingController {
     const decodedToken = 1;
     try {
       logger.info(`GET URL REQ => ${request.url.href}`);
-      const entity = await this.resolver.TestingV1(
+      const entity = await this.resolver.SectionDataV1(
         request.payload,
         decodedToken
       );
@@ -1902,7 +1958,127 @@ export class TestingController {
       }
       return response.response(entity).code(200);
     } catch (error) {
-      logger.error("error in Testing Controller", error);
+      logger.error("error in Sending The Section Page Data", error);
+      return response
+        .response({
+          success: false,
+          message:
+            error instanceof Error
+              ? error.message
+              : "An unknown error occurred",
+        })
+        .code(500);
+    }
+  };
+  public branch = async (
+    request: any,
+    response: Hapi.ResponseToolkit
+  ): Promise<any> => {
+    const decodedToken = request.plugins.token.id;
+    // const decodedToken = 1;
+    try {
+      logger.info(`GET URL REQ => ${request.url.href}`);
+      const entity = await this.resolver.branchV1(
+        request.payload,
+        decodedToken
+      );
+
+      if (entity.success) {
+        return response.response(entity).code(200);
+      }
+      return response.response(entity).code(200);
+    } catch (error) {
+      logger.error("error in Sending The Section Page Data", error);
+      return response
+        .response({
+          success: false,
+          message:
+            error instanceof Error
+              ? error.message
+              : "An unknown error occurred",
+        })
+        .code(500);
+    }
+  };
+  public addSectionPage = async (
+    request: any,
+    response: Hapi.ResponseToolkit
+  ): Promise<any> => {
+    const decodedToken = request.plugins.token.id;
+    // const decodedToken = 1;
+    try {
+      logger.info(`GET URL REQ => ${request.url.href}`);
+      const entity = await this.resolver.addSectionPageV1(
+        request.payload,
+        decodedToken
+      );
+
+      if (entity.success) {
+        return response.response(entity).code(200);
+      }
+      return response.response(entity).code(200);
+    } catch (error) {
+      logger.error("error in Sending The Section Page Data", error);
+      return response
+        .response({
+          success: false,
+          message:
+            error instanceof Error
+              ? error.message
+              : "An unknown error occurred",
+        })
+        .code(500);
+    }
+  };
+  public addNewSection = async (
+    request: any,
+    response: Hapi.ResponseToolkit
+  ): Promise<any> => {
+    // const decodedToken = request.plugins.token.id;
+    const decodedToken = 1;
+    try {
+      logger.info(`GET URL REQ => ${request.url.href}`);
+      const entity = await this.resolver.addNewSectionV1(
+        request.payload,
+        decodedToken
+      );
+
+      if (entity.success) {
+        return response.response(entity).code(200);
+      }
+      return response.response(entity).code(200);
+    } catch (error) {
+      logger.error("error in Adding The New Section Data", error);
+      return response
+        .response({
+          success: false,
+          message:
+            error instanceof Error
+              ? error.message
+              : "An unknown error occurred",
+        })
+        .code(500);
+    }
+  };
+  public editSectionData = async (
+    request: any,
+    response: Hapi.ResponseToolkit
+  ): Promise<any> => {
+    const decodedToken = request.plugins.token.id;
+    // const decodedToken = 1;
+    try {
+      logger.info(`GET URL REQ => ${request.url.href}`);
+      const entity = await this.resolver.editSectionDataV1(
+        request.payload,
+        decodedToken
+      );
+
+      if (entity.success) {
+        return response.response(entity).code(200);
+      }
+      return response.response(entity).code(200);
+    } catch (error) {
+      logger.error("error in Sending The Section Edit Page Data", error);
       return response
         .response({
           success: false,
@@ -2020,6 +2196,44 @@ export class NotesController {
       return response.response(entity).code(200);
     } catch (error) {
       logger.error("error in Adding New Notes", error);
+      return response
+        .response({
+          success: false,
+          message:
+            error instanceof Error
+              ? error.message
+              : "An unknown error occurred",
+        })
+        .code(500);
+    }
+  };
+}
+export class TestingController {
+  public resolver: any;
+
+  constructor() {
+    this.resolver = new TestingResolver();
+  }
+
+  public testing = async (
+    request: any,
+    response: Hapi.ResponseToolkit
+  ): Promise<any> => {
+    // const decodedToken = request.plugins.token.id;
+    const decodedToken = 1;
+    try {
+      logger.info(`GET URL REQ => ${request.url.href}`);
+      const entity = await this.resolver.TestingV1(
+        request.payload,
+        decodedToken
+      );
+
+      if (entity.success) {
+        return response.response(entity).code(200);
+      }
+      return response.response(entity).code(200);
+    } catch (error) {
+      logger.error("error in Testing Controller", error);
       return response
         .response({
           success: false,

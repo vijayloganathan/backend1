@@ -80,3 +80,33 @@ export const convertToFormattedDateTime = (input: string): string => {
     "0"
   )}${minutes}`;
 };
+
+export function timeFormat(Time: string) {
+  // Split input string into start and end time
+  const [startTimeString, endTimeString] = Time.split(" to ");
+
+  // Function to convert 24-hour time to 12-hour format
+  const formatTo12Hour = (timeString: string) => {
+    const [time, modifier] = timeString.trim().split(" "); // Split time and AM/PM
+    let [hours, minutes] = time.split(":").map(Number);
+
+    // Ensure hours stay within 1-12 for 12-hour format
+    if (hours > 12) {
+      hours -= 12;
+    } else if (hours === 0) {
+      hours = 12;
+    }
+
+    // Return formatted time
+    return `${hours.toString().padStart(2, "0")}:${minutes
+      .toString()
+      .padStart(2, "0")} ${modifier}`;
+  };
+
+  // Format start and end times
+  const startTime = formatTo12Hour(startTimeString);
+  const endTime = formatTo12Hour(endTimeString);
+
+  // Return both formatted times as an object
+  return { startTime, endTime };
+}

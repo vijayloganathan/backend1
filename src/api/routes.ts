@@ -12,6 +12,7 @@ import {
   financeController,
   TestingController,
   NotesController,
+  SettingsController,
 } from "./controller";
 import { Logger } from "winston";
 import { decodeToken, validateToken } from "../helper/token";
@@ -48,6 +49,15 @@ export class UserRouters implements IRoute {
             handler: controller.validateUserName,
             description: "Signup Checking",
             tags: ["api", "Users", "SignUp"],
+            auth: false,
+          },
+        },
+        {
+          method: "POST",
+          path: "/api/v1/users/validateEmail",
+          config: {
+            handler: controller.validateEmail,
+            description: "Signup Checking",
             auth: false,
           },
         },
@@ -514,6 +524,16 @@ export class DirectorRoutes implements IRoute {
         },
         {
           method: "POST",
+          path: "/api/v1/director/validateCouponCode",
+          config: {
+            pre: [{ method: validateToken, assign: "token" }],
+            handler: controller.validateCouponCode,
+            description: "Validate Coupon Code for Offers",
+            auth: false,
+          },
+        },
+        {
+          method: "POST",
           path: "/api/v1/director/editOfferStructure",
           config: {
             pre: [{ method: validateToken, assign: "token" }],
@@ -678,18 +698,58 @@ export class Finance implements IRoute {
     });
   }
 }
-export class Testing implements IRoute {
+export class Settings implements IRoute {
   public async register(server: any): Promise<any> {
     return new Promise((resolve) => {
-      const UserPage = new TestingController();
+      const settingsPage = new SettingsController();
       server.route([
         {
-          method: "GET",
-          path: "/api/v1/test",
+          method: "POST",
+          path: "/api/v1/settings/Section",
           config: {
-            // pre: [{ method: validateToken, assign: "token" }],
-            handler: UserPage.testing,
+            pre: [{ method: validateToken, assign: "token" }],
+            handler: settingsPage.SectionData,
+            description: "Sending Section Data",
+            auth: false,
+          },
+        },
+        {
+          method: "GET",
+          path: "/api/v1/settings/Section/branch",
+          config: {
+            pre: [{ method: validateToken, assign: "token" }],
+            handler: settingsPage.branch,
+            description: "sending Branch Data",
+            auth: false,
+          },
+        },
+        {
+          method: "GET",
+          path: "/api/v1/settings/Section/addSectionPage",
+          config: {
+            pre: [{ method: validateToken, assign: "token" }],
+            handler: settingsPage.addSectionPage,
             description: "For testing",
+            auth: false,
+          },
+        },
+        {
+          method: "POST",
+          path: "/api/v1/settings/Section/addNewSection",
+          config: {
+            pre: [{ method: validateToken, assign: "token" }],
+            handler: settingsPage.addNewSection,
+            description: "Adding New Section",
+            auth: false,
+          },
+        },
+        {
+          method: "POST",
+          path: "/api/v1/settings/Section/editSectionData",
+          config: {
+            pre: [{ method: validateToken, assign: "token" }],
+            handler: settingsPage.editSectionData,
+            description: "Section Edit Page Data",
             auth: false,
           },
         },
@@ -736,6 +796,26 @@ export class Notes implements IRoute {
             pre: [{ method: validateToken, assign: "token" }],
             handler: UserPage.deleteNotes,
             description: "Adding New Notes",
+            auth: false,
+          },
+        },
+      ]);
+      resolve(true);
+    });
+  }
+}
+export class Testing implements IRoute {
+  public async register(server: any): Promise<any> {
+    return new Promise((resolve) => {
+      const UserPage = new TestingController();
+      server.route([
+        {
+          method: "GET",
+          path: "/api/v1/test",
+          config: {
+            // pre: [{ method: validateToken, assign: "token" }],
+            handler: UserPage.testing,
+            description: "For testing",
             auth: false,
           },
         },

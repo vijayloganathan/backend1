@@ -29,6 +29,7 @@ import {
   updateNotification,
   selectUserByrefStId,
   changePassword,
+  checkEmailQuery,
 } from "./query";
 import { getUserData as rawGetUserDataQuery } from "./query";
 import { encrypt } from "../../helper/encrypt";
@@ -219,6 +220,7 @@ export class UserRepository {
         userData.temp_su_username, // refcust Username
         userData.temp_su_password, // refCustPassword
         hashedPassword, // refCustHashedPassword
+        userData.temp_su_email,
       ];
 
       const domainResult = await executeQuery(
@@ -316,6 +318,29 @@ export class UserRepository {
         {
           success: true,
           message: "username is unique",
+        },
+        true
+      );
+    }
+  }
+  public async validateEmailV1(userData: any, domain_code?: any): Promise<any> {
+    const check = [userData.temp_su_email];
+
+    const userEmailCheck = await executeQuery(checkEmailQuery, check);
+    const userFind = userEmailCheck[0];
+    if (userFind) {
+      return encrypt(
+        {
+          success: false,
+          message: "Email Id Already Exist",
+        },
+        true
+      );
+    } else {
+      return encrypt(
+        {
+          success: true,
+          message: "Email Id is Unique",
         },
         true
       );

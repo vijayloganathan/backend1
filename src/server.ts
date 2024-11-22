@@ -10,47 +10,47 @@ const init = async () => {
   try {
     DotEnv.config();
 
-    const server = Hapi.server({
-      host: "0.0.0.0",
-      port: 6201,
-      routes: {
-        cors: {
-          origin: [
-            "http://3.111.31.152",
-            "http://localhost:5173",
-            "http://43.204.98.66",
-            "http://65.2.69.27",
-            "http://3.109.210.24",
-            "http://13.201.189.174",
-            "http://13.203.75.83",
-            "http://65.0.138.25",
-          ], // Allowed origins
-          headers: ["Accept", "Authorization", "Content-Type", "If-None-Match"], // Allowed headers
-          exposedHeaders: ["WWW-Authenticate", "Server-Authorization"], // Exposed headers
-          credentials: true, // Allow credentials (cookies/auth headers)
-        },
-        payload: {
-          maxBytes: 5242880,
-        },
-      },
-    });
-
     // const server = Hapi.server({
-    //   host: process.env.HOST || "localhost",
-    //   port: process.env.PORT || 6201,
+    //   host: "0.0.0.0",
+    //   port: 6201,
     //   routes: {
     //     cors: {
-    //       origin: ["*"],
-    //       headers: ["Accept", "Authorization", "Content-Type", "If-None-Match"],
-    //       exposedHeaders: ["WWW-Authenticate", "Server-Authorization"],
-    //       credentials: true,
+    //       origin: [
+    //         "http://3.111.31.152",
+    //         "http://localhost:5173",
+    //         "http://43.204.98.66",
+    //         "http://65.2.69.27",
+    //         "http://3.109.210.24",
+    //         "http://13.201.189.174",
+    //         "http://13.203.75.83",
+    //         "http://65.0.138.25",
+    //       ], // Allowed origins
+    //       headers: ["Accept", "Authorization", "Content-Type", "If-None-Match"], // Allowed headers
+    //       exposedHeaders: ["WWW-Authenticate", "Server-Authorization"], // Exposed headers
+    //       credentials: true, // Allow credentials (cookies/auth headers)
     //     },
-    //     security: true,
     //     payload: {
     //       maxBytes: 5242880,
     //     },
     //   },
     // });
+
+    const server = Hapi.server({
+      host: process.env.HOST || "localhost",
+      port: process.env.PORT || 6201,
+      routes: {
+        cors: {
+          origin: ["*"],
+          headers: ["Accept", "Authorization", "Content-Type", "If-None-Match"],
+          exposedHeaders: ["WWW-Authenticate", "Server-Authorization"],
+          credentials: true,
+        },
+        security: true,
+        payload: {
+          maxBytes: 5242880,
+        },
+      },
+    });
 
     // REGISTER HAPI ROUTES
     await Router.loadRoutes(server);

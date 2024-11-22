@@ -2,6 +2,10 @@ export const checkQuery = `
   SELECT * FROM public."refUsersDomain" 
   WHERE "refUserName" = $1;
 `;
+export const checkEmailQuery = `
+SELECT * FROM public."refUsersDomain"
+  WHERE "refCustPrimEmail" = $1;
+`;
 
 export const getCustomerCount = `SELECT COUNT(*) FROM public.users`;
 
@@ -13,11 +17,18 @@ export const insertUserQuery = `
   RETURNING "refStId", "refSCustId";
 `;
 
+// export const insertUserDomainQuery = `
+//   INSERT INTO public."refUsersDomain" (
+//     "refStId", "refCustId","refUserName", "refCustPassword",
+//     "refCustHashedPassword"
+//   ) VALUES ($1, $2, $3, $4, $5)
+//   RETURNING *;
+// `;
 export const insertUserDomainQuery = `
   INSERT INTO public."refUsersDomain" (
     "refStId", "refCustId","refUserName", "refCustPassword", 
-    "refCustHashedPassword"
-  ) VALUES ($1, $2, $3, $4, $5)
+    "refCustHashedPassword","refCustPrimEmail"
+  ) VALUES ($1, $2, $3, $4, $5,$6)
   RETURNING *;
 `;
 export const insertUserCommunicationQuery = `
@@ -47,8 +58,11 @@ export const selectUserByEmailQuery = `
   WHERE ud."refCustPrimEmail" = $1;
 `;
 
+// export const selectUserByUsername =
+//   'SELECT * FROM public."refUsersDomain" WHERE "refUserName" = $1;';
+
 export const selectUserByUsername =
-  'SELECT * FROM public."refUsersDomain" WHERE "refUserName" = $1;';
+  'SELECT * FROM public."refUsersDomain" WHERE "refUserName" = $1 OR "refCustPrimEmail" =$1;';
 export const selectUserByrefStId =
   'SELECT * FROM public."refUsersDomain" WHERE "refStId" = $1;';
 

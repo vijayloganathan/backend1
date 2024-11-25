@@ -8,6 +8,8 @@ import {
   setNewSection,
   getSessionDays,
   updateSection,
+  deleteSection,
+  customClass,
 } from "./query";
 
 import { timeFormat } from "../../helper/common";
@@ -163,8 +165,9 @@ export class SettingsRepository {
         userData.refTimeMode,
         userData.refTimeDays,
         userData.refTimeMembersID,
-        userData.refbranchId,
+        userData.refTimeId,
       ];
+      console.log("params", params);
       const updateSectionResult = await executeQuery(updateSection, params);
       const results = {
         success: true,
@@ -177,6 +180,65 @@ export class SettingsRepository {
       const results = {
         success: false,
         message: "Error in updating the section Data",
+        token: token,
+      };
+      return encrypt(results, true);
+    }
+  }
+  public async deleteSectionDataV1(
+    userData: any,
+    decodedToken: number
+  ): Promise<any> {
+    const refStId = decodedToken;
+    const tokenData = {
+      id: refStId,
+    };
+    const token = generateToken(tokenData, true);
+
+    try {
+      console.log("userData.refTimeId,", userData.refTimeId);
+      const deleteSectionResult = await executeQuery(deleteSection, [
+        userData.refTimeId,
+      ]);
+      const results = {
+        success: true,
+        message: "The Section Update Successfully",
+        token: token,
+      };
+      return encrypt(results, true);
+    } catch (error) {
+      const results = {
+        success: false,
+        message: "Error in updating the section Data",
+        token: token,
+      };
+      return encrypt(results, true);
+    }
+  }
+  public async customClassDataV1(
+    userData: any,
+    decodedToken: number
+  ): Promise<any> {
+    const refStId = decodedToken;
+    const tokenData = {
+      id: refStId,
+    };
+    const token = generateToken(tokenData, true);
+
+    try {
+      const branchId = userData.branchId || 1;
+      const customClassResult = await executeQuery(customClass, [branchId]);
+      const results = {
+        success: true,
+        message: "Custom Class Data is Passed Successfully",
+        token: token,
+        customClass: customClassResult,
+      };
+      return encrypt(results, false);
+    } catch (error) {
+      const results = {
+        success: false,
+        message: "Error in Sending the Custom Class Data",
         token: token,
       };
       return encrypt(results, true);

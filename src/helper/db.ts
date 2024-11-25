@@ -5,7 +5,7 @@ dotenv.config();
 
 const pool = new Pool({
   user: process.env.DB_USER || "postgres",
-  host: process.env.DB_HOST || "3.110.88.212",
+  host: process.env.DB_HOST || "43.204.110.11",
   database: process.env.DB_NAME || "ublis_backend",
   password: process.env.DB_PASSWORD || "1967",
   port: Number(process.env.DB_PORT) || 5432,

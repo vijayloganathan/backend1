@@ -7,6 +7,7 @@ import { FinanceRepository } from "./finance/finance-repository";
 import { TestingRepository } from "./testing/testing-repository";
 import { NotesRepository } from "./notes/notes-repository";
 import { SettingsRepository } from "./settings/settings-repository";
+import { FutureClientsRepository } from "./future_clients/future_clients-repository";
 
 export class Resolver {
   public userRepository: any;
@@ -478,15 +479,7 @@ export class FinanceResolver {
     );
   }
 }
-export class TestingResolver {
-  public TestingRepository: any;
-  constructor() {
-    this.TestingRepository = new TestingRepository();
-  }
-  public async TestingV1(user_data: any, domain_code: any): Promise<any> {
-    return await this.TestingRepository.TestingV1(user_data, domain_code);
-  }
-}
+
 export class NoteResolver {
   public NoteResolver: any;
   constructor() {
@@ -536,5 +529,74 @@ export class SettingsResolver {
       user_data,
       domain_code
     );
+  }
+  public async deleteSectionDataV1(
+    user_data: any,
+    domain_code: any
+  ): Promise<any> {
+    return await this.SettingsRepository.deleteSectionDataV1(
+      user_data,
+      domain_code
+    );
+  }
+  public async customClassDataV1(
+    user_data: any,
+    domain_code: any
+  ): Promise<any> {
+    return await this.SettingsRepository.customClassDataV1(
+      user_data,
+      domain_code
+    );
+  }
+}
+export class FutureClientsResolver {
+  public FutureClientsRepository: any;
+  constructor() {
+    this.FutureClientsRepository = new FutureClientsRepository();
+  }
+  public async futureClientsDataV1(
+    user_data: any,
+    domain_code: any
+  ): Promise<any> {
+    return await this.FutureClientsRepository.futureClientsDataV1(
+      user_data,
+      domain_code
+    );
+  }
+  public async futureClientsActionBtnV1(
+    user_data: any,
+    domain_code: any
+  ): Promise<any> {
+    return await this.FutureClientsRepository.futureClientsActionBtnV1(
+      user_data,
+      domain_code
+    );
+  }
+  public async futureClientsAuditPageV1(
+    user_data: any,
+    domain_code: any
+  ): Promise<any> {
+    return await this.FutureClientsRepository.futureClientsAuditPageV1(
+      user_data,
+      domain_code
+    );
+  }
+  public async futureClientsAuditFollowUpV1(
+    user_data: any,
+    domain_code: any
+  ): Promise<any> {
+    return await this.FutureClientsRepository.futureClientsAuditFollowUpV1(
+      user_data,
+      domain_code
+    );
+  }
+}
+export class TestingResolver {
+  public TestingRepository: any;
+  constructor() {
+    this.TestingRepository = new TestingRepository();
+  }
+  public async TestingV1(user_data: any, domain_code: any): Promise<any> {
+    return await this.TestingRepository.TestingV1(user_data, domain_code);
   }
 }

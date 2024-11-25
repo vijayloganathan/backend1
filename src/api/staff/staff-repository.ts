@@ -79,6 +79,7 @@ export class StaffRepository {
               2,
               CurrentTime(),
             ]);
+
             refDashBoardData = { ...refDashBoardData, registerSampleData };
           case "Signedup":
             const signUpCount = await executeQuery(getSignUpCount, [
@@ -205,8 +206,8 @@ export class StaffRepository {
         {
           success: true,
           message: "DashBoard Data Passed Successfully",
-          token: token,
           data: refDashBoardData,
+          token: token,
         },
         true
       );

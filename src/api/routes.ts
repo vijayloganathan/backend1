@@ -13,6 +13,7 @@ import {
   TestingController,
   NotesController,
   SettingsController,
+  FutureClientsController,
 } from "./controller";
 import { Logger } from "winston";
 import { decodeToken, validateToken } from "../helper/token";
@@ -753,6 +754,36 @@ export class Settings implements IRoute {
             auth: false,
           },
         },
+        {
+          method: "POST",
+          path: "/api/v1/settings/Section/deleteSectionData",
+          config: {
+            pre: [{ method: validateToken, assign: "token" }],
+            handler: settingsPage.deleteSectionData,
+            description: "Deleting The Section Data",
+            auth: false,
+          },
+        },
+        {
+          method: "POST",
+          path: "/api/v1/settings/Section/customClassData",
+          config: {
+            // pre: [{ method: validateToken, assign: "token" }],
+            handler: settingsPage.customClassData,
+            description: "Custom Class Data",
+            auth: false,
+          },
+        },
+        // {
+        //   method: "POST",
+        //   path: "/api/v1/settings/Section/customClassData",
+        //   config: {
+        //     // pre: [{ method: validateToken, assign: "token" }],
+        //     handler: settingsPage.customClassData,
+        //     description: "Custom Class Data",
+        //     auth: false,
+        //   },
+        // },
       ]);
       resolve(true);
     });
@@ -796,6 +827,56 @@ export class Notes implements IRoute {
             pre: [{ method: validateToken, assign: "token" }],
             handler: UserPage.deleteNotes,
             description: "Adding New Notes",
+            auth: false,
+          },
+        },
+      ]);
+      resolve(true);
+    });
+  }
+}
+export class FutureClients implements IRoute {
+  public async register(server: any): Promise<any> {
+    return new Promise((resolve) => {
+      const UserPage = new FutureClientsController();
+      server.route([
+        {
+          method: "GET",
+          path: "/api/v1/futureClients/data",
+          config: {
+            pre: [{ method: validateToken, assign: "token" }],
+            handler: UserPage.futureClientsData,
+            description: "Future Client Table Data",
+            auth: false,
+          },
+        },
+        {
+          method: "GET",
+          path: "/api/v1/futureClients/actionBtn",
+          config: {
+            pre: [{ method: validateToken, assign: "token" }],
+            handler: UserPage.futureClientsActionBtn,
+            description: "Future Clients Action Button",
+            auth: false,
+          },
+        },
+        {
+          method: "POST",
+          path: "/api/v1/futureClients/auditPage",
+          config: {
+            pre: [{ method: validateToken, assign: "token" }],
+            handler: UserPage.futureClientsAuditPage,
+            description: "Future Clients Audit Page Data",
+            auth: false,
+          },
+        },
+        {
+          method: "POST",
+          path: "/api/v1/futureClients/FollowUpAction",
+          config: {
+            pre: [{ method: validateToken, assign: "token" }],
+            handler: UserPage.futureClientsAuditFollowUp,
+            description: "Future Clients Followup Action",
             auth: false,
           },
         },

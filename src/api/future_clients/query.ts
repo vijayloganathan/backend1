@@ -1,4 +1,14 @@
 export const fetchClientData = `
+WITH latest_status AS (
+    SELECT *
+    FROM (
+        SELECT 
+            us.*,
+            ROW_NUMBER() OVER (PARTITION BY us."refStId" ORDER BY us."refStatusId" DESC) AS row_num
+        FROM public."refuserstatus" us
+    ) sub
+    WHERE row_num = 1
+)
 SELECT DISTINCT ON (u."refSCustId")
     u."refStId",
     u."refSCustId",
@@ -19,11 +29,11 @@ FULL JOIN
 FULL JOIN
     public."refUserTxnHistory" t ON CAST(u."refStId" AS INTEGER) = t."refStId"
 FULL JOIN
-    public."refuserstatus" us ON CAST(u."refStId" AS INTEGER) = us."refStId"
- LEFT JOIN
- public.refuserstatustype ust ON CAST (us."resStatusId" AS INTEGER) = ust."refUserStatusId"
- LEFT JOIN 
- public.refuserfollowuptype ft ON CAST (us."refFollowUpId" AS INTEGER) = ft."refUserFollowUpId"
+    latest_status us ON CAST(u."refStId" AS INTEGER) = us."refStId"
+LEFT JOIN
+    public.refuserstatustype ust ON CAST(us."resStatusId" AS INTEGER) = ust."refUserStatusId"
+LEFT JOIN
+    public.refuserfollowuptype ft ON CAST(us."refFollowUpId" AS INTEGER) = ft."refUserFollowUpId"
 WHERE
     u."refUtId" = $1
     AND t."transTypeId" = $2
@@ -91,3 +101,10 @@ VALUES
 RETURNING
   *;
 `;
+
+export const maxFollowUp = `update
+  "public"."users"
+set
+  "refUtId" = 5
+where
+  "refStId" = $1;`;

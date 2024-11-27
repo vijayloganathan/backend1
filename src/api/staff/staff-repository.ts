@@ -35,6 +35,7 @@ import {
   getTrailPaymentCount,
   getEmployeeChangesCount,
   getStudentChangesCount,
+  getFeesDetails,
 } from "./query";
 import { encrypt, formatDate } from "../../helper/encrypt";
 import { generateToken, decodeToken } from "../../helper/token";
@@ -90,10 +91,10 @@ export class StaffRepository {
             // console.log("This For Feedback");
             break;
           case "Trail":
-            const trailCount = await executeQuery(getTrailPaymentCount, [
-              CurrentTime(),
-            ]);
+            const trailCount = await executeQuery(getTrailPaymentCount, []);
             refDashBoardData = { ...refDashBoardData, trailCount };
+            const fessCount = await executeQuery(getFeesDetails, []);
+            refDashBoardData = { ...refDashBoardData, fessCount };
             let trailSampleData = await executeQuery(getRecentFormData, [
               3,
               CurrentTime(),
@@ -201,6 +202,7 @@ export class StaffRepository {
       };
 
       const token = generateToken(tokenData, true);
+      // console.log("refDashBoardData", refDashBoardData);
 
       return encrypt(
         {
@@ -229,6 +231,7 @@ export class StaffRepository {
 
     try {
       const getClientData = await executeQuery(fetchClientData1, []);
+      console.log("getClientData", getClientData);
 
       const userTypeLabel = await executeQuery(getUserStatusLabel, []);
 
@@ -278,7 +281,7 @@ export class StaffRepository {
         updateUserType,
         studentId
       );
-      const transId = 4,
+      const transId = 8,
         transData = "Accept the User as Student",
         refUpdatedBy = "Front Desk";
 

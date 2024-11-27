@@ -10,6 +10,9 @@ import {
   updateSection,
   deleteSection,
   customClass,
+  addCustomClass,
+  editCustomClass,
+  deleteCustomClass,
 } from "./query";
 
 import { timeFormat } from "../../helper/common";
@@ -90,6 +93,8 @@ export class SettingsRepository {
     try {
       const memberList = await executeQuery(getMemberList, []);
       const SessionDays = await executeQuery(getSessionDays, []);
+      console.log("memberList", memberList);
+      console.log("SessionDays", SessionDays);
 
       const results = {
         success: true,
@@ -126,7 +131,7 @@ export class SettingsRepository {
         userData.refTimeMode,
         userData.refTimeDays,
         userData.refTimeMembersID,
-        userData.refbranchId,
+        userData.refBranchId,
       ];
       console.log("params", params);
       console.log("params", params);
@@ -234,11 +239,101 @@ export class SettingsRepository {
         token: token,
         customClass: customClassResult,
       };
-      return encrypt(results, false);
+      return encrypt(results, true);
     } catch (error) {
       const results = {
         success: false,
         message: "Error in Sending the Custom Class Data",
+        token: token,
+      };
+      return encrypt(results, true);
+    }
+  }
+
+  public async addCustomClassDataV1(
+    userData: any,
+    decodedToken: number
+  ): Promise<any> {
+    const refStId = decodedToken;
+    const tokenData = {
+      id: refStId,
+    };
+    const token = generateToken(tokenData, true);
+
+    try {
+      const params = [userData.refBranchId, userData.refCustTimeData];
+      const customClassResult = await executeQuery(addCustomClass, params);
+      const results = {
+        success: true,
+        message: "Add Custom Class Data",
+        token: token,
+        customClass: customClassResult,
+      };
+      return encrypt(results, true);
+    } catch (error) {
+      const results = {
+        success: false,
+        message: "Error in Adding The Custom Class Data",
+        token: token,
+      };
+      return encrypt(results, true);
+    }
+  }
+  public async editCustomClassDataV1(
+    userData: any,
+    decodedToken: number
+  ): Promise<any> {
+    const refStId = decodedToken;
+    const tokenData = {
+      id: refStId,
+    };
+    const token = generateToken(tokenData, true);
+
+    try {
+      const params = [userData.refCustTimeData, userData.refCustTimeId];
+      console.log("params", params);
+      const customClassResult = await executeQuery(editCustomClass, params);
+      const results = {
+        success: true,
+        message: "Edit  Custom Class Data is updated Successfully",
+        token: token,
+        customClass: customClassResult,
+      };
+      return encrypt(results, true);
+    } catch (error) {
+      const results = {
+        success: false,
+        message: "Error in Editing The Custom Class Data",
+        token: token,
+      };
+      return encrypt(results, true);
+    }
+  }
+  public async deleteCustomClassDataV1(
+    userData: any,
+    decodedToken: number
+  ): Promise<any> {
+    const refStId = decodedToken;
+    const tokenData = {
+      id: refStId,
+    };
+    const token = generateToken(tokenData, true);
+
+    try {
+      const params = [userData.refCustTimeId];
+      console.log("params", params);
+      const customClassResult = await executeQuery(deleteCustomClass, params);
+      const results = {
+        success: true,
+        message: "Deleting  Custom Class Data is updated Successfully",
+        token: token,
+        customClass: customClassResult,
+      };
+      return encrypt(results, true);
+    } catch (error) {
+      const results = {
+        success: false,
+        message: "Error in Deleting The Custom Class Data",
         token: token,
       };
       return encrypt(results, true);

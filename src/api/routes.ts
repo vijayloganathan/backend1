@@ -14,6 +14,7 @@ import {
   NotesController,
   SettingsController,
   FutureClientsController,
+  StudentFeesController,
 } from "./controller";
 import { Logger } from "winston";
 import { decodeToken, validateToken } from "../helper/token";
@@ -768,22 +769,42 @@ export class Settings implements IRoute {
           method: "POST",
           path: "/api/v1/settings/Section/customClassData",
           config: {
-            // pre: [{ method: validateToken, assign: "token" }],
+            pre: [{ method: validateToken, assign: "token" }],
             handler: settingsPage.customClassData,
             description: "Custom Class Data",
             auth: false,
           },
         },
-        // {
-        //   method: "POST",
-        //   path: "/api/v1/settings/Section/customClassData",
-        //   config: {
-        //     // pre: [{ method: validateToken, assign: "token" }],
-        //     handler: settingsPage.customClassData,
-        //     description: "Custom Class Data",
-        //     auth: false,
-        //   },
-        // },
+        {
+          method: "POST",
+          path: "/api/v1/settings/Section/addCustomClassData",
+          config: {
+            pre: [{ method: validateToken, assign: "token" }],
+            handler: settingsPage.addCustomClassData,
+            description: "Custom Class Data",
+            auth: false,
+          },
+        },
+        {
+          method: "POST",
+          path: "/api/v1/settings/Section/editCustomClassData",
+          config: {
+            pre: [{ method: validateToken, assign: "token" }],
+            handler: settingsPage.editCustomClassData,
+            description: "Editing the Custom Class Name ",
+            auth: false,
+          },
+        },
+        {
+          method: "POST",
+          path: "/api/v1/settings/Section/deleteCustomClassData",
+          config: {
+            pre: [{ method: validateToken, assign: "token" }],
+            handler: settingsPage.deleteCustomClassData,
+            description: "Editing the Custom Class Name ",
+            auth: false,
+          },
+        },
       ]);
       resolve(true);
     });
@@ -877,6 +898,26 @@ export class FutureClients implements IRoute {
             pre: [{ method: validateToken, assign: "token" }],
             handler: UserPage.futureClientsAuditFollowUp,
             description: "Future Clients Followup Action",
+            auth: false,
+          },
+        },
+      ]);
+      resolve(true);
+    });
+  }
+}
+export class StudentFees implements IRoute {
+  public async register(server: any): Promise<any> {
+    return new Promise((resolve) => {
+      const studentFessPage = new StudentFeesController();
+      server.route([
+        {
+          method: "POST",
+          path: "/api/v1/studentFees/Data",
+          config: {
+            pre: [{ method: validateToken, assign: "token" }],
+            handler: studentFessPage.studentFeesData,
+            description: "Getting the Student Fees Data",
             auth: false,
           },
         },

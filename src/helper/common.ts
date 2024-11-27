@@ -59,6 +59,32 @@ export function formatDate(isoDate: any) {
   return `${year}-${month}-${day}`;
 }
 
+export function formatDate_Time(isoDate: any) {
+  const date = new Date(isoDate);
+  
+  // Get date components
+  const day = String(date.getDate()).padStart(2, "0");
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const year = date.getFullYear();
+
+  // Get time components
+  let hours = date.getHours();
+  let minutes = String(date.getMinutes()).padStart(2, "0");
+  let seconds = String(date.getSeconds()).padStart(2, "0");
+  
+  // Convert hours to 12-hour format and determine AM/PM
+  const ampm = hours >= 12 ? "pm" : "am";
+  hours = hours % 12;
+  hours = hours ? hours : 12; // the hour '0' should be '12'
+  
+  // Format the time
+  const time = `${hours}:${minutes}:${seconds} ${ampm}`;
+
+  // Return the final formatted date and time
+  return `${day}/${month}/${year}, ${time}`;
+}
+
+
 export const convertToFormattedDateTime = (input: string): string => {
   const [date, time] = input.split(", ");
   const [day, month, year] = date.split("/");

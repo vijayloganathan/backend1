@@ -8,6 +8,7 @@ import { TestingRepository } from "./testing/testing-repository";
 import { NotesRepository } from "./notes/notes-repository";
 import { SettingsRepository } from "./settings/settings-repository";
 import { FutureClientsRepository } from "./future_clients/future_clients-repository";
+import { StudentFeesRepository } from "./studentfees/studentfees-repository";
 
 export class Resolver {
   public userRepository: any;
@@ -548,6 +549,33 @@ export class SettingsResolver {
       domain_code
     );
   }
+  public async addCustomClassDataV1(
+    user_data: any,
+    domain_code: any
+  ): Promise<any> {
+    return await this.SettingsRepository.addCustomClassDataV1(
+      user_data,
+      domain_code
+    );
+  }
+  public async editCustomClassDataV1(
+    user_data: any,
+    domain_code: any
+  ): Promise<any> {
+    return await this.SettingsRepository.editCustomClassDataV1(
+      user_data,
+      domain_code
+    );
+  }
+  public async deleteCustomClassDataV1(
+    user_data: any,
+    domain_code: any
+  ): Promise<any> {
+    return await this.SettingsRepository.deleteCustomClassDataV1(
+      user_data,
+      domain_code
+    );
+  }
 }
 export class FutureClientsResolver {
   public FutureClientsRepository: any;
@@ -586,6 +614,21 @@ export class FutureClientsResolver {
     domain_code: any
   ): Promise<any> {
     return await this.FutureClientsRepository.futureClientsAuditFollowUpV1(
+      user_data,
+      domain_code
+    );
+  }
+}
+export class StudentFeesResolver {
+  public StudentFeesRepository: any;
+  constructor() {
+    this.StudentFeesRepository = new StudentFeesRepository();
+  }
+  public async studentFeesDataV1(
+    user_data: any,
+    domain_code: any
+  ): Promise<any> {
+    return await this.StudentFeesRepository.studentFeesDataV1(
       user_data,
       domain_code
     );

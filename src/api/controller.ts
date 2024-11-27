@@ -11,6 +11,7 @@ import {
   NoteResolver,
   SettingsResolver,
   FutureClientsResolver,
+  StudentFeesResolver,
 } from "./resolver";
 import logger from "../helper/logger";
 import { decodeToken } from "../helper/token";
@@ -2125,8 +2126,8 @@ export class SettingsController {
     request: any,
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
-    // const decodedToken = request.plugins.token.id;
-    const decodedToken = 1;
+    const decodedToken = request.plugins.token.id;
+    // const decodedToken = 1;
     try {
       logger.info(`GET URL REQ => ${request.url.href}`);
       const entity = await this.resolver.customClassDataV1(
@@ -2140,6 +2141,96 @@ export class SettingsController {
       return response.response(entity).code(200);
     } catch (error) {
       logger.error("error in Sending The Custom Class Data", error);
+      return response
+        .response({
+          success: false,
+          message:
+            error instanceof Error
+              ? error.message
+              : "An unknown error occurred",
+        })
+        .code(500);
+    }
+  };
+  public addCustomClassData = async (
+    request: any,
+    response: Hapi.ResponseToolkit
+  ): Promise<any> => {
+    const decodedToken = request.plugins.token.id;
+    // const decodedToken = 1;
+    try {
+      logger.info(`GET URL REQ => ${request.url.href}`);
+      const entity = await this.resolver.addCustomClassDataV1(
+        request.payload,
+        decodedToken
+      );
+
+      if (entity.success) {
+        return response.response(entity).code(200);
+      }
+      return response.response(entity).code(200);
+    } catch (error) {
+      logger.error("error in Adding New Custom Class Data", error);
+      return response
+        .response({
+          success: false,
+          message:
+            error instanceof Error
+              ? error.message
+              : "An unknown error occurred",
+        })
+        .code(500);
+    }
+  };
+  public editCustomClassData = async (
+    request: any,
+    response: Hapi.ResponseToolkit
+  ): Promise<any> => {
+    const decodedToken = request.plugins.token.id;
+    // const decodedToken = 1;
+    try {
+      logger.info(`GET URL REQ => ${request.url.href}`);
+      const entity = await this.resolver.editCustomClassDataV1(
+        request.payload,
+        decodedToken
+      );
+
+      if (entity.success) {
+        return response.response(entity).code(200);
+      }
+      return response.response(entity).code(200);
+    } catch (error) {
+      logger.error("error in Editing Custom Class Data", error);
+      return response
+        .response({
+          success: false,
+          message:
+            error instanceof Error
+              ? error.message
+              : "An unknown error occurred",
+        })
+        .code(500);
+    }
+  };
+  public deleteCustomClassData = async (
+    request: any,
+    response: Hapi.ResponseToolkit
+  ): Promise<any> => {
+    const decodedToken = request.plugins.token.id;
+    // const decodedToken = 1;
+    try {
+      logger.info(`GET URL REQ => ${request.url.href}`);
+      const entity = await this.resolver.deleteCustomClassDataV1(
+        request.payload,
+        decodedToken
+      );
+
+      if (entity.success) {
+        return response.response(entity).code(200);
+      }
+      return response.response(entity).code(200);
+    } catch (error) {
+      logger.error("error in Deleting Custom Class Data", error);
       return response
         .response({
           success: false,
@@ -2403,6 +2494,44 @@ export class FutureClientsController {
         "error in Storing the Future Clients Follow Up Action",
         error
       );
+      return response
+        .response({
+          success: false,
+          message:
+            error instanceof Error
+              ? error.message
+              : "An unknown error occurred",
+        })
+        .code(500);
+    }
+  };
+}
+export class StudentFeesController {
+  public resolver: any;
+
+  constructor() {
+    this.resolver = new StudentFeesResolver();
+  }
+
+  public studentFeesData = async (
+    request: any,
+    response: Hapi.ResponseToolkit
+  ): Promise<any> => {
+    const decodedToken = request.plugins.token.id;
+    // const decodedToken = 1;
+    try {
+      logger.info(`GET URL REQ => ${request.url.href}`);
+      const entity = await this.resolver.studentFeesDataV1(
+        request.payload,
+        decodedToken
+      );
+
+      if (entity.success) {
+        return response.response(entity).code(200);
+      }
+      return response.response(entity).code(200);
+    } catch (error) {
+      logger.error("error Sending the Student Fees Data", error);
       return response
         .response({
           success: false,

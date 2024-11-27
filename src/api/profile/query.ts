@@ -46,8 +46,9 @@ export const insertProfilePersonalData = `
     "refSPreferTimeId"=$13,
     "refSessionMode"=$14,
     "refMaritalStatus"=$15,
-    "refWeddingDate"=$16
-  WHERE "refStId" = $17
+    "refWeddingDate"=$16,
+    "refClassMode"=$17
+  WHERE "refStId" = $18
   RETURNING *;
 
 `;
@@ -101,6 +102,21 @@ WHERE rt."refbranchId" = $2
 GROUP BY rt."refTimeMembersID", rm."refTimeMembers";`;
 
 // export const getSectionTimeData = `SELECT "refTimeId" ,"refTime","refTimeMode","refTimeDays" FROM public."refTiming" rt WHERE "refTimeMembersID"=$1`;
+// export const getSectionTimeData = `SELECT
+//     ROW_NUMBER() OVER (ORDER BY to_timestamp(substring("refTime" from '^[0-9:]+ [APM]+'), 'HH12:MI AM')) AS "order",
+//     "refTimeId",
+//     "refTime",
+//     "refTimeMode",
+//     "refTimeDays"
+// FROM
+//     public."refTiming" rt
+// WHERE
+//     "refTimeMembersID" = $1
+// ORDER BY
+//     to_timestamp(
+//         substring("refTime" from '^[0-9:]+ [APM]+'),
+//         'HH12:MI AM'
+//     ) ASC;`;
 export const getSectionTimeData = `SELECT 
     ROW_NUMBER() OVER (ORDER BY to_timestamp(substring("refTime" from '^[0-9:]+ [APM]+'), 'HH12:MI AM')) AS "order",
     "refTimeId", 
@@ -110,11 +126,20 @@ export const getSectionTimeData = `SELECT
 FROM 
     public."refTiming" rt
 WHERE 
-    "refTimeMembersID" = $1
+    "refTimeMembersID" = $1 AND (rt."refDeleteAt" is null
+    OR rt."refDeleteAt" = 0)
 ORDER BY 
     to_timestamp(
         substring("refTime" from '^[0-9:]+ [APM]+'), 
         'HH12:MI AM'
     ) ASC;`;
 
-export const getCustTime = `SELECT * FROM public."refCustTime"`;
+// export const getCustTime = `SELECT * FROM public."refCustTime"`;
+
+export const getCustTime = `SELECT
+  *
+FROM
+  public."refCustTime"
+WHERE
+  "refDeleteAt" is null
+  OR "refDeleteAt" = 0`;

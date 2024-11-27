@@ -57,8 +57,22 @@ ORDER BY
 //     t."transTime";
 // `;
 
+// export const fetchClientData1 = `
+// SELECT DISTINCT ON ("refSCustId") *
+// FROM public.users u
+// FULL JOIN public."refUserCommunication" uc
+//   ON CAST(u."refStId" AS INTEGER) = uc."refStId"
+// FULL JOIN public."refUserAddress" ad
+//   ON CAST(u."refStId" AS INTEGER) = ad."refStId"
+// FULL JOIN public."refUserTxnHistory" th
+//   ON CAST(u."refStId" AS INTEGER) = th."refStId"
+// WHERE "refUtId" IN (3, 6)
+//   AND "reftherapist" IS NOT NULL
+// ORDER BY "refSCustId";
+// `;
 export const fetchClientData1 = `
-SELECT DISTINCT ON ("refSCustId") *
+SELECT DISTINCT ON ("refSCustId")
+u."refStId",u."refStFName",u."refStLName",uc."refCtMobile",uc."refCtEmail",th."transTime",u.reftherapist,u."refUtId"
 FROM public.users u
 FULL JOIN public."refUserCommunication" uc
   ON CAST(u."refStId" AS INTEGER) = uc."refStId"
@@ -66,8 +80,11 @@ FULL JOIN public."refUserAddress" ad
   ON CAST(u."refStId" AS INTEGER) = ad."refStId"
 FULL JOIN public."refUserTxnHistory" th
   ON CAST(u."refStId" AS INTEGER) = th."refStId"
+LEFT JOIN public."refPayment" rp
+  ON CAST(u."refStId" AS INTEGER) = rp."refStId"
 WHERE "refUtId" IN (3, 6)  
-  AND "reftherapist" IS NOT NULL
+  AND "reftherapist" IS NOT NULL 
+  AND rp."refStId" IS NULL
 ORDER BY "refSCustId";
 `;
 
@@ -112,7 +129,7 @@ export const getFollowUpLabel = `
 `;
 
 // export const getDataForUserManagement = `
-// SELECT DISTINCT ON (u."refSCustId") * 
+// SELECT DISTINCT ON (u."refSCustId") *
 // FROM public.users u
 // LEFT JOIN public."refUserCommunication" uc
 //   ON CAST(u."refStId" AS INTEGER) = uc."refStId"
@@ -120,7 +137,7 @@ export const getFollowUpLabel = `
 //   ON CAST(u."refStId" AS INTEGER) = ad."refStId"
 // LEFT JOIN public."refGeneralHealth" gh
 //   ON CAST(u."refStId" AS INTEGER) = gh."refStId"
-// WHERE u."refUtId" IN (1,2,3, 5, 6) 
+// WHERE u."refUtId" IN (1,2,3, 5, 6)
 // ORDER BY u."refSCustId", u."refStId";`;
 export const getDataForUserManagement = `
 SELECT DISTINCT ON (u."refSCustId") 
@@ -366,55 +383,45 @@ RETURNING *;`;
 
 export const getDocuments = `SELECT * FROM public."refEmployeeData" WHERE "refStId"=$1`;
 
-// export const getTrailPaymentCount = `WITH total_count AS (
-//     SELECT COUNT(*) AS total
-//     FROM public."users"
-//     WHERE "refUtId" IN (3, 6)
-// )
-// SELECT
-//     rut."refUserType" AS user_type_label,
-//     COUNT(u."refUtId") AS total_count,
+// export const getTrailPaymentCount = `SELECT
 //     COUNT(CASE
-//         WHEN DATE(TO_TIMESTAMP(th."transTime", 'DD/MM/YYYY, HH12:MI:SS am')) = CURRENT_DATE THEN 1
+//         WHEN DATE(TO_TIMESTAMP(th."transTime", 'DD/MM/YYYY, HH12:MI:SS am')) = DATE(TO_TIMESTAMP($1, 'DD/MM/YYYY, HH12:MI:SS am'))
+//         THEN 1
 //         ELSE NULL
 //     END) AS "count_today",
 //     COUNT(CASE
-//         WHEN DATE(TO_TIMESTAMP(th."transTime", 'DD/MM/YYYY, HH12:MI:SS am')) != CURRENT_DATE THEN 1
+//         WHEN DATE(TO_TIMESTAMP(th."transTime", 'DD/MM/YYYY, HH12:MI:SS am')) < DATE(TO_TIMESTAMP($1, 'DD/MM/YYYY, HH12:MI:SS am'))
+//         THEN 1
 //         ELSE NULL
 //     END) AS "count_other_days"
 // FROM
 //     public."users" u
 // JOIN
-//     public."refUserType" rut ON u."refUtId" = rut."refUtId"
-// JOIN
-//     total_count total ON true
-// JOIN
-//     public."refUserTxnHistory" th ON CAST(u."refStId" AS INTEGER) = th."refStId"
+//     public."refUserTxnHistory" th
+// ON
+//     CAST(th."refStId" AS INTEGER) = u."refStId"
 // WHERE
-//     u."refUtId" IN (3, 6)
-//     AND th."transTypeId" IN (4, 8)
-// GROUP BY
-//     rut."refUserType";`;
+//     u."refUtId" = 3
+//     AND th."transTypeId" = 4;`;
 export const getTrailPaymentCount = `SELECT 
-    COUNT(CASE 
-        WHEN DATE(TO_TIMESTAMP(th."transTime", 'DD/MM/YYYY, HH12:MI:SS am')) = DATE(TO_TIMESTAMP($1, 'DD/MM/YYYY, HH12:MI:SS am')) 
-        THEN 1 
-        ELSE NULL 
-    END) AS "count_today",
-    COUNT(CASE 
-        WHEN DATE(TO_TIMESTAMP(th."transTime", 'DD/MM/YYYY, HH12:MI:SS am')) < DATE(TO_TIMESTAMP($1, 'DD/MM/YYYY, HH12:MI:SS am')) 
-        THEN 1 
-        ELSE NULL 
-    END) AS "count_other_days"
+  COUNT(CASE WHEN u."refUtId" = 3 AND th."transTypeId" = 4 THEN 1 END) AS "trailCount",
+  COUNT(CASE WHEN u."refUtId" = 6 AND th."transTypeId" = 8 THEN 1 END) AS "paymentPending"
 FROM 
-    public."users" u
-JOIN 
-    public."refUserTxnHistory" th
-ON 
-    CAST(th."refStId" AS INTEGER) = u."refStId"
+  public."users" u
+  JOIN public."refUserTxnHistory" th ON CAST(th."refStId" AS INTEGER) = u."refStId"
+  LEFT JOIN public."refPayment" rp ON CAST(u."refStId" AS INTEGER) = rp."refStId"
 WHERE 
-    u."refUtId" = 3 
-    AND th."transTypeId" = 4;`;
+  rp."refStId" IS NULL;`;
+
+export const getFeesDetails = `SELECT 
+  COUNT(CASE WHEN u."refUtId" = 5 AND th."transTypeId" = 4 THEN 1 END) AS "feesPaid",
+  COUNT(CASE WHEN u."refUtId" = 6 AND th."transTypeId" = 8 THEN 1 END) AS "feesPending"
+FROM 
+  public."users" u
+  JOIN public."refUserTxnHistory" th ON CAST(th."refStId" AS INTEGER) = u."refStId"
+  LEFT JOIN public."refPayment" rp ON CAST(u."refStId" AS INTEGER) = rp."refStId"
+WHERE 
+  rp."refStId" IS NOT NULL;`;
 
 export const getStudentChangesCount = `WITH ApproveCTE AS (
     SELECT COUNT(*) AS "ApproveCount"

@@ -11,6 +11,7 @@ import {
   Notes,
   Settings,
   FutureClients,
+  StudentFees,
 } from "./api/routes";
 // import StaffRoutes from "./api/staff/routes";
 
@@ -27,5 +28,6 @@ export default class Router {
     await new Notes().register(server);
     await new Settings().register(server);
     await new FutureClients().register(server);
+    await new StudentFees().register(server);
   }
 }

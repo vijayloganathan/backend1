@@ -65,4 +65,40 @@ set
 where
   "refTimeId" = $1;`;
 
-export const customClass = `SELECT * FROM public."refCustTime" WHERE "refBranchId"=$1 AND ("refDeleteAt" is null OR "refDeleteAt" =0)`;
+// export const customClass = `SELECT * FROM public."refCustTime" WHERE "refBranchId"=$1 AND ("refDeleteAt" is null OR "refDeleteAt" =0)`;
+
+export const customClass = `SELECT
+  ct.*,
+  b."refBranchName"
+FROM
+  public."refCustTime" ct
+  LEFT JOIN public.branch b ON CAST (ct."refBranchId" AS INTEGER) = b."refbranchId"
+WHERE
+  "refBranchId" = $1
+  AND (
+    "refDeleteAt" is null
+    OR "refDeleteAt" = 0
+  )`;
+export const addCustomClass = `insert into
+  "public"."refCustTime" (
+    "refBranchId",
+    "refCustTimeData"
+    
+  )
+values
+  ($1,$2)
+  RETURNING *;`;
+
+export const editCustomClass = `update
+  "public"."refCustTime"
+set
+  "refCustTimeData" = $1
+where
+  "refCustTimeId" = $2;`;
+
+export const deleteCustomClass = `update
+  "public"."refCustTime"
+set
+  "refDeleteAt" = 1
+where
+  "refCustTimeId" = $1;`;

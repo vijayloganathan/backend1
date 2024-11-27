@@ -8,6 +8,7 @@ import {
   getFutureClientAuditData,
   updateHistoryQuery,
   updateUserStatus,
+  maxFollowUp,
 } from "./query";
 import { executeQuery, getClient } from "../../helper/db";
 import { CurrentTime } from "../../helper/common";
@@ -172,6 +173,10 @@ export class FutureClientsRepository {
       const transId = 23,
         transData = "Future Client FollowUp Data Updated",
         refUpdatedBy = refStId;
+
+      if (userData.refFollowUpId == 6) {
+        await executeQuery(maxFollowUp, [userData.refStId]);
+      }
 
       const historyData = [
         transId,

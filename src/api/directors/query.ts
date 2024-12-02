@@ -27,9 +27,14 @@ ORDER BY "transTime"`;
 
 export const getUserTypeLabel = `SELECT * FROM public."refUserType" WHERE "refUtId" IN (4,7,8,10,11)`;
 
-export const getCustomerCount = `SELECT COUNT(*) 
-FROM public.users
-WHERE "refSCustId" LIKE 'UBYS%';`;
+// export const getCustomerCount = `SELECT COUNT(*)
+// FROM public.users
+// WHERE "refSCustId" LIKE 'UBYS%';`;
+
+export const getEmployeeCount = `SELECT COUNT(*)
+FROM public.users u
+WHERE u."refSCustId" LIKE '%S%' 
+  AND u."refSCustId" LIKE 'UY' || $1 || '%';`;
 
 export const insertUserQuery = `
  WITH inserted_user AS (

@@ -9,6 +9,7 @@ import { NotesRepository } from "./notes/notes-repository";
 import { SettingsRepository } from "./settings/settings-repository";
 import { FutureClientsRepository } from "./future_clients/future_clients-repository";
 import { StudentFeesRepository } from "./studentfees/studentfees-repository";
+import { ForgotPasswordRepository } from "./forgotpassword/forgot_password";
 
 export class Resolver {
   public userRepository: any;
@@ -629,6 +630,36 @@ export class StudentFeesResolver {
     domain_code: any
   ): Promise<any> {
     return await this.StudentFeesRepository.studentFeesDataV1(
+      user_data,
+      domain_code
+    );
+  }
+}
+export class ForgotPasswordResolver {
+  public ForgotPasswordRepository: any;
+  constructor() {
+    this.ForgotPasswordRepository = new ForgotPasswordRepository();
+  }
+  public async verifyUserNameEmailV1(
+    user_data: any,
+    domain_code: any
+  ): Promise<any> {
+    return await this.ForgotPasswordRepository.verifyUserNameEmailV1(
+      user_data,
+      domain_code
+    );
+  }
+  public async verifyOtpV1(user_data: any, domain_code: any): Promise<any> {
+    return await this.ForgotPasswordRepository.verifyOtpV1(
+      user_data,
+      domain_code
+    );
+  }
+  public async changePasswordV1(
+    user_data: any,
+    domain_code: any
+  ): Promise<any> {
+    return await this.ForgotPasswordRepository.changePasswordV1(
       user_data,
       domain_code
     );

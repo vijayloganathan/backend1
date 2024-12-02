@@ -7,7 +7,8 @@ SELECT * FROM public."refUsersDomain"
   WHERE "refCustPrimEmail" = $1;
 `;
 
-export const getCustomerCount = `SELECT COUNT(*) FROM public.users`;
+// export const getCustomerCount = `SELECT COUNT(*) FROM public.users`;
+export const getCustomerCount = `SELECT COUNT(*) FROM public.users u WHERE u."refSCustId" LIKE 'UBY%'`;
 
 export const insertUserQuery = `
   INSERT INTO public.users (

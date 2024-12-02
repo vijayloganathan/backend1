@@ -4,54 +4,55 @@ ON CAST (u."refStId" AS INTEGER) = uc."refStId"
 WHERE u."refBranchId"=$1 AND (u."refUtId"=5 OR u."refUtId"=6)`;
 
 export const getStudentProfileData = `SELECT 
-    u."refStId",
-    u."refSCustId",
-    INITCAP(u."refStFName") AS "FirstName",
-    INITCAP(u."refStLName") AS "LastName",
-    uc."refCtMobile",
-    uc."refCtEmail",
-    ml."refTimeMembers",
-    ct."refCustTimeData",
-    pt."refTime",
-    pt."refTimeMode",
-    pt."refTimeDays",
-    up."refPaymentFrom",
-    up."refPaymentTo",
-    up."refExpiry",
-    up."refDate",
-    INITCAP(up."refPaymentMode") AS "PaymentMode",
-    up."refToAmt",
-    up."refFeesPaid",
-    up."refGstPaid",
-    INITCAP(ofn."refOfferName") AS "OfferName",
-    fo."refOffer"
-FROM public.users u
-LEFT JOIN public."refUserCommunication" uc
-    ON u."refStId" = uc."refStId"
-LEFT JOIN (
-    SELECT up.*
-    FROM public."refPayment" up
-    INNER JOIN (
-        SELECT "refStId", MAX("refDate") AS latest_entry
-        FROM public."refPayment"
-        GROUP BY "refStId"
-    ) latest_up
-    ON up."refStId" = latest_up."refStId"
-    AND up."refDate" = latest_up.latest_entry
-) up
-    ON u."refStId" = up."refStId"
-LEFT JOIN public."refMembers" ml
-    ON u."refSessionType" = ml."refTimeMembersID"
-LEFT JOIN public."refCustTime" ct
-    ON u."refSessionMode" = ct."refCustTimeId"
-LEFT JOIN public."refTiming" pt
-    ON u."refSPreferTimeId" = pt."refTimeId"
-LEFT JOIN public."refOffers" fo
-    ON CAST(up."refCoupon" AS TEXT) = fo."refCoupon"
-LEFT JOIN public."refOfName" ofn
-    ON fo."refOfferId" = ofn."refOfferId"
-WHERE 
-    u."refStId" = $1 `;
+      u."refStId",
+      u."refSCustId",
+      INITCAP(u."refStFName") AS "FirstName",
+      INITCAP(u."refStLName") AS "LastName",
+      uc."refCtMobile",
+      uc."refCtEmail",
+      ml."refTimeMembers",
+      ct."refCustTimeData",
+      pt."refTime",
+      pt."refTimeMode",
+      sd."refDays" AS "refTimeDays",
+      up."refPaymentFrom",
+      up."refPaymentTo",
+      up."refExpiry",
+      up."refDate",
+      INITCAP(up."refPaymentMode") AS "PaymentMode",
+      up."refToAmt",
+      up."refFeesPaid",
+      up."refGstPaid",
+      INITCAP(ofn."refOfferName") AS "OfferName",
+      fo."refOffer"
+  FROM public.users u
+  LEFT JOIN public."refUserCommunication" uc
+      ON u."refStId" = uc."refStId"
+  LEFT JOIN (
+      SELECT up.*
+      FROM public."refPayment" up
+      INNER JOIN (
+          SELECT "refStId", MAX("refDate") AS latest_entry
+          FROM public."refPayment"
+          GROUP BY "refStId"
+      ) latest_up
+      ON up."refStId" = latest_up."refStId"
+      AND up."refDate" = latest_up.latest_entry
+  ) up
+      ON u."refStId" = up."refStId"
+  LEFT JOIN public."refMembers" ml
+      ON u."refSessionType" = ml."refTimeMembersID"
+  LEFT JOIN public."refCustTime" ct
+      ON u."refSessionMode" = ct."refCustTimeId"
+  LEFT JOIN public."refTiming" pt
+      ON u."refSPreferTimeId" = pt."refTimeId"
+  LEFT JOIN public."refOffers" fo
+      ON CAST(up."refCoupon" AS TEXT) = fo."refCoupon"
+  LEFT JOIN public."refOfName" ofn
+      ON fo."refOfferId" = ofn."refOfferId"
+      INNER JOIN public."refSessionDays" sd ON CAST (pt."refTimeDays" AS INTEGER) = sd."refSDId"
+  WHERE 
+      u."refStId" = $1`;
 
 export const feesEntry = `SELECT 
     u."refStId",
@@ -62,7 +63,7 @@ export const feesEntry = `SELECT
     ct."refCustTimeData",
     pt."refTime",
     pt."refTimeMode",
-    pt."refTimeDays",
+    sd."refDays" AS "refTimeDays",
     fs."refFees",
     fs."refGst",
     fs."refFeTotal",
@@ -113,6 +114,7 @@ LEFT JOIN public."refCustTime" ct
     ON CAST(u."refSessionMode" AS INTEGER) = ct."refCustTimeId"
 LEFT JOIN public."refTiming" pt
     ON CAST(u."refSPreferTimeId" AS INTEGER) = pt."refTimeId"
+    INNER JOIN public."refSessionDays" sd ON CAST (pt."refTimeDays" AS INTEGER) = sd."refSDId"
 WHERE u."refStId" = $1;`;
 
 export const verifyCoupon = `SELECT 
@@ -218,7 +220,17 @@ FROM public."refPayment"
 WHERE "refStId" = $1 
 ORDER BY "refPaId" DESC;`;
 
+export const pastFessCount = `SELECT COUNT(*) FROM public."refPayment" WHERE "refStId"=$1`;
+
+export const getbranchId = `SELECT "refBranchId" FROM public.users WHERE "refStId"=$1`;
+
+export const getStudentCount = `SELECT COUNT(*)
+FROM public.users
+WHERE "refSCustId" NOT LIKE '%S%' 
+  AND "refSCustId" LIKE 'UY' || $1 || '%';`;
+
 export const refUtIdUpdate = `Update public.users SET "refUtId"=5 WHERE "refStId"=$1;`;
+export const refUtId_userId_Update = `Update public.users SET "refUtId"=5,"refSCustId"=$2 WHERE "refStId"=$1;`;
 
 export const updateHistoryQuery = `
   INSERT INTO public."refUserTxnHistory" (

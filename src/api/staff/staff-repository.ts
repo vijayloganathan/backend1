@@ -218,7 +218,6 @@ export class StaffRepository {
       throw error;
     }
   }
-
   public async staffStudentApprovalV1(
     userData: any,
     decodedToken: number
@@ -265,7 +264,6 @@ export class StaffRepository {
       );
     }
   }
-
   public async staffApprovalBtnV1(
     userData: any,
     decodedToken: number
@@ -443,7 +441,6 @@ export class StaffRepository {
       );
     }
   }
-
   public async userFollowUpV1(
     userData: any,
     decodedToken: number
@@ -1038,7 +1035,6 @@ export class StaffRepository {
       return encrypt(results, true);
     }
   }
-
   public async addEmployeeDocumentV1(
     userData: any,
     decodedToken: any

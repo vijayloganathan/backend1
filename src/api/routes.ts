@@ -15,6 +15,7 @@ import {
   SettingsController,
   FutureClientsController,
   StudentFeesController,
+  ForgotPasswordController,
 } from "./controller";
 import { Logger } from "winston";
 import { decodeToken, validateToken } from "../helper/token";
@@ -918,6 +919,43 @@ export class StudentFees implements IRoute {
             pre: [{ method: validateToken, assign: "token" }],
             handler: studentFessPage.studentFeesData,
             description: "Getting the Student Fees Data",
+            auth: false,
+          },
+        },
+      ]);
+      resolve(true);
+    });
+  }
+}
+export class ForgotPassword implements IRoute {
+  public async register(server: any): Promise<any> {
+    return new Promise((resolve) => {
+      const ForgotPasswordPage = new ForgotPasswordController();
+      server.route([
+        {
+          method: "POST",
+          path: "/api/v1/forgotPassword/idCheck",
+          config: {
+            handler: ForgotPasswordPage.verifyUserNameEmail,
+            description: "To Validate the User Name or Email ",
+            auth: false,
+          },
+        },
+        {
+          method: "POST",
+          path: "/api/v1/forgotPassword/otpValidate",
+          config: {
+            handler: ForgotPasswordPage.verifyOtp,
+            description: "To Validate the  OTP",
+            auth: false,
+          },
+        },
+        {
+          method: "POST",
+          path: "/api/v1/forgotPassword/changePassword",
+          config: {
+            handler: ForgotPasswordPage.changePassword,
+            description: "Changing Password",
             auth: false,
           },
         },

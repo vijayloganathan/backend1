@@ -18,16 +18,19 @@ export const getSectionPageData = `SELECT
   rt."refTime",
   rt."refTimeMode",
   rt."refTimeMembersID",
-  rt."refTimeDays",
+  rt."refTimeDays" AS "refTimeDaysId",
   rm."refTimeMembers",
-  rb."refBranchName"
+  rb."refBranchName",
+  sd."refDays" AS "refTimeDays"
 FROM public."refTiming" rt
 LEFT JOIN public."refMembers" rm
   ON CAST(rt."refTimeMembersID" AS INTEGER) = rm."refTimeMembersID"
 LEFT JOIN public."branch" rb
   ON CAST(rt."refbranchId" AS INTEGER) = rb."refbranchId"
-WHERE rt."refbranchId" = $1  -- Replace $1 with your actual value
-  AND (rt."refDeleteAt" is null OR rt."refDeleteAt" =0) 
+  INNER JOIN public."refSessionDays" sd
+  ON CAST (rt."refTimeDays" AS INTEGER) = sd."refSDId"
+WHERE rt."refbranchId" = $1
+  AND (rt."refDeleteAt" is null OR rt."refDeleteAt" =0)
 `;
 
 export const getBranchData = `SELECT * FROM public.branch`;

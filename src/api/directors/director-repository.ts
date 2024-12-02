@@ -21,7 +21,6 @@ import {
   getDataForUserManagement,
   getUserTransaction,
   getUserTypeLabel,
-  getCustomerCount,
   insertUserQuery,
   insertUserDomainQuery,
   insertUserCommunicationQuery,
@@ -52,6 +51,7 @@ import {
   editOffers,
   deleteOffers,
   validateCouponCode,
+  getEmployeeCount,
 } from "./query";
 import { encrypt } from "../../helper/encrypt";
 import { generateToken, decodeToken } from "../../helper/token";
@@ -312,16 +312,21 @@ export class DirectorRepository {
     };
     const token = generateToken(tokenData, true);
     try {
-      const userCountResult = await executeQuery(getCustomerCount);
-      const userCount = parseInt(userCountResult[0].count, 10);
+      let bId = userData.refbranchId.toString().padStart(2, "0");
 
-      let newCustomerId = `UBYS${(10000 + userCount + 1).toString()}`;
+      const employeeCountResult = await executeQuery(getEmployeeCount, [bId]);
+
+      const userCount = parseInt(employeeCountResult[0].count, 10);
+
+      let newEmployeeId = `UY${bId}S${(userCount + 1)
+        .toString()
+        .padStart(3, "0")}`;
 
       const params = [
         userData.refFName,
         userData.refLName,
         userData.refDob,
-        newCustomerId,
+        newEmployeeId,
         userData.refUserType,
         userData.refPanCard,
         userData.refAadharCard,
@@ -349,8 +354,8 @@ export class DirectorRepository {
 
       const domainParams = [
         newUser.refStId,
-        newCustomerId,
-        newCustomerId,
+        newEmployeeId,
+        newEmployeeId,
         password,
         hashedPassword,
         userData.refEmail,
@@ -1083,38 +1088,52 @@ export class DirectorRepository {
     };
     const token = generateToken(tokenData, true);
     try {
-      const params = [
-        userData.refBranchId,
-        userData.refMemberType,
-        userData.refSessionType,
-        userData.refFees,
-        userData.refGst,
-        userData.refTotal,
-        userData.refAmtPerDay,
-      ];
-      const checkFeesResult = await executeQuery(checkFeesStructure, params);
-
-      if (checkFeesResult[0].ResultStatus == false) {
-        return encrypt(
-          {
-            success: false,
-            message: "The Fees is Already Exit",
-            token: token,
-            data: checkFeesResult,
-          },
-          true
-        );
-      } else {
-        return encrypt(
-          {
-            success: true,
-            message: "New Fees Is Added Successfully",
-            token: token,
-            data: checkFeesResult,
-          },
-          true
-        );
+      let checkFeesResult;
+      for (let i = 0; i < userData.refMemberType.length; i++) {
+        for (let j = 0; j < userData.refSessionType.length; j++) {
+          const params = [
+            userData.refBranchId,
+            userData.refMemberType[i],
+            userData.refSessionType[j],
+            userData.refFees,
+            userData.refGst,
+            userData.refTotal,
+            userData.refAmtPerDay,
+          ];
+          checkFeesResult = await executeQuery(checkFeesStructure, params);
+        }
       }
+
+      // if (checkFeesResult[0].ResultStatus == false) {
+      //   return encrypt(
+      //     {
+      //       success: false,
+      //       message: "The Fees is Already Exit",
+      //       token: token,
+      //       data: checkFeesResult,
+      //     },
+      //     true
+      //   );
+      // } else {
+      //   return encrypt(
+      //     {
+      //       success: true,
+      //       message: "New Fees Is Added Successfully",
+      //       token: token,
+      //       data: checkFeesResult,
+      //     },
+      //     true
+      //   );
+      // }
+      return encrypt(
+        {
+          success: true,
+          message: "New Fees Is Added Successfully",
+          token: token,
+          data: checkFeesResult,
+        },
+        true
+      );
     } catch (error) {
       const results = {
         success: false,

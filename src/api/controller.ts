@@ -12,6 +12,7 @@ import {
   SettingsResolver,
   FutureClientsResolver,
   StudentFeesResolver,
+  ForgotPasswordResolver,
 } from "./resolver";
 import logger from "../helper/logger";
 import { decodeToken } from "../helper/token";
@@ -2532,6 +2533,89 @@ export class StudentFeesController {
       return response.response(entity).code(200);
     } catch (error) {
       logger.error("error Sending the Student Fees Data", error);
+      return response
+        .response({
+          success: false,
+          message:
+            error instanceof Error
+              ? error.message
+              : "An unknown error occurred",
+        })
+        .code(500);
+    }
+  };
+}
+export class ForgotPasswordController {
+  public resolver: any;
+
+  constructor() {
+    this.resolver = new ForgotPasswordResolver();
+  }
+
+  public verifyUserNameEmail = async (
+    request: any,
+    response: Hapi.ResponseToolkit
+  ): Promise<any> => {
+    try {
+      logger.info(`GET URL REQ => ${request.url.href}`);
+      const entity = await this.resolver.verifyUserNameEmailV1(request.payload);
+
+      if (entity.success) {
+        return response.response(entity).code(200);
+      }
+      return response.response(entity).code(200);
+    } catch (error) {
+      logger.error("error in Validating The User Name or MailId", error);
+      return response
+        .response({
+          success: false,
+          message:
+            error instanceof Error
+              ? error.message
+              : "An unknown error occurred",
+        })
+        .code(500);
+    }
+  };
+  public verifyOtp = async (
+    request: any,
+    response: Hapi.ResponseToolkit
+  ): Promise<any> => {
+    try {
+      logger.info(`GET URL REQ => ${request.url.href}`);
+      const entity = await this.resolver.verifyOtpV1(request.payload);
+
+      if (entity.success) {
+        return response.response(entity).code(200);
+      }
+      return response.response(entity).code(200);
+    } catch (error) {
+      logger.error("error in Validating The OTP", error);
+      return response
+        .response({
+          success: false,
+          message:
+            error instanceof Error
+              ? error.message
+              : "An unknown error occurred",
+        })
+        .code(500);
+    }
+  };
+  public changePassword = async (
+    request: any,
+    response: Hapi.ResponseToolkit
+  ): Promise<any> => {
+    try {
+      logger.info(`GET URL REQ => ${request.url.href}`);
+      const entity = await this.resolver.changePasswordV1(request.payload);
+
+      if (entity.success) {
+        return response.response(entity).code(200);
+      }
+      return response.response(entity).code(200);
+    } catch (error) {
+      logger.error("Error in changing the Password", error);
       return response
         .response({
           success: false,

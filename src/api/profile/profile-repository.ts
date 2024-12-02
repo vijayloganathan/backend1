@@ -12,10 +12,11 @@ import {
   getSectionTimeData,
   getCustTime,
   fetchCommunicationRef,
+  getStudentCount,
 } from "./query";
 import { encrypt } from "../../helper/encrypt";
 import { generateToken, generateToken1 } from "../../helper/token";
-import { PoolClient } from "pg"; 
+import { PoolClient } from "pg";
 import { getAdjustedTime } from "../../helper/common";
 import { CurrentTime } from "../../helper/common";
 
@@ -118,8 +119,20 @@ export class ProfileRepository {
     const token = { id: userData.refStId };
     const TokenData = generateToken1(token, true);
     try {
-      // Start the transaction
       await client.query("BEGIN");
+
+      // let bId = userData.personalData.ref_su_branchId
+      //   .toString()
+      //   .padStart(2, "0");
+      // console.log("bId", bId);
+
+      // const studentCountResult = await executeQuery(getStudentCount, [bId]);
+
+      // const userCount = parseInt(studentCountResult[0].count, 10);
+
+      // let newCustomerId = `UY${bId}${(userCount + 1)
+      //   .toString()
+      //   .padStart(4, "0")}`;
 
       userData.refStId = decodedToken;
       const refUtId = 2;
@@ -144,30 +157,38 @@ export class ProfileRepository {
         userData.personalData.ref_su_WeddingDate, //16
         userData.personalData.ref_Class_Mode, //17
         userData.refStId, //18
+        userData.personalData.ref_su_kidsCount, //19
+        userData.personalData.ref_su_deliveryType, // 20
       ];
+      console.log("userResult1", 0);
 
       const userResult1 = await client.query(
         insertProfilePersonalData,
         paramsProfile
       );
+      console.log("userResult1", 1);
 
       if (!userResult1.rowCount) {
         throw new Error("Failed to update personal data in the users table.");
       }
 
+      const communicationType = 3;
       //step2: Insert Communication Data into the refCommunication table
       const parasCommunication = [
         userData.refStId, //1
         userData.personalData.ref_su_Whatsapp, //2
         userData.personalData.ref_su_phoneno, //3
         userData.personalData.ref_su_mailid, //4
-        userData.personalData.ref_su_communicationPreference, //5
+        communicationType, //5
+        userData.personalData.ref_su_emgContaxt, //6
       ];
+      console.log("userResult2", 0);
 
       const userResult2 = await client.query(
         insertCommunicationData,
         parasCommunication
       );
+      console.log("userResult2", 1);
 
       if (!userResult2.rowCount) {
         throw new Error(
@@ -197,10 +218,13 @@ export class ProfileRepository {
         userData.address.refAdState2,
         userData.address.refAdPincode2,
       ];
+
+      console.log("userResult3", 0);
       const userResult3 = await client.query(
         insertProfileAddressQuery,
         paramsAddress
       );
+      console.log("userResult3", 1);
 
       if (!userResult3.rowCount) {
         throw new Error(
@@ -236,11 +260,16 @@ export class ProfileRepository {
         userData.generalhealth.refPastHistory,
         userData.generalhealth.refFamilyHistory,
         userData.generalhealth.refAnythingelse,
+        userData.generalhealth.refBackPainValue,
       ];
+      console.log("paramsHealth", paramsHealth);
+      console.log("userResult4", 0);
       const userResult4 = await client.query(
         insertProfileGeneralHealth,
         paramsHealth
       );
+      console.log("userResult4", 1);
+
       if (!userResult4.rowCount) {
         throw new Error(
           "Failed to insert health data into the refGeneralHealth table."
@@ -257,7 +286,9 @@ export class ProfileRepository {
         refUpdatedBy,
       ];
 
+      console.log("userResult5", 0);
       const userResult5 = await client.query(updateHistoryQuery, parasHistory);
+      console.log("userResult5", 1);
 
       if (!userResult5.rowCount) {
         throw new Error("Failed to insert The History In refUserTxnHistory.");
@@ -279,7 +310,7 @@ export class ProfileRepository {
         success: false,
         message: error || "Error occurred while processing.",
       };
-      return encrypt(results, false);
+      return encrypt(results, true);
     } finally {
       client.release(); // Release the client back to the pool
     }
@@ -416,7 +447,7 @@ export class ProfileRepository {
           formattedString:
             member.refTime +
             "  |  " +
-            member.refTimeMode +  
+            member.refTimeMode +
             "  |  " +
             member.refTimeDays,
           refTimeId: member.refTimeId,

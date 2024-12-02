@@ -81,6 +81,7 @@ export class UserRepository {
           followUpCount: result,
           refUtId: userData,
         };
+        console.log("registerBtn", registerBtn);
 
         if (updateHistory && updateHistory.length > 0) {
           const tokenData = {
@@ -244,8 +245,6 @@ export class UserRepository {
         domainResult.length > 0 &&
         communicationResult.length > 0
       ) {
-        console.log("CurrentTime() line -----------245", CurrentTime());
-
         const history = [
           1,
           CurrentTime(),
@@ -616,6 +615,7 @@ export class UserRepository {
         refCtEmail: Data.refCtEmail,
         refCtWhatsapp: Data.refCtWhatsapp,
         refUcPreference: Data.refUcPreference,
+        refEmerContact: Data.refEmerContact,
       };
 
       profileData = { ...profileData, communication };

@@ -17,6 +17,10 @@ import {
   userPaymentAuditList,
   refUtIdUpdate,
   updateHistoryQuery,
+  pastFessCount,
+  getStudentCount,
+  refUtId_userId_Update,
+  getbranchId,
 } from "./query";
 import { encrypt } from "../../helper/encrypt";
 import { generateToken, decodeToken } from "../../helper/token";
@@ -84,7 +88,8 @@ export class FinanceRepository {
     const token = generateToken(tokenData, true);
     try {
       const id = userData.refStId;
-      const studentData = await executeQuery(getStudentProfileData, [id]);
+      let studentData = await executeQuery(getStudentProfileData, [id]);
+      studentData[0].refDate = formatDate(studentData[0].refDate);
 
       return encrypt(
         {
@@ -119,7 +124,9 @@ export class FinanceRepository {
     const token = generateToken(tokenData, true);
     const id = userData.refStId;
     try {
+      console.log("id", id);
       const FeesData = await executeQuery(feesEntry, [id]);
+      console.log("FeesData", FeesData);
 
       // const filteredData = studentData.map((student) => ({
       //   refStId: student.refStId,
@@ -306,6 +313,11 @@ export class FinanceRepository {
     const client: PoolClient = await getClient();
 
     try {
+      console.log("\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\");
+      console.log("userData.refStId", userData.refStId);
+      const feesCount = await executeQuery(pastFessCount, [userData.refStId]);
+      console.log("feesCount", feesCount);
+
       await client.query("BEGIN");
       const countResult = await executeQuery(paymentCount, []);
       const currentTime = CurrentTime();
@@ -332,9 +344,37 @@ export class FinanceRepository {
       ];
 
       const storeFees = await client.query(setFeesStored, Data);
-      const refUtIdUpdateResult = await client.query(refUtIdUpdate, [
-        userData.refStId,
-      ]);
+
+      if (feesCount[0].count == 0) {
+        console.log("_______________________________________");
+        const branch = await executeQuery(getbranchId, [userData.refStId]);
+        console.log("branch", branch);
+        let bId = branch[0].refBranchId.toString().padStart(2, "0");
+        console.log("bId", bId);
+
+        const studentCountResult = await executeQuery(getStudentCount, [bId]);
+
+        const userCount = parseInt(studentCountResult[0].count, 10);
+
+        const newCustomerId = `UY${bId}${(userCount + 1)
+          .toString()
+          .padStart(4, "0")}`;
+
+        console.log("newCustomerId", newCustomerId);
+        console.log(
+          "userData.refStId,newCustomerId,",
+          userData.refStId,
+          newCustomerId
+        );
+        const refUtIdUpdateResult = await client.query(refUtId_userId_Update, [
+          userData.refStId,
+          newCustomerId,
+        ]);
+      } else {
+        const refUtIdUpdateResult = await client.query(refUtIdUpdate, [
+          userData.refStId,
+        ]);
+      }
 
       const history = [
         7,
@@ -343,9 +383,12 @@ export class FinanceRepository {
         "Front Office",
         "Payment Success",
       ];
+      console.log("history", history);
       const updateHistory = await client.query(updateHistoryQuery, history);
 
-      if (!storeFees && !refUtIdUpdateResult && !updateHistory) {
+      console.log("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk");
+
+      if (!storeFees && !updateHistory) {
         return encrypt(
           {
             success: false,
@@ -440,6 +483,7 @@ export class FinanceRepository {
 
     try {
       const auditData = await executeQuery(userPaymentAuditList, [id]);
+      console.log("auditData", auditData);
 
       const filteredData = auditData.map((data) => ({
         refOrderId: data.refOrderId,

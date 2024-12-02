@@ -1,6 +1,8 @@
 import { generateToken, decodeToken } from "../../helper/token";
 import { encrypt } from "../../helper/encrypt";
-import { executeQuery } from "../../helper/db";
+import { executeQuery, getClient } from "../../helper/db";
+import { PoolClient } from "pg";
+
 import {
   getSectionPageData,
   getBranchData,
@@ -93,8 +95,7 @@ export class SettingsRepository {
     try {
       const memberList = await executeQuery(getMemberList, []);
       const SessionDays = await executeQuery(getSessionDays, []);
-      console.log("memberList", memberList);
-      console.log("SessionDays", SessionDays);
+      const getBranch = await executeQuery(getBranchData, []);
 
       const results = {
         success: true,
@@ -102,6 +103,7 @@ export class SettingsRepository {
         token: token,
         MemberList: memberList,
         SessionDays: SessionDays,
+        Branch: getBranch,
       };
       return encrypt(results, true);
     } catch (error) {
@@ -117,6 +119,8 @@ export class SettingsRepository {
     userData: any,
     decodedToken: number
   ): Promise<any> {
+    const client: PoolClient = await getClient(); // Get the database client
+
     const refStId = decodedToken;
     const tokenData = {
       id: refStId,
@@ -124,18 +128,36 @@ export class SettingsRepository {
     const token = generateToken(tokenData, true);
 
     try {
-      let refTime = userData.fromTime + " to " + userData.fromTo;
-      console.log("refTime", refTime);
+      await client.query("BEGIN");
+
+      const refTime = userData.fromTime + " to " + userData.fromTo;
+      const refTimeMode = userData.refTimeMode;
+
       const params = [
         refTime,
-        userData.refTimeMode,
+        refTimeMode,
         userData.refTimeDays,
         userData.refTimeMembersID,
         userData.refBranchId,
       ];
-      console.log("params", params);
-      console.log("params", params);
-      const getSectionData = await executeQuery(setNewSection, params);
+
+      for (let i = 0; i < userData.refBranchId.length; i++) {
+        for (let j = 0; j < userData.refTimeMembersID.length; j++) {
+          for (let k = 0; k < userData.refTimeDays.length; k++) {
+            const params = [
+              refTime,
+              refTimeMode,
+              userData.refTimeDays[k],
+              userData.refTimeMembersID[j],
+              userData.refBranchId[i],
+            ];
+            console.log("params", params);
+            await client.query(setNewSection, params);
+          }
+        }
+      }
+
+      await client.query("COMMIT");
 
       const results = {
         success: true,
@@ -144,12 +166,16 @@ export class SettingsRepository {
       };
       return encrypt(results, true);
     } catch (error) {
+      await client.query("ROLLBACK");
+
       const results = {
         success: false,
         message: "Error In Adding The New Section",
         token: token,
       };
       return encrypt(results, true);
+    } finally {
+      client.release();
     }
   }
   public async editSectionDataV1(

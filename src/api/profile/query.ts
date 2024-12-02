@@ -23,11 +23,38 @@ export const insertProfileGeneralHealth = `
     "refBMI", "refBP", "refRecentInjuries","refRecentInjuriesReason","refRecentFractures","refRecentFracturesReason",
     "refOthers","refElse","refOtherActivities","refPerHealthId","refMedicalDetails","refUnderPhysCare","refDrName"
     ,"refHospital","refBackpain","refProblem","refPastHistory","refFamilyHistory"
-    ,"refAnythingelse"
-  ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12 ,$13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23)
+    ,"refAnythingelse","refBackPainValue"
+  ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12 ,$13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23,$24)
   RETURNING *;
 `;
 
+// export const insertProfilePersonalData = `
+//     UPDATE public."users"
+//   SET
+//     "refStSex" = $1,
+//     "refQualification" = $2,
+//     "refOccupation" = $3,
+//     "refguardian" = $4,
+//     "refTimingId" = $5,
+//     "refUtId" = $6,
+//     "refStFName"=$7,
+//     "refStLName"=$8,
+//     "refStDOB"=$9,
+//     "refStAge"=$10,
+//     "refBranchId"=$11,
+//     "refSessionType"=$12,
+//     "refSPreferTimeId"=$13,
+//     "refSessionMode"=$14,
+//     "refMaritalStatus"=$15,
+//     "refWeddingDate"=$16,
+//     "refClassMode"=$17,
+//     "refSCustId"=$18,
+//     "refKidsCount"=$20,
+//     "refDeliveryType"=$21
+//   WHERE "refStId" = $19
+//   RETURNING *;
+
+// `;
 export const insertProfilePersonalData = `
     UPDATE public."users"
   SET 
@@ -47,11 +74,18 @@ export const insertProfilePersonalData = `
     "refSessionMode"=$14,
     "refMaritalStatus"=$15,
     "refWeddingDate"=$16,
-    "refClassMode"=$17
+    "refClassMode"=$17,
+    "refKidsCount"=$19,
+    "refDeliveryType"=$20
   WHERE "refStId" = $18
   RETURNING *;
 
 `;
+
+export const getStudentCount = `SELECT COUNT(*)
+FROM public.users
+WHERE "refSCustId" NOT LIKE '%S%' 
+  AND "refSCustId" LIKE 'UY' || $1 || '%';`;
 
 export const insertCommunicationData = `
   UPDATE public."refUserCommunication"
@@ -59,7 +93,8 @@ SET
   "refCtWhatsapp" = $2,
   "refCtMobile"=$3,
   "refCtEmail"=$4,
-  "refUcPreference"=$5
+  "refUcPreference"=$5,
+  "refEmerContact"=$6
 WHERE "refStId" = $1
 RETURNING *;
 `;
@@ -119,12 +154,13 @@ GROUP BY rt."refTimeMembersID", rm."refTimeMembers";`;
 //     ) ASC;`;
 export const getSectionTimeData = `SELECT 
     ROW_NUMBER() OVER (ORDER BY to_timestamp(substring("refTime" from '^[0-9:]+ [APM]+'), 'HH12:MI AM')) AS "order",
-    "refTimeId", 
-    "refTime",
-    "refTimeMode",
-    "refTimeDays"
+    rt."refTimeId", 
+    rt."refTime",
+    rt."refTimeMode",
+    sd."refDays" AS "refTimeDays"
 FROM 
     public."refTiming" rt
+    INNER JOIN public."refSessionDays" sd ON CAST (rt."refTimeDays" AS INTEGER) = sd."refSDId"
 WHERE 
     "refTimeMembersID" = $1 AND (rt."refDeleteAt" is null
     OR rt."refDeleteAt" = 0)

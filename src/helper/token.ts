@@ -2,6 +2,7 @@ import jwt, { JwtPayload } from "jsonwebtoken";
 import dotenv from "dotenv";
 import { request } from "http";
 import { ResponseToolkit } from "@hapi/hapi";
+import { encrypt } from "./encrypt";
 
 dotenv.config();
 
@@ -51,15 +52,68 @@ function decodeToken(token: string): JwtPayload | { error: string } {
 
 function validateToken(request: any, h: ResponseToolkit) {
   const authHeader = request.headers.authorization;
+
   if (!authHeader) {
     return h.response({ error: "Token missing" }).code(401).takeover();
   }
+
   const token = authHeader.split(" ")[1];
   const decodedToken = decodeToken(token);
-  console.log("decodedToken line ------ 59", decodedToken);
+
+  if ("error" in decodedToken) {
+    return h
+      .response(
+        encrypt(
+          {
+            token: false,
+            message: decodedToken.error,
+          },
+          true
+        )
+      )
+      .code(200)
+      .takeover();
+  }
+
+  // Attach the decoded token to the request plugins for use in the handler
   request.plugins.token = decodedToken;
 
+  // Continue to the next step if no errors
   return h.continue;
 }
 
 export { decodeToken, generateToken, validateToken, generateToken1 };
+
+// ___________________________________________________________________________________________________________
+
+//OTP Validation
+
+const TOKEN_EXPIRATION_OTP = "20m";
+
+function generateTokenOtp(tokenData: object, action: boolean): string | object {
+  console.log("action", action);
+  if (action) {
+    console.log("tokenData", tokenData);
+    const token = jwt.sign(tokenData, process.env.ACCESS_TOKEN as string, {
+      expiresIn: TOKEN_EXPIRATION_OTP,
+    });
+    console.log("token", token);
+    return token;
+  } else {
+    return tokenData;
+  }
+}
+
+function decodeTokenOtp(token: string): JwtPayload | { error: string } {
+  try {
+    const decoded = jwt.verify(token, process.env.ACCESS_TOKEN as string);
+    if (typeof decoded === "string") {
+      return { error: "Invalid token format" };
+    }
+    return decoded;
+  } catch (error) {
+    return { error: "Invalid or expired OTP" };
+  }
+}
+
+export { generateTokenOtp, decodeTokenOtp };

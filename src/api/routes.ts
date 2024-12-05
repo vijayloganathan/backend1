@@ -780,7 +780,7 @@ export class Settings implements IRoute {
           method: "POST",
           path: "/api/v1/settings/Section/addCustomClassData",
           config: {
-            pre: [{ method: validateToken, assign: "token" }],
+            // pre: [{ method: validateToken, assign: "token" }],
             handler: settingsPage.addCustomClassData,
             description: "Custom Class Data",
             auth: false,
@@ -803,6 +803,46 @@ export class Settings implements IRoute {
             pre: [{ method: validateToken, assign: "token" }],
             handler: settingsPage.deleteCustomClassData,
             description: "Editing the Custom Class Name ",
+            auth: false,
+          },
+        },
+        {
+          method: "GET",
+          path: "/api/v1/settings/generalHealth/Options",
+          config: {
+            pre: [{ method: validateToken, assign: "token" }],
+            handler: settingsPage.generalHealthOptions,
+            description: "Get the General Health Option List",
+            auth: false,
+          },
+        },
+        {
+          method: "POST",
+          path: "/api/v1/settings/generalHealth/addOptions",
+          config: {
+            pre: [{ method: validateToken, assign: "token" }],
+            handler: settingsPage.addGeneralHealth,
+            description: "Add new Health Options",
+            auth: false,
+          },
+        },
+        {
+          method: "POST",
+          path: "/api/v1/settings/generalHealth/editOptions",
+          config: {
+            pre: [{ method: validateToken, assign: "token" }],
+            handler: settingsPage.editGeneralHealth,
+            description: "Updating Health Options",
+            auth: false,
+          },
+        },
+        {
+          method: "POST",
+          path: "/api/v1/settings/generalHealth/deleteOptions",
+          config: {
+            pre: [{ method: validateToken, assign: "token" }],
+            handler: settingsPage.deleteGeneralHealth,
+            description: "Delete Health Options",
             auth: false,
           },
         },

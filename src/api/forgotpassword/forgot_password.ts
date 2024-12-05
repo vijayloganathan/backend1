@@ -18,10 +18,7 @@ import bcrypt from "bcryptjs";
 export class ForgotPasswordRepository {
   public async verifyUserNameEmailV1(userData: any): Promise<any> {
     try {
-      console.log("userData.validateText", userData.validateText);
       let ValidationTextResult = [];
-      console.log("userData.id", userData.id);
-      console.log("userData.validateText", userData.validateText);
       if (userData.validateText) {
         ValidationTextResult = await executeQuery(ValidateEmailUserName, [
           userData.validateText,
@@ -79,6 +76,7 @@ export class ForgotPasswordRepository {
         ];
 
         result = await executeQuery(SetOtp, params);
+        
       } else {
         const results = {
           success: true,
@@ -162,10 +160,7 @@ export class ForgotPasswordRepository {
   public async changePasswordV1(userData: any): Promise<any> {
     try {
       const refStId = userData.id;
-      console.log("refStId", refStId);
-      console.log("userData.newPassword", userData.password);
       const hashedPassword = await bcrypt.hash(userData.password, 10);
-      console.log("hashedPassword", hashedPassword);
 
       const passwordChangeResult = await executeQuery(changePassword, [
         hashedPassword,

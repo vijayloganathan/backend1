@@ -89,7 +89,7 @@ export class FinanceRepository {
     try {
       const id = userData.refStId;
       let studentData = await executeQuery(getStudentProfileData, [id]);
-      studentData[0].refDate = formatDate(studentData[0].refDate);
+      // studentData[0].refDate = formatDate(studentData[0].refDate);
 
       return encrypt(
         {
@@ -313,16 +313,15 @@ export class FinanceRepository {
     const client: PoolClient = await getClient();
 
     try {
-      console.log("\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\");
-      console.log("userData.refStId", userData.refStId);
       const feesCount = await executeQuery(pastFessCount, [userData.refStId]);
-      console.log("feesCount", feesCount);
 
       await client.query("BEGIN");
       const countResult = await executeQuery(paymentCount, []);
       const currentTime = CurrentTime();
       let newOrderId = convertToFormattedDateTime(currentTime);
       newOrderId = `${newOrderId}${(10000 + countResult[0].count).toString()}`;
+
+      console.log("  CurrentTime()", CurrentTime());
 
       let Data = [
         userData.refStId,
@@ -343,6 +342,7 @@ export class FinanceRepository {
         userData.refOfferName,
       ];
 
+      console.log("Data", Data);
       const storeFees = await client.query(setFeesStored, Data);
 
       if (feesCount[0].count == 0) {
@@ -448,7 +448,9 @@ export class FinanceRepository {
 
     try {
       let invoiceData = await executeQuery(passInvoiceData, [refOrderId]);
-      invoiceData[0].refDate = formatDate(invoiceData[0].refDate);
+      console.log("invoiceData[0].refDate", invoiceData[0].refDate);
+      // invoiceData[0].refDate = formatDate(invoiceData[0].refDate);
+      // console.log("invoiceData[0].refDate", invoiceData[0].refDate);
       return encrypt(
         {
           success: true,

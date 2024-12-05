@@ -82,14 +82,26 @@ WHERE
     "refDeleteAt" is null
     OR "refDeleteAt" = 0
   )`;
+// export const addCustomClass = `insert into
+//   "public"."refCustTime" (
+//     "refBranchId",
+//     "refCustTimeData"
+
+//   )
+// values
+//   ($1,$2)
+//   RETURNING *;`;
 export const addCustomClass = `insert into
-  "public"."refCustTime" (
+  "public"."refCustTime"(
     "refBranchId",
-    "refCustTimeData"
+    "refCustTimeData",
+    "refClassCount",
+    "refMonthDuration",
+    "refClassDes"
     
   )
 values
-  ($1,$2)
+  ($1,$2,$3,$4,$5)
   RETURNING *;`;
 
 export const editCustomClass = `update
@@ -105,3 +117,31 @@ set
   "refDeleteAt" = 1
 where
   "refCustTimeId" = $1;`;
+
+export const getHealthIssue = `SELECT
+  "refHealthId",
+  "refHealth"
+FROM
+  public."refHealthIssues"
+WHERE
+  "refIsDeleted" is null
+  OR "refIsDeleted" = 0`;
+
+export const addNewHealthIssue = `insert into
+  "public"."refHealthIssues" ("refHealth")
+values
+  ($1) RETURNING *;`;
+
+export const editHealthIssue = `update
+  "public"."refHealthIssues"
+set
+  "refHealth" = $1
+where
+  "refHealthId" = $2;`;
+
+export const deleteHealthIssue = `UPDATE
+  public."refHealthIssues"
+SET
+  "refIsDeleted" = 1
+WHERE
+  "refHealthId" = $1;`;

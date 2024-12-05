@@ -2,6 +2,7 @@ import { generateToken, decodeToken } from "../../helper/token";
 import { encrypt } from "../../helper/encrypt";
 import { executeQuery, getClient } from "../../helper/db";
 import { PoolClient } from "pg";
+import { generateClassDurationString } from "../../helper/common";
 
 import {
   getSectionPageData,
@@ -15,6 +16,10 @@ import {
   addCustomClass,
   editCustomClass,
   deleteCustomClass,
+  getHealthIssue,
+  addNewHealthIssue,
+  editHealthIssue,
+  deleteHealthIssue,
 } from "./query";
 
 import { timeFormat } from "../../helper/common";
@@ -287,7 +292,23 @@ export class SettingsRepository {
     const token = generateToken(tokenData, true);
 
     try {
-      const params = [userData.refBranchId, userData.refCustTimeData];
+      let refCustTimeData;
+      if (userData.refUseValue == false) {
+        refCustTimeData = await generateClassDurationString(
+          userData.refClassCount,
+          userData.refMonthDuration
+        );
+      } else {
+        refCustTimeData = userData.refClassValue;
+      }
+
+      const params = [
+        userData.refBranchId,
+        refCustTimeData,
+        userData.refClassCount,
+        userData.refMonthDuration,
+        userData.refClassValue,
+      ];
       const customClassResult = await executeQuery(addCustomClass, params);
       const results = {
         success: true,
@@ -360,6 +381,128 @@ export class SettingsRepository {
       const results = {
         success: false,
         message: "Error in Deleting The Custom Class Data",
+        token: token,
+      };
+      return encrypt(results, true);
+    }
+  }
+  public async generalHealthOptionsV1(
+    userData: any,
+    decodedToken: number
+  ): Promise<any> {
+    const refStId = decodedToken;
+    const tokenData = {
+      id: refStId,
+    };
+    const token = generateToken(tokenData, true);
+
+    try {
+      const healthOptions = await executeQuery(getHealthIssue, []);
+      const results = {
+        success: true,
+        message: "Health Options is Passed Successfully",
+        token: token,
+        healthOptions: healthOptions,
+      };
+      return encrypt(results, true);
+    } catch (error) {
+      const results = {
+        success: false,
+        message: "Error in Sending the Health Options ",
+        token: token,
+      };
+      return encrypt(results, true);
+    }
+  }
+  public async addGeneralHealthV1(
+    userData: any,
+    decodedToken: number
+  ): Promise<any> {
+    const refStId = decodedToken;
+    const tokenData = {
+      id: refStId,
+    };
+    const token = generateToken(tokenData, true);
+
+    try {
+      console.log("userData.healthText", userData.healthText);
+      const healthOptions = await executeQuery(addNewHealthIssue, [
+        userData.healthText,
+      ]);
+
+      const results = {
+        success: true,
+        message: "New Health Issue Is Added Successfully",
+        token: token,
+      };
+      return encrypt(results, true);
+    } catch (error) {
+      const results = {
+        success: false,
+        message: "Error in Adding new Health Issue",
+        token: token,
+      };
+      return encrypt(results, true);
+    }
+  }
+  public async editGeneralHealthV1(
+    userData: any,
+    decodedToken: number
+  ): Promise<any> {
+    const refStId = decodedToken;
+    const tokenData = {
+      id: refStId,
+    };
+    const token = generateToken(tokenData, true);
+
+    try {
+      console.log("userData.healthText", userData.healthText);
+      console.log("userData.refHId", userData.refHId);
+      const healthOptions = await executeQuery(editHealthIssue, [
+        userData.healthText,
+        userData.refHId,
+      ]);
+
+      const results = {
+        success: true,
+        message: "The Health Issue is Content changed successfully",
+        token: token,
+      };
+      return encrypt(results, true);
+    } catch (error) {
+      const results = {
+        success: false,
+        message: "Error in updating the Health Issue",
+        token: token,
+      };
+      return encrypt(results, true);
+    }
+  }
+  public async deleteGeneralHealthV1(
+    userData: any,
+    decodedToken: number
+  ): Promise<any> {
+    const refStId = decodedToken;
+    const tokenData = {
+      id: refStId,
+    };
+    const token = generateToken(tokenData, true);
+
+    try {
+      const healthOptions = await executeQuery(deleteHealthIssue, [
+        userData.refHealthId,
+      ]);
+
+      const results = {
+        success: true,
+        message: "Health Issue Is Deleted Successfully",
+        token: token,
+      };
+      return encrypt(results, true);
+    } catch (error) {
+      const results = {
+        success: false,
+        message: "Error in Deleting the Health Issue",
         token: token,
       };
       return encrypt(results, true);

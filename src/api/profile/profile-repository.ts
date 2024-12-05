@@ -159,6 +159,8 @@ export class ProfileRepository {
         userData.refStId, //18
         userData.personalData.ref_su_kidsCount, //19
         userData.personalData.ref_su_deliveryType, // 20
+        // userData.personalData.ref_su_Therapy, //21
+        // userData.personalData.ref_su_regSession, //22
       ];
       console.log("userResult1", 0);
 
@@ -401,18 +403,22 @@ export class ProfileRepository {
     try {
       const refStId = userData.refStId;
       const branchId = userData.branchId;
-      const refAge = userData.refAge || 23;
+      console.log("branchId", branchId);
+      const refAge = userData.refAge;
+      console.log("refAge", refAge);
 
       const MemberList = await executeQuery(BranchMemberList, [
         refAge,
         branchId,
       ]);
+      console.log("MemberList", MemberList);
 
       const formattedMemberList = MemberList.reduce((acc, member) => {
         acc[member.refTimeMembersID] = member.refTimeMembers;
         return acc;
       }, {});
 
+      console.log("formattedMemberList", formattedMemberList);
       const tokenData = {
         id: refStId,
       };
@@ -440,7 +446,7 @@ export class ProfileRepository {
       const sectionTimeList = await executeQuery(getSectionTimeData, [
         sectionId,
       ]);
-      const custTime = await executeQuery(getCustTime, []);
+      const custTime = await executeQuery(getCustTime, [userData.refBranchId]);
 
       const formattedSectionTime = sectionTimeList.reduce((acc, member) => {
         acc[member.order] = {

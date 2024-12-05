@@ -105,6 +105,7 @@ export class DirectorRepository {
     try {
       const userTypeLabel = await executeQuery(getUserStatusLabel, []);
       const userData = await executeQuery(getDataForUserManagement, [Id]);
+      console.log("userData", userData);
       const userTypeMap = new Map(
         userTypeLabel.map((item) => [item.refUtId, item.refUserType])
       );
@@ -115,6 +116,7 @@ export class DirectorRepository {
       });
 
       const userTransaction = await executeQuery(getUserTransaction, [Id]);
+      console.log("userTransaction", userTransaction);
       const data = {
         UserData: userData,
         userTransaction: userTransaction,

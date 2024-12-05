@@ -353,6 +353,7 @@ export class UserRepository {
   ): Promise<any> {
     try {
       const refStId = decodedToken;
+      console.log("refStId", refStId);
       const id = [refStId];
       const user = await executeQuery(selectUserData, id);
       console.log("CurrentTime() line -----------334", CurrentTime());
@@ -361,6 +362,7 @@ export class UserRepository {
         CurrentTime(),
         refStId,
       ]);
+      console.log("signinCount line --------------- 365", signinCount);
       const followUpCount = await executeQuery(getFollowUpCount, id);
       const status2 = followUpCount.length > 0 ? followUpCount[0].status : null;
 
@@ -373,6 +375,7 @@ export class UserRepository {
       }
       const registerBtn = {
         signUpCount: signinCount[0].result,
+
         followUpCount: result,
         refUtId: userData,
       };

@@ -2157,8 +2157,8 @@ export class SettingsController {
     request: any,
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
-    const decodedToken = request.plugins.token.id;
-    // const decodedToken = 1;
+    // const decodedToken = request.plugins.token.id;
+    const decodedToken = 1;
     try {
       logger.info(`GET URL REQ => ${request.url.href}`);
       const entity = await this.resolver.addCustomClassDataV1(
@@ -2232,6 +2232,126 @@ export class SettingsController {
       return response.response(entity).code(200);
     } catch (error) {
       logger.error("error in Deleting Custom Class Data", error);
+      return response
+        .response({
+          success: false,
+          message:
+            error instanceof Error
+              ? error.message
+              : "An unknown error occurred",
+        })
+        .code(500);
+    }
+  };
+  public generalHealthOptions = async (
+    request: any,
+    response: Hapi.ResponseToolkit
+  ): Promise<any> => {
+    const decodedToken = request.plugins.token.id;
+    // const decodedToken = 1;
+    try {
+      logger.info(`GET URL REQ => ${request.url.href}`);
+      const entity = await this.resolver.generalHealthOptionsV1(
+        request.payload,
+        decodedToken
+      );
+
+      if (entity.success) {
+        return response.response(entity).code(200);
+      }
+      return response.response(entity).code(200);
+    } catch (error) {
+      logger.error("error in Sending the General Health Options", error);
+      return response
+        .response({
+          success: false,
+          message:
+            error instanceof Error
+              ? error.message
+              : "An unknown error occurred",
+        })
+        .code(500);
+    }
+  };
+  public addGeneralHealth = async (
+    request: any,
+    response: Hapi.ResponseToolkit
+  ): Promise<any> => {
+    const decodedToken = request.plugins.token.id;
+    // const decodedToken = 1;
+    try {
+      logger.info(`GET URL REQ => ${request.url.href}`);
+      const entity = await this.resolver.addGeneralHealthV1(
+        request.payload,
+        decodedToken
+      );
+
+      if (entity.success) {
+        return response.response(entity).code(200);
+      }
+      return response.response(entity).code(200);
+    } catch (error) {
+      logger.error("error in adding new general Health", error);
+      return response
+        .response({
+          success: false,
+          message:
+            error instanceof Error
+              ? error.message
+              : "An unknown error occurred",
+        })
+        .code(500);
+    }
+  };
+  public editGeneralHealth = async (
+    request: any,
+    response: Hapi.ResponseToolkit
+  ): Promise<any> => {
+    const decodedToken = request.plugins.token.id;
+    // const decodedToken = 1;
+    try {
+      logger.info(`GET URL REQ => ${request.url.href}`);
+      const entity = await this.resolver.editGeneralHealthV1(
+        request.payload,
+        decodedToken
+      );
+
+      if (entity.success) {
+        return response.response(entity).code(200);
+      }
+      return response.response(entity).code(200);
+    } catch (error) {
+      logger.error("error in Editing the Health Issue", error);
+      return response
+        .response({
+          success: false,
+          message:
+            error instanceof Error
+              ? error.message
+              : "An unknown error occurred",
+        })
+        .code(500);
+    }
+  };
+  public deleteGeneralHealth = async (
+    request: any,
+    response: Hapi.ResponseToolkit
+  ): Promise<any> => {
+    const decodedToken = request.plugins.token.id;
+    // const decodedToken = 1;
+    try {
+      logger.info(`GET URL REQ => ${request.url.href}`);
+      const entity = await this.resolver.deleteGeneralHealthV1(
+        request.payload,
+        decodedToken
+      );
+
+      if (entity.success) {
+        return response.response(entity).code(200);
+      }
+      return response.response(entity).code(200);
+    } catch (error) {
+      logger.error("error in Deleting the Health Issue", error);
       return response
         .response({
           success: false,

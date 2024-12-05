@@ -353,7 +353,14 @@ export const updateHistoryQuery1 = `
 
 export const getTempData = `SELECT * FROM public."refTempUserData" WHERE "refTeId"=$1`;
 
-export const getPresentHealthLabel = 'SELECT * FROM public."refHealthIssues"';
+export const getPresentHealthLabel = `SELECT
+  "refHealthId",
+  "refHealth"
+FROM
+  public."refHealthIssues"
+WHERE
+  "refIsDeleted" is null
+  OR "refIsDeleted" = 0`;
 
 export const updateNotification = `INSERT INTO public."refNotification" ("transId", "refRead") VALUES ($1, $2);`;
 

@@ -76,7 +76,7 @@ export const insertProfilePersonalData = `
     "refWeddingDate"=$16,
     "refClassMode"=$17,
     "refKidsCount"=$19,
-    "refDeliveryType"=$20
+    "refDeliveryType"=$20,
   WHERE "refStId" = $18
   RETURNING *;
 
@@ -112,8 +112,14 @@ WHERE u."refStId" = $1;
 export const fetchCommunicationRef = `SELECT * FROM public."refCommType" `;
 
 export const fetchPresentHealthProblem = `
-  SELECT "refHealthId", "refHealth"
-  FROM public."refHealthIssues";
+  SELECT
+  "refHealthId",
+  "refHealth"
+FROM
+  public."refHealthIssues"
+WHERE
+  "refIsDeleted" is null
+  OR "refIsDeleted" = 0
 `;
 
 export const updateHistoryQuery = `
@@ -172,10 +178,22 @@ ORDER BY
 
 // export const getCustTime = `SELECT * FROM public."refCustTime"`;
 
+// export const getCustTime = `SELECT
+//   *
+// FROM
+//   public."refCustTime"
+// WHERE
+//   "refDeleteAt" is null
+//   OR "refDeleteAt" = 0`;
 export const getCustTime = `SELECT
   *
 FROM
   public."refCustTime"
 WHERE
-  "refDeleteAt" is null
-  OR "refDeleteAt" = 0`;
+  "refBranchId"=$1 AND ("refDeleteAt" IS NULL
+  OR "refDeleteAt" = 0)
+ORDER BY
+  "refMonthDuration" IS NULL, 
+  "refMonthDuration",         
+  "refClassCount" IS NULL,    
+  "refClassCount";`;

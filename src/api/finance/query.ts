@@ -156,7 +156,7 @@ VALUES (
   $2,  -- refPaymentMode
   $3,  -- refPaymentFrom
   $4,  -- refCollectedBy
-  TO_TIMESTAMP($5, 'DD/MM/YYYY, HH12:MI:SS am'), -- refDate
+  $5,  -- refDate
   $6,  -- refExpiry
   $7,  -- refOrderId
   $8,  -- refTransactionId

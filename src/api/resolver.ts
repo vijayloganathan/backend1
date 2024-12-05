@@ -577,6 +577,42 @@ export class SettingsResolver {
       domain_code
     );
   }
+  public async generalHealthOptionsV1(
+    user_data: any,
+    domain_code: any
+  ): Promise<any> {
+    return await this.SettingsRepository.generalHealthOptionsV1(
+      user_data,
+      domain_code
+    );
+  }
+  public async addGeneralHealthV1(
+    user_data: any,
+    domain_code: any
+  ): Promise<any> {
+    return await this.SettingsRepository.addGeneralHealthV1(
+      user_data,
+      domain_code
+    );
+  }
+  public async editGeneralHealthV1(
+    user_data: any,
+    domain_code: any
+  ): Promise<any> {
+    return await this.SettingsRepository.editGeneralHealthV1(
+      user_data,
+      domain_code
+    );
+  }
+  public async deleteGeneralHealthV1(
+    user_data: any,
+    domain_code: any
+  ): Promise<any> {
+    return await this.SettingsRepository.deleteGeneralHealthV1(
+      user_data,
+      domain_code
+    );
+  }
 }
 export class FutureClientsResolver {
   public FutureClientsRepository: any;

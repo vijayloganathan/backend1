@@ -13,12 +13,17 @@ import {
   getCustTime,
   fetchCommunicationRef,
   getStudentCount,
+  storeMedicalDoc,
+  deleteMedDoc,
+  getMedDoc,
 } from "./query";
+import path from "path";
+
 import { encrypt } from "../../helper/encrypt";
 import { generateToken, generateToken1 } from "../../helper/token";
 import { PoolClient } from "pg";
-import { getAdjustedTime } from "../../helper/common";
 import { CurrentTime } from "../../helper/common";
+import { storeFile, viewFile, deleteFile } from "../../helper/storage";
 
 export class ProfileRepository {
   // STORING ADDRESS IN DB
@@ -120,19 +125,6 @@ export class ProfileRepository {
     const TokenData = generateToken1(token, true);
     try {
       await client.query("BEGIN");
-
-      // let bId = userData.personalData.ref_su_branchId
-      //   .toString()
-      //   .padStart(2, "0");
-      // console.log("bId", bId);
-
-      // const studentCountResult = await executeQuery(getStudentCount, [bId]);
-
-      // const userCount = parseInt(studentCountResult[0].count, 10);
-
-      // let newCustomerId = `UY${bId}${(userCount + 1)
-      //   .toString()
-      //   .padStart(4, "0")}`;
 
       userData.refStId = decodedToken;
       const refUtId = 2;
@@ -277,6 +269,19 @@ export class ProfileRepository {
           "Failed to insert health data into the refGeneralHealth table."
         );
       }
+
+      for (let i = 0; i < userData.MedicalDocuments.length; i++) {
+        const paramsMedicalDocuments = [
+          userData.MedicalDocuments[i].medDocName,
+          userData.MedicalDocuments[i].medDocPath,
+          userData.refStId,
+        ];
+        const userResult6 = client.query(
+          storeMedicalDoc,
+          paramsMedicalDocuments
+        );
+      }
+
       const transTypeId = 3,
         transData = "Registered Form Data",
         refUpdatedBy = "user";
@@ -288,9 +293,7 @@ export class ProfileRepository {
         refUpdatedBy,
       ];
 
-      console.log("userResult5", 0);
       const userResult5 = await client.query(updateHistoryQuery, parasHistory);
-      console.log("userResult5", 1);
 
       if (!userResult5.rowCount) {
         throw new Error("Failed to insert The History In refUserTxnHistory.");
@@ -485,6 +488,73 @@ export class ProfileRepository {
     } catch (error) {
       console.error("Error in Section Time Data", error);
       throw error;
+    }
+  }
+  public async userHealthReportUploadV1(userData: any): Promise<any> {
+    try {
+      const file = userData.file;
+      let filePath: string | any;
+      let profileFile;
+
+      if (file) {
+        filePath = await storeFile(file, 3);
+      }
+      const fileBuffer = await viewFile(filePath);
+      const fileBase64 = fileBuffer.toString("base64");
+      profileFile = {
+        filename: path.basename(filePath),
+        content: fileBase64,
+        contentType: "image/jpeg/application/pdf",
+      };
+      return encrypt(
+        {
+          success: true,
+          message: "File Stored Successfully",
+          filePath: filePath,
+          file: profileFile,
+        },
+        true
+      );
+    } catch (error) {
+      return encrypt(
+        {
+          success: true,
+          message: "Error In Storing the Medical Documents",
+        },
+        true
+      );
+    }
+  }
+  public async deleteMedicalDocumentV1(userData: any): Promise<any> {
+    try {
+      let filepath;
+
+      if (userData.refMedDocId) {
+        const medDoc = await executeQuery(getMedDoc, [userData.refMedDocId]);
+        filepath = medDoc[0].refMedDocPath;
+        await executeQuery(deleteMedDoc, [userData.refMedDocId]);
+      } else {
+        filepath = userData.filePath;
+      }
+      if (filepath) {
+        await deleteFile(filepath);
+      }
+
+      return encrypt(
+        {
+          success: true,
+          message: "The Medical File Deleted Successfully",
+        },
+        false
+      );
+    } catch (error) {
+      return encrypt(
+        {
+          success: true,
+          message: "Error In Deleting the Medical Documents",
+        },
+        true
+      );
     }
   }
 }

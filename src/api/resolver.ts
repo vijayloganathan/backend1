@@ -131,6 +131,24 @@ export class ProfileResolver {
   public async sectionTimeV1(userData: any, domainCode: any): Promise<any> {
     return await this.profileRepository.sectionTimeV1(userData, domainCode);
   }
+  public async userHealthReportUploadV1(
+    userData: any,
+    domainCode: any
+  ): Promise<any> {
+    return await this.profileRepository.userHealthReportUploadV1(
+      userData,
+      domainCode
+    );
+  }
+  public async deleteMedicalDocumentV1(
+    userData: any,
+    domainCode: any
+  ): Promise<any> {
+    return await this.profileRepository.deleteMedicalDocumentV1(
+      userData,
+      domainCode
+    );
+  }
 }
 
 export class FrontDeskResolver {

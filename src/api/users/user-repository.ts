@@ -809,6 +809,21 @@ export class UserRepository {
 
             case "communication":
               transTypeId = 13;
+              tableName = "refMedicalDocuments";
+              getUserData = rawGetUserDataQuery.replace(
+                "{{tableName}}",
+                tableName
+              );
+              newData = await executeQuery(getUserData, [refStId]);
+
+              olddata = newData[0];
+              userData = { ...userData, olddata };
+              updatedData = userData.communication;
+              oldData = userData.olddata;
+              break;
+
+            case "medicalDocuments":
+              transTypeId = 13;
               tableName = "refUserCommunication";
               getUserData = rawGetUserDataQuery.replace(
                 "{{tableName}}",

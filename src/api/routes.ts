@@ -180,6 +180,33 @@ export class UserProfile implements IRoute {
             auth: false,
           },
         },
+        {
+          method: "POST",
+          path: "/api/v1/profile/userHealthReportUpload",
+          config: {
+            // pre: [{ method: validateToken, assign: "token" }],
+            handler: controller.userHealthReportUpload,
+            description: "Uploading the User Health Report",
+            tags: ["api", "Users"],
+            auth: false,
+            payload: {
+              maxBytes: 10485760,
+              output: "stream",
+              parse: true,
+              multipart: true,
+            },
+          },
+        },
+        {
+          method: "POST",
+          path: "/api/v1/profile/deleteMedicalDocument",
+          config: {
+            // pre: [{ method: validateToken, assign: "token" }],
+            handler: controller.deleteMedicalDocument,
+            description: "Deleting the Medical Documents",
+            auth: false,
+          },
+        },
       ]);
       resolve(true);
     });

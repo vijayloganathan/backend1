@@ -39,6 +39,8 @@ export const storeFile = async (
     uploadDir = path.join(process.cwd(), "./src/assets/Profile");
   } else if (uploadType === 2) {
     uploadDir = path.join(process.cwd(), "./src/assets/Notes");
+  } else if (uploadType === 3) {
+    uploadDir = path.join(process.cwd(), "./src/assets/Medical-reports");
   } else {
     uploadDir = path.join(
       process.cwd(),

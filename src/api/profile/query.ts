@@ -197,3 +197,15 @@ ORDER BY
   "refMonthDuration",         
   "refClassCount" IS NULL,    
   "refClassCount";`;
+
+export const storeMedicalDoc = `insert into
+  "public"."refMedicalDocuments" ("refMedDocName", "refMedDocPath", "refStId")
+values
+  ($1, $2, $3);`;
+
+export const deleteMedDoc = `delete from
+  public."refMedicalDocuments"
+where
+  "refMedDocId" = $1`;
+
+export const getMedDoc = `SELECt * FROM public."refMedicalDocuments" WHERE "refMedDocId"=$1`;

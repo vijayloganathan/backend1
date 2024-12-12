@@ -1,8 +1,13 @@
 import { executeQuery, getClient } from "../../helper/db";
-import { buildUpdateQuery, getChanges } from "../../helper/buildquery";
+import {
+  buildUpdateQuery,
+  getChanges,
+  buildInsertQuery,
+  getChanges1,
+} from "../../helper/buildquery";
 import { PoolClient } from "pg";
 import path from "path";
-import { viewFile } from "../../helper/storage";
+import { viewFile, getFileType } from "../../helper/storage";
 import { reLabelText } from "../../helper/label";
 import { getAdjustedTime, CurrentTime } from "../../helper/common";
 
@@ -30,6 +35,7 @@ import {
   selectUserByrefStId,
   changePassword,
   checkEmailQuery,
+  fetMedDocData,
 } from "./query";
 import { getUserData as rawGetUserDataQuery } from "./query";
 import { encrypt } from "../../helper/encrypt";
@@ -52,7 +58,6 @@ export class UserRepository {
         user.refCustHashedPassword
       );
       if (validPassword) {
-        console.log("CurrentTime() line -----------54", CurrentTime());
         const history = [2, CurrentTime(), user.refStId, "User", "Login"];
 
         const updateHistory = await executeQuery(updateHistoryQuery, history);
@@ -81,7 +86,6 @@ export class UserRepository {
           followUpCount: result,
           refUtId: userData,
         };
-        console.log("registerBtn", registerBtn);
 
         if (updateHistory && updateHistory.length > 0) {
           const tokenData = {
@@ -134,9 +138,7 @@ export class UserRepository {
         ]);
 
         if (result.length > 0) {
-          console.log("error in changing Password");
         }
-        console.log("CurrentTime() line -----------137", CurrentTime());
 
         const history = [
           19,
@@ -353,16 +355,13 @@ export class UserRepository {
   ): Promise<any> {
     try {
       const refStId = decodedToken;
-      console.log("refStId", refStId);
       const id = [refStId];
       const user = await executeQuery(selectUserData, id);
-      console.log("CurrentTime() line -----------334", CurrentTime());
 
       const signinCount = await executeQuery(getSingInCount, [
         CurrentTime(),
         refStId,
       ]);
-      console.log("signinCount line --------------- 365", signinCount);
       const followUpCount = await executeQuery(getFollowUpCount, id);
       const status2 = followUpCount.length > 0 ? followUpCount[0].status : null;
 
@@ -496,18 +495,24 @@ export class UserRepository {
     userData: any,
     decodedToken: number
   ): Promise<any> {
-    const id = decodedToken || 65;
+    const id = decodedToken;
     const tokenData = {
       id: id,
     };
 
     let refStId;
     const checkUser = await executeQuery(getUserType, [id]);
-    if (checkUser[0].refUtId == 5 || checkUser[0].refUtId == 6) {
+    if (
+      checkUser[0].refUtId == 5 ||
+      checkUser[0].refUtId == 6 ||
+      checkUser[0].refUtId == 2 ||
+      checkUser[0].refUtId == 3
+    ) {
       refStId = id;
     } else {
       refStId = userData.refStId;
     }
+    console.log("refStId", refStId);
 
     const token = generateToken(tokenData, true);
 
@@ -645,16 +650,37 @@ export class UserRepository {
 
       profileData = { ...profileData, modeOfCommunication };
 
+      let getMedDocument = await executeQuery(fetMedDocData, [refStId]);
+
+      if (getMedDocument.length > 0) {
+        for (let i = 0; i < getMedDocument.length; i++) {
+          const filePath = getMedDocument[i].refMedDocPath;
+          const fileBuffer = await viewFile(filePath);
+          const fileBase64 = fileBuffer.toString("base64");
+
+          const profileFile = {
+            filename: path.basename(filePath),
+            content: fileBase64,
+            contentType: getFileType(filePath), // Dynamically set content type
+          };
+
+          // Add profileFile to the current object
+          getMedDocument[i].refMedDocFile = profileFile;
+        }
+      }
+
       return encrypt(
         {
           success: true,
           message: "profile Data Is Passed Successfully",
           token: token,
           data: profileData,
+          Documents: getMedDocument,
         },
         true
       );
     } catch (error) {
+      console.log("error", error);
       return encrypt(
         {
           success: false,
@@ -671,6 +697,8 @@ export class UserRepository {
   ): Promise<any> {
     const client: PoolClient = await getClient();
     const refStId = decodedToken;
+    const tokenData = { id: refStId };
+    const token = generateToken(tokenData, true);
 
     let refUtId: string;
 
@@ -809,21 +837,6 @@ export class UserRepository {
 
             case "communication":
               transTypeId = 13;
-              tableName = "refMedicalDocuments";
-              getUserData = rawGetUserDataQuery.replace(
-                "{{tableName}}",
-                tableName
-              );
-              newData = await executeQuery(getUserData, [refStId]);
-
-              olddata = newData[0];
-              userData = { ...userData, olddata };
-              updatedData = userData.communication;
-              oldData = userData.olddata;
-              break;
-
-            case "medicalDocuments":
-              transTypeId = 13;
               tableName = "refUserCommunication";
               getUserData = rawGetUserDataQuery.replace(
                 "{{tableName}}",
@@ -837,18 +850,66 @@ export class UserRepository {
               oldData = userData.olddata;
               break;
 
+            case "medicalDocuments":
+              transTypeId = 23;
+              tableName = "refMedicalDocuments";
+              getUserData = rawGetUserDataQuery.replace(
+                "{{tableName}}",
+                tableName
+              );
+              newData = await executeQuery(getUserData, [refStId]);
+
+              olddata = newData;
+              userData = { ...userData, olddata };
+              updatedData = userData.medicalDocuments;
+              oldData = userData.olddata;
+              break;
+
             default:
               continue;
           }
           const identifier = { column: "refStId", value: refStId };
+          let userResult;
 
-          const { updateQuery, values } = buildUpdateQuery(
-            tableName,
-            updatedData,
-            identifier
-          );
+          if (userData.medicalDocuments) {
+            for (let i = 0; i < userData.medicalDocuments.length; i++) {
+              if (userData.medicalDocuments[i].refMedDocId) {
+                const identifier = {
+                  column: "refMedDocId",
+                  value: userData.medicalDocuments[i].refMedDocId,
+                };
+                const { updateQuery, values } = buildUpdateQuery(
+                  tableName,
+                  updatedData[i],
+                  identifier
+                );
+                userResult = await client.query(updateQuery, values);
+              } else {
+                updatedData[i] = { ...updatedData[i], refStId: refStId };
+                const { insertQuery, values } = buildInsertQuery(
+                  tableName,
+                  updatedData[i]
+                );
+                userResult = await client.query(insertQuery, values);
+              }
+            }
+            getUserData = rawGetUserDataQuery.replace(
+              "{{tableName}}",
+              tableName
+            );
+            newData = await executeQuery(getUserData, [refStId]);
 
-          const userResult = await client.query(updateQuery, values);
+            olddata = newData;
+            oldData = olddata;
+          } else {
+            const { updateQuery, values } = buildUpdateQuery(
+              tableName,
+              updatedData,
+              identifier
+            );
+
+            userResult = await client.query(updateQuery, values);
+          }
 
           if (oldData.refPerHealthId && updatedData.refPerHealthId) {
             const getLabel = await executeQuery(getPresentHealthLabel, []);
@@ -873,9 +934,13 @@ export class UserRepository {
             updatedData.refPerHealthId = JSON.stringify(labelsUpdatedData);
           }
 
-          const changes = getChanges(updatedData, oldData);
-          if (!userResult.rowCount) {
-            throw new Error("Failed to update the profile data.");
+          let changes: any;
+          if (userData.medicalDocuments) {
+            changes = getChanges1(updatedData, oldData);
+            console.log("changes", changes);
+          } else {
+            changes = getChanges(updatedData, oldData);
+            console.log("changes", changes);
           }
 
           for (const key in changes) {
@@ -901,7 +966,6 @@ export class UserRepository {
                 throw new Error("Failed to update the History.");
               }
               const paramsNotification = [queryResult.rows[0].transId, false];
-              console.log("paramsNotification", paramsNotification);
               const notificationResult = await client.query(
                 updateNotification,
                 paramsNotification
@@ -915,9 +979,6 @@ export class UserRepository {
           }
         }
       }
-
-      const tokenData = { id: refStId };
-      const token = generateToken(tokenData, true);
 
       return encrypt(
         {
@@ -933,6 +994,7 @@ export class UserRepository {
       const results = {
         success: false,
         message: "Error in updating the profile data",
+        token: token,
       };
       return encrypt(results, true);
     } finally {

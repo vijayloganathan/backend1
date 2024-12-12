@@ -101,3 +101,19 @@ export const deleteFile = async (filePath: string): Promise<void> => {
     });
   });
 };
+
+export const getFileType = (filePath: string): string => {
+  const extname = path.extname(filePath).toLowerCase();
+  
+  switch (extname) {
+    case '.jpg':
+    case '.jpeg':
+    case '.png':
+    case '.gif':
+      return 'image/jpeg';  // Can be adjusted for other image types
+    case '.pdf':
+      return 'application/pdf';
+    default:
+      return 'application/octet-stream';  // Default for unsupported types
+  }
+};

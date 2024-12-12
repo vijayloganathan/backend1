@@ -208,3 +208,5 @@ export const updateNotification = `INSERT INTO public."refNotification" ("transI
 export const TimeStamp = `SELECT CURRENT_TIMESTAMP;`;
 
 export const time = `SELECT CURRENT_TIME;`;
+
+export const fetMedDocData = `SELECT * FROM public."refMedicalDocuments" WHERE "refStId"=$1`;

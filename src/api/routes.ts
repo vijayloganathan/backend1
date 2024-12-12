@@ -184,7 +184,7 @@ export class UserProfile implements IRoute {
           method: "POST",
           path: "/api/v1/profile/userHealthReportUpload",
           config: {
-            // pre: [{ method: validateToken, assign: "token" }],
+            pre: [{ method: validateToken, assign: "token" }],
             handler: controller.userHealthReportUpload,
             description: "Uploading the User Health Report",
             tags: ["api", "Users"],
@@ -201,7 +201,7 @@ export class UserProfile implements IRoute {
           method: "POST",
           path: "/api/v1/profile/deleteMedicalDocument",
           config: {
-            // pre: [{ method: validateToken, assign: "token" }],
+            pre: [{ method: validateToken, assign: "token" }],
             handler: controller.deleteMedicalDocument,
             description: "Deleting the Medical Documents",
             auth: false,

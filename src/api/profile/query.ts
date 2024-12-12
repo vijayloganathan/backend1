@@ -56,30 +56,32 @@ export const insertProfileGeneralHealth = `
 
 // `;
 export const insertProfilePersonalData = `
-    UPDATE public."users"
-  SET 
-    "refStSex" = $1,
-    "refQualification" = $2,
-    "refOccupation" = $3,
-    "refguardian" = $4,
-    "refTimingId" = $5,
-    "refUtId" = $6,
-    "refStFName"=$7,
-    "refStLName"=$8,
-    "refStDOB"=$9,
-    "refStAge"=$10,
-    "refBranchId"=$11,
-    "refSessionType"=$12,
-    "refSPreferTimeId"=$13,
-    "refSessionMode"=$14,
-    "refMaritalStatus"=$15,
-    "refWeddingDate"=$16,
-    "refClassMode"=$17,
-    "refKidsCount"=$19,
-    "refDeliveryType"=$20,
-  WHERE "refStId" = $18
-  RETURNING *;
-
+    UPDATE
+  public."users"
+SET
+  "refStSex" = $1,
+  "refQualification" = $2,
+  "refOccupation" = $3,
+  "refguardian" = $4,
+  "refTimingId" = $5,
+  "refUtId" = $6,
+  "refStFName" = $7,
+  "refStLName" = $8,
+  "refStDOB" = $9,
+  "refStAge" = $10,
+  "refBranchId" = $11,
+  "refSessionType" = $12,
+  "refSPreferTimeId" = $13,
+  "refSessionMode" = $14,
+  "refMaritalStatus" = $15,
+  "refWeddingDate" = $16,
+  "refClassMode" = $17,
+  "refKidsCount" = $19,
+  "refDeliveryType" = $20
+WHERE
+  "refStId" = $18
+RETURNING
+  *;
 `;
 
 export const getStudentCount = `SELECT COUNT(*)

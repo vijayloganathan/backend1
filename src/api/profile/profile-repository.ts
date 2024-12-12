@@ -23,7 +23,12 @@ import { encrypt } from "../../helper/encrypt";
 import { generateToken, generateToken1 } from "../../helper/token";
 import { PoolClient } from "pg";
 import { CurrentTime } from "../../helper/common";
-import { storeFile, viewFile, deleteFile } from "../../helper/storage";
+import {
+  storeFile,
+  viewFile,
+  deleteFile,
+  getFileType,
+} from "../../helper/storage";
 
 export class ProfileRepository {
   // STORING ADDRESS IN DB
@@ -256,7 +261,6 @@ export class ProfileRepository {
         userData.generalhealth.refAnythingelse,
         userData.generalhealth.refBackPainValue,
       ];
-      console.log("paramsHealth", paramsHealth);
       console.log("userResult4", 0);
       const userResult4 = await client.query(
         insertProfileGeneralHealth,
@@ -270,12 +274,25 @@ export class ProfileRepository {
         );
       }
 
-      for (let i = 0; i < userData.MedicalDocuments.length; i++) {
+      console.log(
+        "userData.MedicalDocuments.length",
+        userData.MedicalDocuments
+      );
+      console.log(
+        "userData.MedicalDocuments.length",
+        userData.MedicalDocuments.uploadDocuments.length
+      );
+      for (
+        let i = 0;
+        i < userData.MedicalDocuments.uploadDocuments.length;
+        i++
+      ) {
         const paramsMedicalDocuments = [
-          userData.MedicalDocuments[i].medDocName,
-          userData.MedicalDocuments[i].medDocPath,
+          userData.MedicalDocuments.uploadDocuments[i].refMedDocName,
+          userData.MedicalDocuments.uploadDocuments[i].refMedDocPath,
           userData.refStId,
         ];
+        console.log("paramsMedicalDocuments", paramsMedicalDocuments);
         const userResult6 = client.query(
           storeMedicalDoc,
           paramsMedicalDocuments
@@ -311,9 +328,10 @@ export class ProfileRepository {
     } catch (error) {
       await client.query("ROLLBACK");
 
+      console.log("error", error);
       const results = {
         success: false,
-        message: error || "Error occurred while processing.",
+        message: error,
       };
       return encrypt(results, true);
     } finally {
@@ -449,7 +467,7 @@ export class ProfileRepository {
       const sectionTimeList = await executeQuery(getSectionTimeData, [
         sectionId,
       ]);
-      const custTime = await executeQuery(getCustTime, [userData.refBranchId]);
+      const custTime = await executeQuery(getCustTime, [userData.branch]);
 
       const formattedSectionTime = sectionTimeList.reduce((acc, member) => {
         acc[member.order] = {
@@ -498,14 +516,16 @@ export class ProfileRepository {
 
       if (file) {
         filePath = await storeFile(file, 3);
+        console.log("filePath", filePath);
       }
       const fileBuffer = await viewFile(filePath);
       const fileBase64 = fileBuffer.toString("base64");
       profileFile = {
         filename: path.basename(filePath),
         content: fileBase64,
-        contentType: "image/jpeg/application/pdf",
+        contentType: getFileType(filePath), // Dynamically set content type
       };
+      console.log("profileFile", profileFile);
       return encrypt(
         {
           success: true,
@@ -528,15 +548,22 @@ export class ProfileRepository {
   public async deleteMedicalDocumentV1(userData: any): Promise<any> {
     try {
       let filepath;
+      console.log("userData", userData);
 
       if (userData.refMedDocId) {
+        console.log("userData.refMedDocId", userData.refMedDocId);
+
         const medDoc = await executeQuery(getMedDoc, [userData.refMedDocId]);
         filepath = medDoc[0].refMedDocPath;
+        console.log("filepath line ----------------- 558", filepath);
         await executeQuery(deleteMedDoc, [userData.refMedDocId]);
       } else {
         filepath = userData.filePath;
+        console.log("filepath line ------------- 563", filepath);
       }
+
       if (filepath) {
+        console.log("filepath line -------------------566", filepath);
         await deleteFile(filepath);
       }
 
@@ -545,7 +572,7 @@ export class ProfileRepository {
           success: true,
           message: "The Medical File Deleted Successfully",
         },
-        false
+        true
       );
     } catch (error) {
       return encrypt(

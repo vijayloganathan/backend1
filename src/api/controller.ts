@@ -478,8 +478,8 @@ export class UserProfileController {
     request: any,
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
-    // const decodedToken = request.plugins.token.id;
-    const decodedToken = 1;
+    const decodedToken = request.plugins.token.id;
+    // const decodedToken = 1;
     try {
       logger.info(`GET URL REQ => ${request.url.href}`);
       const entity = await this.resolver.userHealthReportUploadV1(
@@ -508,10 +508,11 @@ export class UserProfileController {
     request: any,
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
-    // const decodedToken = request.plugins.token.id;
-    const decodedToken = 1;
+    const decodedToken = request.plugins.token.id;
+    console.log("decodedToken", decodedToken);
+    // const decodedToken = 1;
     try {
-      logger.info(`GET URL REQ => ${request.url.href}`);
+      logger.info(`\n\n\nGET URL REQ line 514=> ${request.url.href}\n\n\n`);
       const entity = await this.resolver.deleteMedicalDocumentV1(
         request.payload,
         decodedToken
@@ -1710,6 +1711,7 @@ export class userDashBoard {
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
     const decodedToken = request.plugins.token.id;
+    // const decodedToken = 13;
     try {
       logger.info(`GET URL REQ => ${request.url.href}`);
       const domainCode = request.headers.domain_code || "";

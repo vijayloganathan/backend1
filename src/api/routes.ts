@@ -807,7 +807,7 @@ export class Settings implements IRoute {
           method: "POST",
           path: "/api/v1/settings/Section/addCustomClassData",
           config: {
-            // pre: [{ method: validateToken, assign: "token" }],
+            pre: [{ method: validateToken, assign: "token" }],
             handler: settingsPage.addCustomClassData,
             description: "Custom Class Data",
             auth: false,

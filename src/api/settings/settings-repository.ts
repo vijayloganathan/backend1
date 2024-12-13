@@ -262,7 +262,10 @@ export class SettingsRepository {
     const token = generateToken(tokenData, true);
 
     try {
+      console.log("userData", userData);
       const branchId = userData.branchId || 1;
+      console.log("userData.branchId", userData.branchId);
+      console.log("branchId line ------------- 266", branchId);
       const customClassResult = await executeQuery(customClass, [branchId]);
       const results = {
         success: true,
@@ -293,7 +296,7 @@ export class SettingsRepository {
 
     try {
       let refCustTimeData;
-      if (userData.refUseValue == false) {
+      if (userData.checkValue == false) {
         refCustTimeData = await generateClassDurationString(
           userData.refClassCount,
           userData.refMonthDuration

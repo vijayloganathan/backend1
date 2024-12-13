@@ -144,16 +144,31 @@ WHERE "refStId" = $1;
 
 export const getRestriction = `SELECT "columnName" FROM public."refRestrictions" WHERE "refUtId"=$1;`;
 
-export const getProfileData = `SELECT * FROM public.users u 
-FULL JOIN public."refUserCommunication" uc
-  ON CAST(u."refStId" AS INTEGER) = uc."refStId"
-FULL JOIN public."refUserAddress" ad
-  ON CAST(u."refStId" AS INTEGER) = ad."refStId"
-FULL JOIN public."refGeneralHealth" gh
-  ON CAST(u."refStId" AS INTEGER) = gh."refStId"
-FULL JOIN public."refUsersDomain" ud
-  ON CAST(u."refStId" AS INTEGER) = ud."refStId"
- WHERE u."refStId"=$1
+// export const getProfileData = `SELECT * FROM public.users u
+// FULL JOIN public."refUserCommunication" uc
+//   ON CAST(u."refStId" AS INTEGER) = uc."refStId"
+// FULL JOIN public."refUserAddress" ad
+//   ON CAST(u."refStId" AS INTEGER) = ad."refStId"
+// FULL JOIN public."refGeneralHealth" gh
+//   ON CAST(u."refStId" AS INTEGER) = gh."refStId"
+// FULL JOIN public."refUsersDomain" ud
+//   ON CAST(u."refStId" AS INTEGER) = ud."refStId"
+//  WHERE u."refStId"=$1
+// `;
+export const getProfileData = `SELECT
+*
+FROM
+  public.users u
+  FULL JOIN public."refUserCommunication" uc ON CAST(u."refStId" AS INTEGER) = uc."refStId"
+  FULL JOIN public."refUserAddress" ad ON CAST(u."refStId" AS INTEGER) = ad."refStId"
+  FULL JOIN public."refGeneralHealth" gh ON CAST(u."refStId" AS INTEGER) = gh."refStId"
+  FULL JOIN public."refUsersDomain" ud ON CAST(u."refStId" AS INTEGER) = ud."refStId"
+  LEFT JOIN public."refMembers" ml ON u."refSessionType" = ml."refTimeMembersID"
+  LEFT JOIN public."refCustTime" ct ON u."refSessionMode" = ct."refCustTimeId"
+  LEFT JOIN public."refTiming" pt ON u."refSPreferTimeId" = pt."refTimeId"
+  LEFT JOIN public."refSessionDays" sd ON pt."refTimeDays" = sd."refSDId"
+WHERE
+  u."refStId" = $1
 `;
 
 export const fetchPresentHealthProblem = `

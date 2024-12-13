@@ -650,6 +650,19 @@ export class UserRepository {
 
       profileData = { ...profileData, modeOfCommunication };
 
+      const refSessionData = {
+        refTimeMembersId: Data.refTimeMembersId,
+        refTimeMembers: Data.refTimeMembers,
+        refCustTimeId: Data.refCustTimeId,
+        refCustTimeData: Data.refCustTimeData,
+        refTime:
+          Data.refTime + "  |  " + Data.refTimeMode + "  |  " + Data.refDays,
+        refTimeId: Data.refTimeId,
+        refClassMode: Data.refClassMode,
+      };
+
+      profileData = { ...profileData, refSessionData };
+
       let getMedDocument = await executeQuery(fetMedDocData, [refStId]);
 
       if (getMedDocument.length > 0) {
@@ -669,6 +682,7 @@ export class UserRepository {
         }
       }
 
+      console.log("profileData", profileData);
       return encrypt(
         {
           success: true,

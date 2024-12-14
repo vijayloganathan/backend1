@@ -420,6 +420,7 @@ export class ProfileRepository {
       );
     }
   }
+
   public async userMemberListV1(userData: any): Promise<any> {
     try {
       const refStId = userData.refStId;
@@ -460,6 +461,7 @@ export class ProfileRepository {
       throw error;
     }
   }
+
   public async sectionTimeV1(userData: any): Promise<any> {
     try {
       const refStId = userData.refStId;
@@ -508,6 +510,7 @@ export class ProfileRepository {
       throw error;
     }
   }
+
   public async userHealthReportUploadV1(userData: any): Promise<any> {
     try {
       const file = userData.file;
@@ -545,6 +548,7 @@ export class ProfileRepository {
       );
     }
   }
+
   public async deleteMedicalDocumentV1(userData: any): Promise<any> {
     try {
       let filepath;
@@ -584,4 +588,5 @@ export class ProfileRepository {
       );
     }
   }
+  
 }

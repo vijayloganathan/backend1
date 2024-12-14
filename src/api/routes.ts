@@ -164,7 +164,7 @@ export class UserProfile implements IRoute {
           method: "POST",
           path: "/api/v1/profile/MemberList",
           config: {
-            pre: [{ method: validateToken, assign: "token" }], // Use the validateToken function here
+            pre: [{ method: validateToken, assign: "token" }], 
             handler: controller.userMemberList,
             description: "Passing the register Data to the Register Page",
             auth: false,
@@ -330,6 +330,7 @@ export class StaffRoutes implements IRoute {
     });
   }
 }
+
 export class DirectorRoutes implements IRoute {
   public async register(server: any): Promise<any> {
     return new Promise((resolve) => {

@@ -565,6 +565,9 @@ export class UserRepository {
         refUserName: Data.refUserName,
         refMaritalStatus: Data.refMaritalStatus,
         refWeddingDate: formatDate(Data.refWeddingDate),
+        refBranchId: Data.refBranchId,
+        refDeliveryType: Data.refDeliveryType,
+        refKidsCount: Data.refKidsCount,
       };
 
       profileData = { ...profileData, personalData };
@@ -610,6 +613,7 @@ export class UserRepository {
         refDoctor: Data.refDrName,
         refHospital: Data.refHospital,
         refBackPain: Data.refBackpain,
+        refBackPainValue: Data.refBackPainValue,
         refProblem: Data.refProblem,
         refPastHistory: Data.refPastHistory,
         refFamilyHistory: Data.refFamilyHistory,

@@ -1,16 +1,15 @@
 {
   "name": "backend",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node dist/index.js",
-    "dev": "ts-node -r dotenv/config src/server.ts",
-    "build": "tsc"
+    "dev": "ts-node -r dotenv/config src/server.ts"
   },
   "author": "",
   "license": "ISC",
+  "description": "",
   "dependencies": {
     "@bugsnag/js": "^8.0.0",
     "@hapi/boom": "^10.0.1",

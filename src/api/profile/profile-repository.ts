@@ -588,5 +588,4 @@ export class ProfileRepository {
       );
     }
   }
-  
 }

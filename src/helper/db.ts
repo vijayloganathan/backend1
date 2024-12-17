@@ -11,23 +11,20 @@ dotenv.config();
 //   port: Number(process.env.DB_PORT) || 5432,
 // });
 
-// const pool = new Pool({
-//   user: process.env.DB_USER || "postgres",
-//   host: process.env.DB_HOST || "localhost",
-//   database: process.env.DB_NAME || "master_testing_db",
-//   password: process.env.DB_PASSWORD || "vijay",
-//   port: Number(process.env.DB_PORT) || 5432,
-// });
-
 const pool = new Pool({
-  user: process.env.DB_USER || "ublisyogadb_user",
-  host:
-    process.env.DB_HOST ||
-    "dpg-ctgmar56l47c73e8a1lg-a.singapore-postgres.render.com",
-  database: process.env.DB_NAME || "ublisyogadb",
-  password: process.env.DB_PASSWORD || "vDoIhbXybA4WSRwGQkTKHKDTjNCIqM56",
+  user: process.env.DB_USER || "postgres",
+  host: process.env.DB_HOST || "localhost",
+  database: process.env.DB_NAME || "master_testing_db",
+  password: process.env.DB_PASSWORD || "vijay",
   port: Number(process.env.DB_PORT) || 5432,
 });
+// const pool = new Pool({
+//   user: process.env.DB_USER || "ublisyogadb_user",
+//   host: process.env.DB_HOST || "dpg-ctgmar56l47c73e8a1lg-a",
+//   database: process.env.DB_NAME || "ublisyogadb",
+//   password: process.env.DB_PASSWORD || "vDoIhbXybA4WSRwGQkTKHKDTjNCIqM56",
+//   port: Number(process.env.DB_PORT) || 5432,
+// });
 
 // Helper function to execute a query
 export const executeQuery = async (

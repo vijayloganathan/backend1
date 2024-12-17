@@ -34,38 +34,23 @@ const init = async () => {
     //     },
     //   },
     // });
+
     const server = Hapi.server({
-      host: "0.0.0.0",
-      port: 6201,
+      host: process.env.HOST || "localhost",
+      port: process.env.PORT || 6201,
       routes: {
         cors: {
-          origin: ["*"], // Allowed origins
-          headers: ["Accept", "Authorization", "Content-Type", "If-None-Match"], // Allowed headers
-          exposedHeaders: ["WWW-Authenticate", "Server-Authorization"], // Exposed headers
-          credentials: true, // Allow credentials (cookies/auth headers)
+          origin: ["*"],
+          headers: ["Accept", "Authorization", "Content-Type", "If-None-Match"],
+          exposedHeaders: ["WWW-Authenticate", "Server-Authorization"],
+          credentials: true,
         },
+        security: true,
         payload: {
           maxBytes: 5242880,
         },
       },
     });
-
-    // const server = Hapi.server({
-    //   host: process.env.HOST || "localhost",
-    //   port: process.env.PORT || 6201,
-    //   routes: {
-    //     cors: {
-    //       origin: ["*"],
-    //       headers: ["Accept", "Authorization", "Content-Type", "If-None-Match"],
-    //       exposedHeaders: ["WWW-Authenticate", "Server-Authorization"],
-    //       credentials: true,
-    //     },
-    //     security: true,
-    //     payload: {
-    //       maxBytes: 5242880,
-    //     },
-    //   },
-    // });
 
     // REGISTER HAPI ROUTES
     await Router.loadRoutes(server);

@@ -3,13 +3,13 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-const pool = new Pool({
-  user: process.env.DB_USER || "postgres",
-  host: process.env.DB_HOST || "13.127.49.123",
-  database: process.env.DB_NAME || "ublis_backend",
-  password: process.env.DB_PASSWORD || "1967",
-  port: Number(process.env.DB_PORT) || 5432,
-});
+// const pool = new Pool({
+//   user: process.env.DB_USER || "postgres",
+//   host: process.env.DB_HOST || "13.127.49.123",
+//   database: process.env.DB_NAME || "ublis_backend",
+//   password: process.env.DB_PASSWORD || "1967",
+//   port: Number(process.env.DB_PORT) || 5432,
+// });
 
 // const pool = new Pool({
 //   user: process.env.DB_USER || "postgres",
@@ -18,6 +18,16 @@ const pool = new Pool({
 //   password: process.env.DB_PASSWORD || "vijay",
 //   port: Number(process.env.DB_PORT) || 5432,
 // });
+
+const pool = new Pool({
+  user: process.env.DB_USER || "ublisyogadb_user",
+  host:
+    process.env.DB_HOST ||
+    "dpg-ctgmar56l47c73e8a1lg-a.singapore-postgres.render.com",
+  database: process.env.DB_NAME || "ublisyogadb",
+  password: process.env.DB_PASSWORD || "vDoIhbXybA4WSRwGQkTKHKDTjNCIqM56",
+  port: Number(process.env.DB_PORT) || 5432,
+});
 
 // Helper function to execute a query
 export const executeQuery = async (

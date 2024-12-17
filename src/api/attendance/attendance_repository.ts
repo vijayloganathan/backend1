@@ -2,7 +2,7 @@ import { generateToken, decodeToken } from "../../helper/token";
 import { encrypt } from "../../helper/encrypt";
 import { executeQuery, getClient } from "../../helper/db";
 import { attendanceQuery, getAttendance } from "../../helper/attendanceDb";
-import { getAttendanceData } from "./query";
+import { getAttendanceData, getSession } from "./query";
 import { CurrentTime } from "../../helper/common";
 
 export class AttendanceRepository {
@@ -20,11 +20,14 @@ export class AttendanceRepository {
     };
     const token = generateToken(tokenData, true);
     try {
-      console.log("CurrentTime", CurrentTime());
+      let sessionData = await executeQuery(getSession, []);
+      console.log("sessionData", sessionData);
+      for (let i = 0; i < sessionData.length; i++) {}
       const getPunch = await attendanceQuery(getAttendanceData, [
         CurrentTime(),
       ]);
-      //   const sessionData=await executeQuery()
+      console.log("getPunch", getPunch);
+
       if (getPunch.length > 0) {
       }
       const results = {

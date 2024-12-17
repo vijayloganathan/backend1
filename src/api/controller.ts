@@ -13,6 +13,7 @@ import {
   FutureClientsResolver,
   StudentFeesResolver,
   ForgotPasswordResolver,
+  AttendanceResolver,
 } from "./resolver";
 import logger from "../helper/logger";
 import { decodeToken } from "../helper/token";
@@ -2799,6 +2800,47 @@ export class ForgotPasswordController {
       return response.response(entity).code(200);
     } catch (error) {
       logger.error("Error in changing the Password", error);
+      return response
+        .response({
+          success: false,
+          message:
+            error instanceof Error
+              ? error.message
+              : "An unknown error occurred",
+        })
+        .code(500);
+    }
+  };
+}
+export class AttendanceController {
+  public resolver: any;
+
+  constructor() {
+    this.resolver = new AttendanceResolver();
+  }
+
+  public sessionAttendance = async (
+    request: any,
+    response: Hapi.ResponseToolkit
+  ): Promise<any> => {
+    // const decodedToken = request.plugins.token.id;
+    // const branchId = request.plugins.token.branchId;
+    const decodedToken = 1;
+    const branchId = 1;
+    try {
+      logger.info(`GET URL REQ => ${request.url.href}`);
+      const entity = await this.resolver.sessionAttendanceV1(
+        request.payload,
+        decodedToken,
+        branchId
+      );
+
+      if (entity.success) {
+        return response.response(entity).code(200);
+      }
+      return response.response(entity).code(200);
+    } catch (error) {
+      logger.error("error in Getting The Student Attendance", error);
       return response
         .response({
           success: false,

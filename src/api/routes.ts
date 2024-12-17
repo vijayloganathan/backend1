@@ -16,6 +16,7 @@ import {
   FutureClientsController,
   StudentFeesController,
   ForgotPasswordController,
+  AttendanceController,
 } from "./controller";
 import { Logger } from "winston";
 import { decodeToken, validateToken } from "../helper/token";
@@ -164,7 +165,7 @@ export class UserProfile implements IRoute {
           method: "POST",
           path: "/api/v1/profile/MemberList",
           config: {
-            pre: [{ method: validateToken, assign: "token" }], 
+            pre: [{ method: validateToken, assign: "token" }],
             handler: controller.userMemberList,
             description: "Passing the register Data to the Register Page",
             auth: false,
@@ -1024,6 +1025,26 @@ export class ForgotPassword implements IRoute {
           config: {
             handler: ForgotPasswordPage.changePassword,
             description: "Changing Password",
+            auth: false,
+          },
+        },
+      ]);
+      resolve(true);
+    });
+  }
+}
+export class Attendance implements IRoute {
+  public async register(server: any): Promise<any> {
+    return new Promise((resolve) => {
+      const AttendancePage = new AttendanceController();
+      server.route([
+        {
+          method: "GET",
+          path: "/api/v1/attendance/session",
+          config: {
+            // pre: [{ method: validateToken, assign: "token" }],
+            handler: AttendancePage.sessionAttendance,
+            description: "To get the Session Attendance",
             auth: false,
           },
         },

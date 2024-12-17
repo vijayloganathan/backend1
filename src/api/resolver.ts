@@ -10,6 +10,7 @@ import { SettingsRepository } from "./settings/settings-repository";
 import { FutureClientsRepository } from "./future_clients/future_clients-repository";
 import { StudentFeesRepository } from "./studentfees/studentfees-repository";
 import { ForgotPasswordRepository } from "./forgotpassword/forgot_password";
+import { AttendanceRepository } from "./attendance/attendance_repository";
 
 export class Resolver {
   public userRepository: any;
@@ -714,6 +715,21 @@ export class ForgotPasswordResolver {
     domain_code: any
   ): Promise<any> {
     return await this.ForgotPasswordRepository.changePasswordV1(
+      user_data,
+      domain_code
+    );
+  }
+}
+export class AttendanceResolver {
+  public AttendanceRepository: any;
+  constructor() {
+    this.AttendanceRepository = new AttendanceRepository();
+  }
+  public async sessionAttendanceV1(
+    user_data: any,
+    domain_code: any
+  ): Promise<any> {
+    return await this.AttendanceRepository.sessionAttendanceV1(
       user_data,
       domain_code
     );

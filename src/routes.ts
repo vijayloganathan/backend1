@@ -13,6 +13,7 @@ import {
   FutureClients,
   StudentFees,
   ForgotPassword,
+  Attendance,
 } from "./api/routes";
 // import StaffRoutes from "./api/staff/routes";
 
@@ -25,11 +26,12 @@ export default class Router {
     await new UserPageRoutes().register(server);
     await new BatchProgram().register(server);
     await new Finance().register(server);
-    await new Testing().register(server);
     await new Notes().register(server);
     await new Settings().register(server);
     await new FutureClients().register(server);
     await new StudentFees().register(server);
     await new ForgotPassword().register(server);
+    await new Attendance().register(server);
+    await new Testing().register(server);
   }
 }

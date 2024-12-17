@@ -3,24 +3,24 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-const pool = new Pool({
-  user: process.env.DB_USER || "postgres",
-  host: process.env.DB_HOST || "13.127.49.123",
-  database: process.env.DB_NAME || "ublis_backend",
-  password: process.env.DB_PASSWORD || "1967",
-  port: Number(process.env.DB_PORT) || 5432,
-});
-
 // const pool = new Pool({
 //   user: process.env.DB_USER || "postgres",
-//   host: process.env.DB_HOST || "localhost",
-//   database: process.env.DB_NAME || "master_testing_db",
-//   password: process.env.DB_PASSWORD || "vijay",
+//   host: process.env.DB_HOST || "13.232.190.189",
+//   database: process.env.DB_NAME || "ublis_backend",
+//   password: process.env.DB_PASSWORD || "1967",
 //   port: Number(process.env.DB_PORT) || 5432,
 // });
 
+const pool = new Pool({
+  user: process.env.DB_USER || "postgres",
+  host: process.env.DB_HOST || "localhost",
+  database: process.env.DB_NAME || "attendance",
+  password: process.env.DB_PASSWORD || "vijay",
+  port: Number(process.env.DB_PORT) || 5432,
+});
+
 // Helper function to execute a query
-export const executeQuery = async (
+export const attendanceQuery = async (
   query: string,
   params: any[] = []
 ): Promise<any[]> => {
@@ -40,13 +40,13 @@ export const executeQuery = async (
 };
 
 // Method to get a client from the pool for transactions
-export const getClient = async (): Promise<PoolClient> => {
+export const getAttendance = async (): Promise<PoolClient> => {
   const client = await pool.connect(); // Return a connected client
   return client;
 };
 
 // Optionally, create a method to close the pool when the app shuts down
-export const closePool = async () => {
+export const closeAttendance = async () => {
   try {
     await pool.end();
     console.log("Database pool has been closed.");

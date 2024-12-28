@@ -161,14 +161,11 @@ export class ProfileRepository {
         userData.personalData.ref_su_fromMonth, //21
         userData.personalData.ref_su_toMonth, //22
       ];
-      console.log("paramsProfile", paramsProfile);
-      console.log("userResult1", 0);
 
       const userResult1 = await client.query(
         insertProfilePersonalData,
         paramsProfile
       );
-      console.log("userResult1", 1);
 
       if (!userResult1.rowCount) {
         throw new Error("Failed to update personal data in the users table.");
@@ -184,13 +181,11 @@ export class ProfileRepository {
         communicationType, //5
         userData.personalData.ref_su_emgContaxt, //6
       ];
-      console.log("userResult2", 0);
 
       const userResult2 = await client.query(
         insertCommunicationData,
         parasCommunication
       );
-      console.log("userResult2", 1);
 
       if (!userResult2.rowCount) {
         throw new Error(
@@ -223,13 +218,10 @@ export class ProfileRepository {
         userData.address.refAdPincode2,
       ];
 
-      console.log("paramsAddress", paramsAddress);
-      console.log("userResult3", 0);
       const userResult3 = await client.query(
         insertProfileAddressQuery,
         paramsAddress
       );
-      console.log("userResult3", 1);
 
       if (!userResult3.rowCount) {
         throw new Error(
@@ -267,12 +259,10 @@ export class ProfileRepository {
         userData.generalhealth.refAnythingelse,
         userData.generalhealth.refBackPainValue,
       ];
-      console.log("userResult4", 0);
       const userResult4 = await client.query(
         insertProfileGeneralHealth,
         paramsHealth
       );
-      console.log("userResult4", 1);
 
       if (!userResult4.rowCount) {
         throw new Error(
@@ -280,14 +270,6 @@ export class ProfileRepository {
         );
       }
 
-      console.log(
-        "userData.MedicalDocuments.length",
-        userData.MedicalDocuments
-      );
-      console.log(
-        "userData.MedicalDocuments.length",
-        userData.MedicalDocuments.uploadDocuments.length
-      );
       for (
         let i = 0;
         i < userData.MedicalDocuments.uploadDocuments.length;
@@ -298,7 +280,6 @@ export class ProfileRepository {
           userData.MedicalDocuments.uploadDocuments[i].refMedDocPath,
           userData.refStId,
         ];
-        console.log("paramsMedicalDocuments", paramsMedicalDocuments);
         const userResult6 = client.query(
           storeMedicalDoc,
           paramsMedicalDocuments
@@ -433,18 +414,13 @@ export class ProfileRepository {
       const branchId = userData.branchId;
       const refAge = userData.refAge;
 
-      const MemberList = await executeQuery(BranchMemberList, [
-        refAge,
-        branchId,
-      ]);
-      console.log("MemberList", MemberList);
+      const MemberList = await executeQuery(BranchMemberList, [refAge]);
 
       const formattedMemberList = MemberList.reduce((acc, member) => {
         acc[member.refTimeMembersID] = member.refTimeMembers;
         return acc;
       }, {});
 
-      console.log("formattedMemberList", formattedMemberList);
       const tokenData = {
         id: refStId,
       };
@@ -516,15 +492,10 @@ export class ProfileRepository {
   // }
   public async sectionTimeV1(userData: any): Promise<any> {
     try {
-      console.log("userData", userData);
       const refStId = userData.refStId;
       const sectionId = userData.sectionId;
-      console.log("sectionId", sectionId);
       const branchId = userData.branch;
-      console.log("branchId", branchId);
-      console.log("userData.classType", userData.classType);
       const classType = userData.classType === 1 ? "Online" : "Offline";
-      console.log("classType", classType);
       const sectionTimeList = await executeQuery(getSectionTimeData, [
         classType,
         branchId,
@@ -534,7 +505,6 @@ export class ProfileRepository {
         acc[member.refPaId] = member.refPackageName;
         return acc;
       }, {});
-      console.log("sectionTimeList", formattedCustTime);
       // const custTime = await executeQuery(getCustTime, [userData.branch]);
 
       // const formattedSectionTime = sectionTimeList.reduce((acc, member) => {
@@ -582,11 +552,9 @@ export class ProfileRepository {
       const refStId = userData.refStId;
       const packageId = userData.packageId;
       const packageTimingData = await executeQuery(PackageTiming, [packageId]);
-      console.log("packageTimingData", packageTimingData[0].refTimingId);
       const custTime = await executeQuery(getCustTime, [
         packageTimingData[0].refTimingId,
       ]);
-      console.log("custTime", custTime);
 
       const formattedCustTime = custTime.reduce((acc, member) => {
         acc[member.refTimeId] = member.refTime;

@@ -137,16 +137,22 @@ export const updateHistoryQuery = `
 
 export const fetchBranchList = `SELECT * FROM public.branch;`;
 
-export const BranchMemberList = `SELECT rt."refTimeMembersID", rm."refTimeMembers"
-FROM public."refTiming" rt
-JOIN public."refMembers" rm
-  ON CAST(rt."refTimeMembersID" AS integer) = rm."refTimeMembersID"
-WHERE rt."refbranchId" = $2
-  AND (
-    ($1 <= 16 AND rt."refTimeMembersID" = 3)
-    OR ($1 > 16 AND rt."refTimeMembersID" != 3)
-  )
-GROUP BY rt."refTimeMembersID", rm."refTimeMembers";`;
+// export const BranchMemberList = `SELECT rt."refTimeMembersID", rm."refTimeMembers"
+// FROM public."refTiming" rt
+// JOIN public."refMembers" rm
+//   ON CAST(rt."refTimeMembersID" AS integer) = rm."refTimeMembersID"
+// WHERE rt."refbranchId" = $2
+//   AND (
+//     ($1 <= 16 AND rt."refTimeMembersID" = 3)
+//     OR ($1 > 16 AND rt."refTimeMembersID" != 3)
+//   )
+// GROUP BY rt."refTimeMembersID", rm."refTimeMembers";`;
+export const BranchMemberList = `SELECT *
+FROM public."refMembers" rm
+WHERE 
+    ($1 <= 16 AND rm."refTimeMembersID" = 3)
+    OR ($1 > 16 AND rm."refTimeMembersID" != 3)
+ `;
 
 // export const getSectionTimeData = `SELECT
 //     ROW_NUMBER() OVER (ORDER BY to_timestamp(substring("refTime" from '^[0-9:]+ [APM]+'), 'HH12:MI AM')) AS "order",

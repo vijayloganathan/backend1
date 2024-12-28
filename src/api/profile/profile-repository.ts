@@ -16,6 +16,7 @@ import {
   storeMedicalDoc,
   deleteMedDoc,
   getMedDoc,
+  PackageTiming,
 } from "./query";
 import path from "path";
 
@@ -29,6 +30,7 @@ import {
   deleteFile,
   getFileType,
 } from "../../helper/storage";
+import { Session } from "inspector/promises";
 
 export class ProfileRepository {
   // STORING ADDRESS IN DB
@@ -123,15 +125,15 @@ export class ProfileRepository {
 
   public async userRegisterDataV1(
     userData: any,
-    decodedToken: number
+    decodedToken: any
   ): Promise<any> {
     const client: PoolClient = await getClient(); // Get the database client
-    const token = { id: userData.refStId };
+    const token = { id: decodedToken.id, branch: decodedToken.branch };
     const TokenData = generateToken1(token, true);
     try {
       await client.query("BEGIN");
 
-      userData.refStId = decodedToken;
+      userData.refStId = decodedToken.id;
       const refUtId = 2;
 
       // Step 1: Update personal data in users table
@@ -147,18 +149,19 @@ export class ProfileRepository {
         userData.personalData.ref_su_dob, //9
         userData.personalData.ref_su_age, //10
         userData.personalData.ref_su_branchId, //11
-        userData.personalData.ref_su_seTId, //12
+        userData.personalData.ref_su_seTId, //12  Member List
         userData.personalData.ref_su_prTimeId, //13
-        userData.personalData.ref_su_seModeId, //14
+        userData.personalData.ref_su_seModeId, //14 package Name
         userData.personalData.ref_su_MaritalStatus, //15
         userData.personalData.ref_su_WeddingDate, //16
-        userData.personalData.ref_Class_Mode, //17
+        userData.personalData.ref_Class_Mode, //17 online or Offline
         userData.refStId, //18
         userData.personalData.ref_su_kidsCount, //19
         userData.personalData.ref_su_deliveryType, // 20
-        // userData.personalData.ref_su_Therapy, //21
-        // userData.personalData.ref_su_regSession, //22
+        userData.personalData.ref_su_fromMonth, //21
+        userData.personalData.ref_su_toMonth, //22
       ];
+      console.log("paramsProfile", paramsProfile);
       console.log("userResult1", 0);
 
       const userResult1 = await client.query(
@@ -205,12 +208,14 @@ export class ProfileRepository {
       const paramsAddress = [
         userData.refStId,
         refAdAdd1Type,
+        userData.address.refAdFlat1,
         userData.address.refAdAdd1,
         userData.address.refAdArea1,
         userData.address.refAdCity1,
         userData.address.refAdState1,
         userData.address.refAdPincode1,
         refAdAdd2Type,
+        userData.address.refAdFlat2,
         userData.address.refAdAdd2,
         userData.address.refAdArea2,
         userData.address.refAdCity2,
@@ -218,6 +223,7 @@ export class ProfileRepository {
         userData.address.refAdPincode2,
       ];
 
+      console.log("paramsAddress", paramsAddress);
       console.log("userResult3", 0);
       const userResult3 = await client.query(
         insertProfileAddressQuery,
@@ -425,9 +431,7 @@ export class ProfileRepository {
     try {
       const refStId = userData.refStId;
       const branchId = userData.branchId;
-      console.log("branchId", branchId);
       const refAge = userData.refAge;
-      console.log("refAge", refAge);
 
       const MemberList = await executeQuery(BranchMemberList, [
         refAge,
@@ -462,30 +466,130 @@ export class ProfileRepository {
     }
   }
 
+  // public async sectionTimeV1(userData: any): Promise<any> {
+  //   try {
+  //     const refStId = userData.refStId;
+  //     const sectionId = userData.sectionId;
+  //     const sectionTimeList = await executeQuery(getSectionTimeData, [
+  //       sectionId,
+  //     ]);
+  //     const custTime = await executeQuery(getCustTime, [userData.branch]);
+
+  //     const formattedSectionTime = sectionTimeList.reduce((acc, member) => {
+  //       acc[member.order] = {
+  //         formattedString:
+  //           member.refTime +
+  //           "  |  " +
+  //           member.refTimeMode +
+  //           "  |  " +
+  //           member.refTimeDays,
+  //         refTimeId: member.refTimeId,
+  //       };
+  //       return acc;
+  //     }, {});
+
+  //     const formattedCustTime = custTime.reduce((acc, member) => {
+  //       acc[member.refCustTimeId] = member.refCustTimeData;
+  //       return acc;
+  //     }, {});
+
+  //     const tokenData = {
+  //       id: refStId,
+  //     };
+
+  //     const token = generateToken1(tokenData, true);
+
+  //     return encrypt(
+  //       {
+  //         success: true,
+  //         message: "Section Time Data",
+  //         token: token,
+  //         SectionTime: formattedSectionTime,
+  //         CustTime: formattedCustTime,
+  //       },
+  //       true
+  //     );
+  //   } catch (error) {
+  //     console.error("Error in Section Time Data", error);
+  //     throw error;
+  //   }
+  // }
   public async sectionTimeV1(userData: any): Promise<any> {
     try {
+      console.log("userData", userData);
       const refStId = userData.refStId;
       const sectionId = userData.sectionId;
+      console.log("sectionId", sectionId);
+      const branchId = userData.branch;
+      console.log("branchId", branchId);
+      console.log("userData.classType", userData.classType);
+      const classType = userData.classType === 1 ? "Online" : "Offline";
+      console.log("classType", classType);
       const sectionTimeList = await executeQuery(getSectionTimeData, [
+        classType,
+        branchId,
         sectionId,
       ]);
-      const custTime = await executeQuery(getCustTime, [userData.branch]);
-
-      const formattedSectionTime = sectionTimeList.reduce((acc, member) => {
-        acc[member.order] = {
-          formattedString:
-            member.refTime +
-            "  |  " +
-            member.refTimeMode +
-            "  |  " +
-            member.refTimeDays,
-          refTimeId: member.refTimeId,
-        };
+      const formattedCustTime = sectionTimeList.reduce((acc, member) => {
+        acc[member.refPaId] = member.refPackageName;
         return acc;
       }, {});
+      console.log("sectionTimeList", formattedCustTime);
+      // const custTime = await executeQuery(getCustTime, [userData.branch]);
+
+      // const formattedSectionTime = sectionTimeList.reduce((acc, member) => {
+      //   acc[member.order] = {
+      //     formattedString:
+      //       member.refTime +
+      //       "  |  " +
+      //       member.refTimeMode +
+      //       "  |  " +
+      //       member.refTimeDays,
+      //     refTimeId: member.refTimeId,
+      //   };
+      //   return acc;
+      // }, {});
+
+      // const formattedCustTime = custTime.reduce((acc, member) => {
+      //   acc[member.refCustTimeId] = member.refCustTimeData;
+      //   return acc;
+      // }, {});
+
+      const tokenData = {
+        id: refStId,
+      };
+
+      const token = generateToken1(tokenData, true);
+
+      return encrypt(
+        {
+          success: true,
+          message: "Section Package Data",
+          token: token,
+          // SectionTime: formattedSectionTime,
+          // CustTime: formattedCustTime,
+          SectionTime: formattedCustTime,
+        },
+        true
+      );
+    } catch (error) {
+      console.error("Error in Section Package Data", error);
+      throw error;
+    }
+  }
+  public async PackageTimeV1(userData: any): Promise<any> {
+    try {
+      const refStId = userData.refStId;
+      const packageId = userData.packageId;
+      const packageTimingData = await executeQuery(PackageTiming, [packageId]);
+      console.log("packageTimingData", packageTimingData[0].refTimingId);
+      const custTime = await executeQuery(getCustTime, [
+        packageTimingData[0].refTimingId,
+      ]);
+      console.log("custTime", custTime);
 
       const formattedCustTime = custTime.reduce((acc, member) => {
-        acc[member.refCustTimeId] = member.refCustTimeData;
+        acc[member.refTimeId] = member.refTime;
         return acc;
       }, {});
 
@@ -498,15 +602,16 @@ export class ProfileRepository {
       return encrypt(
         {
           success: true,
-          message: "Section Time Data",
+          message: "Section Package Data",
           token: token,
-          SectionTime: formattedSectionTime,
-          CustTime: formattedCustTime,
+          // SectionTime: formattedSectionTime,
+          // CustTime: formattedCustTime,
+          packageTiming: formattedCustTime,
         },
         true
       );
     } catch (error) {
-      console.error("Error in Section Time Data", error);
+      console.error("Error in Section Package Data", error);
       throw error;
     }
   }

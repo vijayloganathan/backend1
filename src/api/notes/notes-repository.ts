@@ -7,10 +7,10 @@ import path from "path";
 import { executeQuery } from "../../helper/db";
 
 export class NotesRepository {
-  public async addNotesV1(userData: any, decodedToken: number): Promise<any> {
-    const refStId = decodedToken;
+  public async addNotesV1(userData: any, decodedToken: any): Promise<any> {
     const tokenData = {
-      id: refStId,
+      id: decodedToken.id,
+        branch: decodedToken.branch,
     };
     const token = generateToken(tokenData, true);
     try {
@@ -40,11 +40,11 @@ export class NotesRepository {
   }
   public async addNotesPdfV1(
     userData: any,
-    decodedToken: number
+    decodedToken: any
   ): Promise<any> {
-    const refStId = userData.decodedToken;
     const tokenData = {
-      id: refStId,
+      id: decodedToken.id,
+        branch: decodedToken.branch,
     };
     const token = generateToken(tokenData, true);
     try {
@@ -83,11 +83,11 @@ export class NotesRepository {
   }
   public async deleteNotesV1(
     userData: any,
-    decodedToken: number
+    decodedToken: any
   ): Promise<any> {
-    const refStId = decodedToken;
     const tokenData = {
-      id: refStId,
+      id: decodedToken.id,
+        branch: decodedToken.branch,
     };
     const token = generateToken(tokenData, true);
     try {

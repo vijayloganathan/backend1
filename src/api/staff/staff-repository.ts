@@ -46,10 +46,10 @@ import { CurrentTime } from "../../helper/common";
 export class StaffRepository {
   public async staffDashBoardV1(
     userData: any,
-    decodedToken: number
+    decodedToken: any
   ): Promise<any> {
     try {
-      const refStId = decodedToken;
+      const refStId = decodedToken.id;
       const userType = await executeQuery(getUserType, [refStId]);
       const refUserType = userType[0];
       let refDashBoardData = {};
@@ -198,7 +198,8 @@ export class StaffRepository {
       refDashBoardData = { ...refDashBoardData, notificationData };
 
       const tokenData = {
-        id: refStId,
+        id: decodedToken.id,
+        branch: decodedToken.branch,
       };
 
       const token = generateToken(tokenData, true);
@@ -220,11 +221,11 @@ export class StaffRepository {
   }
   public async staffStudentApprovalV1(
     userData: any,
-    decodedToken: number
+    decodedToken: any
   ): Promise<any> {
-    const refStId = decodedToken;
     const tokenData = {
-      id: refStId,
+      id: decodedToken.id,
+      branch: decodedToken.branch,
     };
     const token = generateToken(tokenData, true);
 
@@ -266,11 +267,11 @@ export class StaffRepository {
   }
   public async staffApprovalBtnV1(
     userData: any,
-    decodedToken: number
+    decodedToken: any
   ): Promise<any> {
-    const refStId = decodedToken;
     const tokenData = {
-      id: refStId,
+      id: decodedToken.id,
+      branch: decodedToken.branch,
     };
     const token = generateToken(tokenData, true);
     try {
@@ -328,11 +329,11 @@ export class StaffRepository {
   }
   public async staffRejectionBtnV1(
     userData: any,
-    decodedToken: number
+    decodedToken: any
   ): Promise<any> {
-    const refStId = decodedToken;
     const tokenData = {
-      id: refStId,
+      id: decodedToken.id,
+      branch: decodedToken.branch,
     };
     const token = generateToken(tokenData, true);
 
@@ -391,13 +392,10 @@ export class StaffRepository {
       );
     }
   }
-  public async userSignedUpV1(
-    userData: any,
-    decodedToken: number
-  ): Promise<any> {
-    const refStId = decodedToken;
+  public async userSignedUpV1(userData: any, decodedToken: any): Promise<any> {
     const tokenData = {
-      id: refStId,
+      id: decodedToken.id,
+      branch: decodedToken.branch,
     };
     const token = generateToken(tokenData, true);
     try {
@@ -441,13 +439,10 @@ export class StaffRepository {
       );
     }
   }
-  public async userFollowUpV1(
-    userData: any,
-    decodedToken: number
-  ): Promise<any> {
-    const refStId = decodedToken;
+  public async userFollowUpV1(userData: any, decodedToken: any): Promise<any> {
     const tokenData = {
-      id: refStId,
+      id: decodedToken.id,
+      branch: decodedToken.branch,
     };
     const token = generateToken(tokenData, true);
     try {
@@ -510,11 +505,11 @@ export class StaffRepository {
   }
   public async userManagementPageV1(
     userData: any,
-    decodedToken: number
+    decodedToken: any
   ): Promise<any> {
-    const refStId = decodedToken;
     let tokenData = {
-      id: refStId,
+      id: decodedToken.id,
+      branch: decodedToken.branch,
     };
     const token = generateToken(tokenData, true);
     try {
@@ -553,18 +548,19 @@ export class StaffRepository {
   }
   public async userDataUpdateV1(
     userData: any,
-    decodedToken: number
+    decodedToken: any
   ): Promise<any> {
     const client: PoolClient = await getClient();
     let id;
-    const staffId = userData.decodedToken || decodedToken;
+    const staffId = userData.decodedToken.id || decodedToken.id;
     if (userData.refStId == undefined || userData.refStId == null) {
       id = staffId;
     } else {
       id = userData.refStId;
     }
     let tokenData = {
-      id: staffId,
+      id: decodedToken.id,
+      branch: decodedToken.branch,
     };
 
     const token = generateToken(tokenData, true);
@@ -846,14 +842,11 @@ export class StaffRepository {
       client.release();
     }
   }
-  public async ProfileDataV1(
-    userData: any,
-    decodedToken: number
-  ): Promise<any> {
+  public async ProfileDataV1(userData: any, decodedToken: any): Promise<any> {
     const client: PoolClient = await getClient();
     let refStId;
     if (userData.refStId == null) {
-      refStId = decodedToken;
+      refStId = decodedToken.id;
     } else {
       refStId = userData.refStId;
     }
@@ -861,7 +854,8 @@ export class StaffRepository {
     console.log("refStId", refStId);
 
     let tokenData = {
-      id: decodedToken,
+      id: decodedToken.id,
+      branch: decodedToken.branch,
     };
     const token = generateToken(tokenData, true);
 
@@ -1039,9 +1033,10 @@ export class StaffRepository {
     userData: any,
     decodedToken: any
   ): Promise<any> {
-    const refStId = userData.decodedToken;
+    const refStId = userData.decodedToken.id;
     const tokenData = {
-      id: refStId,
+      id: userData.decodedToken.id,
+      branch: userData.decodedToken.branch,
     };
     const token = generateToken(tokenData, true);
 

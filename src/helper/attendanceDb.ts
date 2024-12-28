@@ -12,10 +12,10 @@ dotenv.config();
 // });
 
 const pool = new Pool({
-  user: process.env.DB_USER || "postgres",
-  host: process.env.DB_HOST || "localhost",
+  user: process.env.DB_USER || "attendance",
+  host: process.env.DB_HOST || "13.203.158.161",
   database: process.env.DB_NAME || "attendance",
-  password: process.env.DB_PASSWORD || "vijay",
+  password: process.env.DB_PASSWORD || "ublisattendance",
   port: Number(process.env.DB_PORT) || 5432,
 });
 

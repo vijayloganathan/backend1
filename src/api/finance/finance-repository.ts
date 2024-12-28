@@ -34,14 +34,13 @@ import {
 export class FinanceRepository {
   public async studentDetailsV1(
     userData: any,
-    decodedToken: number,
-    bId: number
+    decodedToken: any,
+    
   ): Promise<any> {
-    const refStId = decodedToken;
-    const branchId = bId || 1;
+    const branchId = decodedToken.branch;
     const tokenData = {
-      id: refStId,
-      bId: branchId,
+      id: decodedToken.id,
+      branch: decodedToken.branch,
     };
     const token = generateToken(tokenData, true);
     try {
@@ -76,14 +75,13 @@ export class FinanceRepository {
   }
   public async studentProfileV1(
     userData: any,
-    decodedToken: number,
-    bId: number
+    decodedToken: any,
+    
   ): Promise<any> {
-    const refStId = decodedToken;
-    const branchId = bId || 1;
+
     const tokenData = {
-      id: refStId,
-      bId: branchId,
+      id: decodedToken.id,
+        branch: decodedToken.branch,
     };
     const token = generateToken(tokenData, true);
     try {
@@ -112,14 +110,13 @@ export class FinanceRepository {
   }
   public async studentFeesDetailsV1(
     userData: any,
-    decodedToken: number,
-    bId: number
+    decodedToken: any,
+    
   ): Promise<any> {
-    const refStId = decodedToken;
-    const branchId = bId || 1;
+
     const tokenData = {
-      id: refStId,
-      bId: branchId,
+      id: decodedToken.id,
+      branch: decodedToken.branch,
     };
     const token = generateToken(tokenData, true);
     const id = userData.refStId;
@@ -157,14 +154,13 @@ export class FinanceRepository {
   }
   public async verifyCouponV1(
     userData: any,
-    decodedToken: number,
-    bId: number
+    decodedToken: any,
+    
   ): Promise<any> {
-    const refStId = decodedToken;
-    const branchId = bId || 1;
+
     const tokenData = {
-      id: refStId,
-      bId: branchId,
+      id: decodedToken.id,
+      branch: decodedToken.branch,
     };
     const token = generateToken(tokenData, true);
     const couponData = userData.refCoupon;
@@ -300,14 +296,14 @@ export class FinanceRepository {
   }
   public async FeesPaidV1(
     userData: any,
-    decodedToken: number,
-    bId: number
+    decodedToken: any,
+    
   ): Promise<any> {
-    const refStId = decodedToken;
-    const branchId = bId || 1;
+    const refStId = decodedToken.id;
+
     const tokenData = {
-      id: refStId,
-      bId: branchId,
+      id: decodedToken.id,
+        branch: decodedToken.branch,
     };
     const token = generateToken(tokenData, true);
     const client: PoolClient = await getClient();
@@ -434,14 +430,13 @@ export class FinanceRepository {
   }
   public async invoiceDownloadV1(
     userData: any,
-    decodedToken: number,
-    bId: number
+    decodedToken: any,
+    
   ): Promise<any> {
-    const refStId = decodedToken;
-    const branchId = bId || 1;
+
     const tokenData = {
-      id: refStId,
-      bId: branchId,
+      id: decodedToken.id,
+        branch: decodedToken.branch,
     };
     const token = generateToken(tokenData, true);
     const refOrderId = userData.refOrderId;
@@ -471,14 +466,13 @@ export class FinanceRepository {
   }
   public async userPaymentAuditPgV1(
     userData: any,
-    decodedToken: number,
-    bId: number
+    decodedToken: any,
+    
   ): Promise<any> {
-    const refStId = decodedToken;
-    const branchId = bId || 1;
+
     const tokenData = {
-      id: refStId,
-      bId: branchId,
+      id: decodedToken.id,
+      branch: decodedToken.branch,
     };
     const token = generateToken(tokenData, true);
     const id = userData.refStId;

@@ -90,6 +90,7 @@ export class UserRepository {
         if (updateHistory && updateHistory.length > 0) {
           const tokenData = {
             id: user.refStId,
+            branch: user.refBranchId,
           };
 
           return encrypt(
@@ -117,9 +118,9 @@ export class UserRepository {
   }
   public async changePasswordV1(
     user_data: any,
-    decodedToken: number
+    decodedToken: any
   ): Promise<any> {
-    const refStId = decodedToken;
+    const refStId = decodedToken.id;
     const users = await executeQuery(selectUserByrefStId, [refStId]);
     if (users.length > 0) {
       const user = users[0];
@@ -153,7 +154,8 @@ export class UserRepository {
 
         if (updateHistory && updateHistory.length > 0) {
           const tokenData = {
-            id: user.refStId,
+            id: decodedToken.id,
+        branch: decodedToken.branch,
           };
 
           return encrypt(
@@ -211,7 +213,7 @@ export class UserRepository {
         userData.temp_su_dob, // refStDOB
         userData.temp_su_age, // refStAge
         newCustomerId,
-        (userType = 1),
+        userType,
       ];
 
       const userResult = await executeQuery(insertUserQuery, params);
@@ -236,7 +238,6 @@ export class UserRepository {
         userData.temp_su_phone,
         userData.temp_su_email,
       ];
-
       const communicationResult = await executeQuery(
         insertUserCommunicationQuery,
         communicationParams
@@ -350,11 +351,11 @@ export class UserRepository {
 
   public async validateUsers(
     userData: any,
-    decodedToken: number,
+    decodedToken: any,
     domain_code?: any
   ): Promise<any> {
     try {
-      const refStId = decodedToken;
+      const refStId = decodedToken.id;
       const id = [refStId];
       const user = await executeQuery(selectUserData, id);
 
@@ -380,7 +381,8 @@ export class UserRepository {
       };
 
       const tokenData = {
-        id: refStId,
+        id: decodedToken.id,
+        branch: decodedToken.branch,
         UserType: user,
       };
 
@@ -397,17 +399,16 @@ export class UserRepository {
         true
       );
     } catch (error) {
-      console.error("Error in User Token Validation:", error);
       throw error;
     }
   }
   public async validateTokenData(
     userData: any,
-    decodedToken: number,
+    decodedToken: any,
     domain_code?: any
   ): Promise<any> {
     try {
-      const refStId = decodedToken;
+      const refStId = decodedToken.id;
 
       const id = [refStId];
       const user = await executeQuery(selectUserData, id);
@@ -428,7 +429,8 @@ export class UserRepository {
       }
 
       const tokenData = {
-        id: refStId,
+        id: decodedToken.id,
+        branch: decodedToken.branch,
         UserType: user[0].refUtId,
       };
 
@@ -446,7 +448,8 @@ export class UserRepository {
       );
     } catch (error) {
       const tokenData = {
-        id: decodedToken,
+        id: decodedToken.id,
+        branch: decodedToken.branch,
       };
 
       const token = generateToken(tokenData, true);
@@ -462,17 +465,18 @@ export class UserRepository {
   }
 
   public async userDashBoardDataV1(
-    userData: any
-    // decodedToken: number
+    userData: any,
+    decodedToken: any
   ): Promise<any> {
     try {
-      // const refStId = decodedToken;
+      // const refStId = decodedToken.id;
       const refStId = 78;
       const userType = await executeQuery(getUserType, [refStId]);
       let refDashBoardData = {};
 
       const tokenData = {
-        id: refStId,
+        id: decodedToken.id,
+        branch: decodedToken.branch,
       };
 
       const token = generateToken(tokenData, true);
@@ -493,11 +497,12 @@ export class UserRepository {
   }
   public async userProfileDataV1(
     userData: any,
-    decodedToken: number
+    decodedToken: any
   ): Promise<any> {
-    const id = decodedToken;
+    const id = decodedToken.id;
     const tokenData = {
-      id: id,
+      id: decodedToken.id,
+      branch: decodedToken.branch,
     };
 
     let refStId;
@@ -512,7 +517,6 @@ export class UserRepository {
     } else {
       refStId = userData.refStId;
     }
-    console.log("refStId", refStId);
 
     const token = generateToken(tokenData, true);
 
@@ -536,11 +540,13 @@ export class UserRepository {
 
       const address = {
         addresstype: addresstype,
+        refAdFlat1: Data.refAdFlat1,
         refAdAdd1: Data.refAdAdd1,
         refAdArea1: Data.refAdArea1,
         refAdCity1: Data.refAdCity1,
         refAdState1: Data.refAdState1,
         refAdPincode1: Data.refAdPincode1,
+        refAdFlat2: Data.refAdFlat2,
         refAdAdd2: Data.refAdAdd2,
         refAdArea2: Data.refAdArea2,
         refAdCity2: Data.refAdCity2,
@@ -686,7 +692,6 @@ export class UserRepository {
         }
       }
 
-      console.log("profileData", profileData);
       return encrypt(
         {
           success: true,
@@ -698,7 +703,6 @@ export class UserRepository {
         true
       );
     } catch (error) {
-      console.log("error", error);
       return encrypt(
         {
           success: false,
@@ -711,11 +715,12 @@ export class UserRepository {
   }
   public async userProfileUpdateV1(
     userData: any,
-    decodedToken: number
+    decodedToken: any
   ): Promise<any> {
     const client: PoolClient = await getClient();
-    const refStId = decodedToken;
-    const tokenData = { id: refStId };
+    const refStId = decodedToken.id;
+    const tokenData = { id: decodedToken.id,
+      branch: decodedToken.branch, };
     const token = generateToken(tokenData, true);
 
     let refUtId: string;
@@ -742,11 +747,15 @@ export class UserRepository {
                 "{{tableName}}",
                 tableName
               );
+              console.log("refStId", refStId);
               newData = await executeQuery(getUserData, [refStId]);
+              console.log("newData", newData);
 
               olddata = newData[0];
+              console.log("olddata line ------- 746", olddata);
 
               userData = { ...userData, olddata };
+              console.log("userData line ------------ 749", userData);
 
               transTypeId = 9;
               let refAdAdd1Type: number = 3;
@@ -757,6 +766,7 @@ export class UserRepository {
                 refAdAdd2Type = 2;
               }
 
+              console.log("userData", userData);
               if (userData.olddata.addresstype === false) {
                 refAdAdd1Type = 1;
                 refAdAdd2Type = 2;
@@ -908,6 +918,7 @@ export class UserRepository {
                   tableName,
                   updatedData[i]
                 );
+
                 userResult = await client.query(insertQuery, values);
               }
             }
@@ -955,10 +966,8 @@ export class UserRepository {
           let changes: any;
           if (userData.medicalDocuments) {
             changes = getChanges1(updatedData, oldData);
-            console.log("changes", changes);
           } else {
             changes = getChanges(updatedData, oldData);
-            console.log("changes", changes);
           }
 
           for (const key in changes) {
@@ -1007,6 +1016,7 @@ export class UserRepository {
         true
       );
     } catch (error) {
+      console.log("error", error);
       await client.query("ROLLBACK");
 
       const results = {

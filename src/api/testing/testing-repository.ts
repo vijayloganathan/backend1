@@ -2,10 +2,11 @@ import { generateToken, decodeToken } from "../../helper/token";
 import { encrypt } from "../../helper/encrypt";
 
 export class TestingRepository {
-  public async TestingV1(userData: any, decodedToken: number): Promise<any> {
-    const refStId = decodedToken;
+  public async TestingV1(userData: any, decodedToken: any): Promise<any> {
+    const refStId = decodedToken.id;
     const tokenData = {
-      id: refStId,
+      id: decodedToken.id,
+      branch: decodedToken.branch,
     };
     const token = generateToken(tokenData, true);
     try {

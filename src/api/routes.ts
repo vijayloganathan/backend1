@@ -177,7 +177,17 @@ export class UserProfile implements IRoute {
           config: {
             pre: [{ method: validateToken, assign: "token" }], // Use the validateToken function here
             handler: controller.sectionTime,
-            description: "Passing the register Data to the Register Page",
+            description: "Passing the Member type and class mode",
+            auth: false,
+          },
+        },
+        {
+          method: "POST",
+          path: "/api/v1/profile/PackageTime",
+          config: {
+            pre: [{ method: validateToken, assign: "token" }], // Use the validateToken function here
+            handler: controller.PackageTime,
+            description: "Passing the Package Data",
             auth: false,
           },
         },
@@ -875,6 +885,96 @@ export class Settings implements IRoute {
             auth: false,
           },
         },
+        {
+          method: "POST",
+          path: "/api/v1/settings/package/addTiming",
+          config: {
+            pre: [{ method: validateToken, assign: "token" }],
+            handler: settingsPage.addPackageTiming,
+            description: "Adding the Timing for the Package",
+            auth: false,
+          },
+        },
+        {
+          method: "POST",
+          path: "/api/v1/settings/package/editTiming",
+          config: {
+            pre: [{ method: validateToken, assign: "token" }],
+            handler: settingsPage.EditPackageTiming,
+            description: "Editing the Timing for the Package",
+            auth: false,
+          },
+        },
+        {
+          method: "GET",
+          path: "/api/v1/settings/package/timingData",
+          config: {
+            pre: [{ method: validateToken, assign: "token" }],
+            handler: settingsPage.timingData,
+            description: "Getting the Timing Data",
+            auth: false,
+          },
+        },
+        {
+          method: "POST",
+          path: "/api/v1/settings/package/deleteTiming",
+          config: {
+            pre: [{ method: validateToken, assign: "token" }],
+            handler: settingsPage.deleteTiming,
+            description: "Delete the Timing Data",
+            auth: false,
+          },
+        },
+        {
+          method: "POST",
+          path: "/api/v1/settings/package/Data",
+          config: {
+            pre: [{ method: validateToken, assign: "token" }],
+            handler: settingsPage.packageData,
+            description: "Get the Package Data",
+            auth: false,
+          },
+        },
+        {
+          method: "GET",
+          path: "/api/v1/settings/package/addOptions",
+          config: {
+            pre: [{ method: validateToken, assign: "token" }],
+            handler: settingsPage.packageAddOptions,
+            description: "Get the Package Add Options",
+            auth: false,
+          },
+        },
+        {
+          method: "POST",
+          path: "/api/v1/settings/package/addPackage",
+          config: {
+            // pre: [{ method: validateToken, assign: "token" }],
+            handler: settingsPage.addNewPackage,
+            description: "Adding New Package",
+            auth: false,
+          },
+        },
+        {
+          method: "POST",
+          path: "/api/v1/settings/package/editPackage",
+          config: {
+            pre: [{ method: validateToken, assign: "token" }],
+            handler: settingsPage.editPackage,
+            description: "Editing Package",
+            auth: false,
+          },
+        },
+        {
+          method: "POST",
+          path: "/api/v1/settings/package/deletePackage",
+          config: {
+            pre: [{ method: validateToken, assign: "token" }],
+            handler: settingsPage.deletePackage,
+            description: "Delete Package",
+            auth: false,
+          },
+        },
       ]);
       resolve(true);
     });
@@ -1040,11 +1140,61 @@ export class Attendance implements IRoute {
       server.route([
         {
           method: "GET",
+          path: "/api/v1/attendance/overView",
+          config: {
+            pre: [{ method: validateToken, assign: "token" }],
+            handler: AttendancePage.attendanceOverView,
+            description: "To get the Attendance Over View",
+            auth: false,
+          },
+        },
+        {
+          method: "POST",
           path: "/api/v1/attendance/session",
           config: {
-            // pre: [{ method: validateToken, assign: "token" }],
+            pre: [{ method: validateToken, assign: "token" }],
             handler: AttendancePage.sessionAttendance,
             description: "To get the Session Attendance",
+            auth: false,
+          },
+        },
+        {
+          method: "POST",
+          path: "/api/v1/attendance/userSearch",
+          config: {
+            pre: [{ method: validateToken, assign: "token" }],
+            handler: AttendancePage.userSearch,
+            description: "Search User Deatils",
+            auth: false,
+          },
+        },
+        {
+          method: "POST",
+          path: "/api/v1/attendance/user",
+          config: {
+            pre: [{ method: validateToken, assign: "token" }],
+            handler: AttendancePage.userAttendance,
+            description: "To get the User Attendance",
+            auth: false,
+          },
+        },
+        {
+          method: "POST",
+          path: "/api/v1/attendance/reportOptions",
+          config: {
+            pre: [{ method: validateToken, assign: "token" }],
+            handler: AttendancePage.attendanceReportOption,
+            description: "To get the Attendance Report Options",
+            auth: false,
+          },
+        },
+        {
+          method: "POST",
+          path: "/api/v1/attendance/report",
+          config: {
+            // pre: [{ method: validateToken, assign: "token" }],
+            handler: AttendancePage.attendanceReport,
+            description: "To get the Attendance Report",
             auth: false,
           },
         },

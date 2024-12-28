@@ -31,7 +31,6 @@ export class UserController {
     request: Hapi.Request,
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
-    logger.info("Router----- line 17");
     try {
       logger.info(`GET URL REQ => ${request.url.href}`);
       const domainCode = request.headers.domain_code || "";
@@ -61,7 +60,10 @@ export class UserController {
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
     try {
-      const decodedToken = request.plugins.token.id;
+      const decodedToken = {
+        id: request.plugins.token.id,
+        branch: request.plugins.token.branch,
+      };
       logger.info(`GET URL REQ => ${request.url.href}`);
       let entity;
 
@@ -92,7 +94,11 @@ export class UserController {
     request: any,
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
-    const decodedToken = request.plugins.token.id;
+    console.log("line ----- 95");
+    const decodedToken = {
+      id: request.plugins.token.id,
+      branch: request.plugins.token.branch,
+    };
     // const decodedToken = 35;
     logger.info("Router----- line 17");
     try {
@@ -127,8 +133,14 @@ export class UserController {
     request: any,
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
-    const decodedToken = request.plugins.token.id;
+    const decodedToken = {
+      id: request.plugins.token.id,
+      branch: request.plugins.token.branch,
+    };
+    console.log("decodedToken", decodedToken);
     logger.info("Router-----store Register Form Data");
+
+    console.log("line ----- 133");
     try {
       logger.info(`GET URL REQ => ${request.url.href}`);
       let entity;
@@ -339,7 +351,10 @@ export class UserProfileController {
     request: any,
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
-    const decodedToken = request.plugins.token.id;
+    const decodedToken = {
+      id: request.plugins.token.id,
+      branch: request.plugins.token.branch,
+    };
     logger.info("Router-----store Register Form Data");
     try {
       logger.info(`GET URL REQ => ${request.url.href}`);
@@ -419,7 +434,10 @@ export class UserProfileController {
     request: any,
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
-    const decodedToken = request.plugins.token.id;
+    const decodedToken = {
+      id: request.plugins.token.id,
+      branch: request.plugins.token.branch,
+    };
     try {
       logger.info(`GET URL REQ => ${request.url.href}`);
       const domainCode = request.headers.domain_code || "";
@@ -450,7 +468,10 @@ export class UserProfileController {
     request: any,
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
-    const decodedToken = request.plugins.token.id;
+    const decodedToken = {
+      id: request.plugins.token.id,
+      branch: request.plugins.token.branch,
+    };
     try {
       logger.info(`GET URL REQ => ${request.url.href}`);
       const entity = await this.resolver.sectionTimeV1(
@@ -475,12 +496,47 @@ export class UserProfileController {
         .code(500);
     }
   };
+  public PackageTime = async (
+    request: any,
+    response: Hapi.ResponseToolkit
+  ): Promise<any> => {
+    const decodedToken = {
+      id: request.plugins.token.id,
+      branch: request.plugins.token.branch,
+    };
+    try {
+      logger.info(`GET URL REQ => ${request.url.href}`);
+      const entity = await this.resolver.PackageTimeV1(
+        request.payload,
+        decodedToken
+      );
+
+      if (entity.success) {
+        return response.response(entity).code(200);
+      }
+      return response.response(entity).code(200);
+    } catch (error) {
+      logger.error("Error in Sending Package Timing", error);
+      return response
+        .response({
+          success: false,
+          message:
+            error instanceof Error
+              ? error.message
+              : "An unknown error occurred",
+        })
+        .code(500);
+    }
+  };
   public userHealthReportUpload = async (
     request: any,
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
-    const decodedToken = request.plugins.token.id;
-    // const decodedToken = 1;
+    const decodedToken = {
+      id: request.plugins.token.id,
+      branch: request.plugins.token.branch,
+    };
+    // const decodedToken = {id:1,branch:1};
     try {
       logger.info(`GET URL REQ => ${request.url.href}`);
       const entity = await this.resolver.userHealthReportUploadV1(
@@ -509,9 +565,12 @@ export class UserProfileController {
     request: any,
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
-    const decodedToken = request.plugins.token.id;
+    const decodedToken = {
+      id: request.plugins.token.id,
+      branch: request.plugins.token.branch,
+    };
     console.log("decodedToken", decodedToken);
-    // const decodedToken = 1;
+    // const decodedToken = {id:1,branch:1};
     try {
       logger.info(`\n\n\nGET URL REQ line 514=> ${request.url.href}\n\n\n`);
       const entity = await this.resolver.deleteMedicalDocumentV1(
@@ -548,7 +607,10 @@ export class FrontDesk {
     request: any,
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
-    const decodedToken = request.plugins.token.id;
+    const decodedToken = {
+      id: request.plugins.token.id,
+      branch: request.plugins.token.branch,
+    };
     try {
       logger.info(`GET URL REQ => ${request.url.href}`);
       const domainCode = request.headers.domain_code || "";
@@ -579,7 +641,10 @@ export class FrontDesk {
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
     try {
-      const decodedToken = request.plugins.token.id;
+      const decodedToken = {
+        id: request.plugins.token.id,
+        branch: request.plugins.token.branch,
+      };
       logger.info(`GET URL REQ => ${request.url.href}`);
       const domainCode = request.headers.domain_code || "";
       const entity = await this.resolver.staffStudentApprovalV1(
@@ -609,7 +674,10 @@ export class FrontDesk {
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
     try {
-      const decodedToken = request.plugins.token.id;
+      const decodedToken = {
+        id: request.plugins.token.id,
+        branch: request.plugins.token.branch,
+      };
       logger.info(`GET URL REQ => ${request.url.href}`);
       const domainCode = request.headers.domain_code || "";
       const entity = await this.resolver.staffApprovalBtnV1(
@@ -639,7 +707,10 @@ export class FrontDesk {
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
     try {
-      const decodedToken = request.plugins.token.id;
+      const decodedToken = {
+        id: request.plugins.token.id,
+        branch: request.plugins.token.branch,
+      };
       logger.info(`GET URL REQ => ${request.url.href}`);
       const domainCode = request.headers.domain_code || "";
       const entity = await this.resolver.staffRejectionBtnV1(
@@ -669,7 +740,10 @@ export class FrontDesk {
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
     try {
-      const decodedToken = request.plugins.token.id;
+      const decodedToken = {
+        id: request.plugins.token.id,
+        branch: request.plugins.token.branch,
+      };
       logger.info(`GET URL REQ => ${request.url.href}`);
       const domainCode = request.headers.domain_code || "";
       const entity = await this.resolver.userSignedUpV1(
@@ -699,7 +773,10 @@ export class FrontDesk {
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
     try {
-      const decodedToken = request.plugins.token.id;
+      const decodedToken = {
+        id: request.plugins.token.id,
+        branch: request.plugins.token.branch,
+      };
 
       logger.info(`GET URL REQ => ${request.url.href}`);
       const domainCode = request.headers.domain_code || "";
@@ -730,7 +807,10 @@ export class FrontDesk {
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
     try {
-      const decodedToken = request.plugins.token.id;
+      const decodedToken = {
+        id: request.plugins.token.id,
+        branch: request.plugins.token.branch,
+      };
       logger.info(`GET URL REQ => ${request.url.href}`);
       const domainCode = request.headers.domain_code || "";
       const entity = await this.resolver.userManagementPageV1(
@@ -759,7 +839,10 @@ export class FrontDesk {
     request: any,
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
-    const decodedToken = request.plugins.token.id;
+    const decodedToken = {
+      id: request.plugins.token.id,
+      branch: request.plugins.token.branch,
+    };
     console.log("decodedToken", decodedToken);
     try {
       logger.info(`GET URL REQ => ${request.url.href}`);
@@ -790,7 +873,10 @@ export class FrontDesk {
     request: any,
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
-    const decodedToken = request.plugins.token.id;
+    const decodedToken = {
+      id: request.plugins.token.id,
+      branch: request.plugins.token.branch,
+    };
     try {
       logger.info(`GET URL REQ => ${request.url.href}`);
       const domainCode = request.headers.domain_code || "";
@@ -820,7 +906,10 @@ export class FrontDesk {
     request: any,
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
-    const decodedToken = request.plugins.token.id;
+    const decodedToken = {
+      id: request.plugins.token.id,
+      branch: request.plugins.token.branch,
+    };
     try {
       logger.info(`GET URL REQ => ${request.url.href}`);
       const payload = request.payload;
@@ -895,7 +984,10 @@ export class Director {
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
     try {
-      const decodedToken = request.plugins.token.id;
+      const decodedToken = {
+        id: request.plugins.token.id,
+        branch: request.plugins.token.branch,
+      };
 
       logger.info(`GET URL REQ => ${request.url.href}`);
       const domainCode = request.headers.domain_code || "";
@@ -925,7 +1017,10 @@ export class Director {
     request: any,
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
-    const decodedToken = request.plugins.token.id;
+    const decodedToken = {
+      id: request.plugins.token.id,
+      branch: request.plugins.token.branch,
+    };
     try {
       logger.info(`GET URL REQ => ${request.url.href}`);
       const domainCode = request.headers.domain_code || "";
@@ -956,7 +1051,10 @@ export class Director {
     request: any,
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
-    const decodedToken = request.plugins.token.id;
+    const decodedToken = {
+      id: request.plugins.token.id,
+      branch: request.plugins.token.branch,
+    };
     try {
       logger.info(`GET URL REQ => ${request.url.href}`);
       const domainCode = request.headers.domain_code || "";
@@ -986,7 +1084,10 @@ export class Director {
     request: any,
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
-    const decodedToken = request.plugins.token.id;
+    const decodedToken = {
+      id: request.plugins.token.id,
+      branch: request.plugins.token.branch,
+    };
     try {
       logger.info(`GET URL REQ => ${request.url.href}`);
       const domainCode = request.headers.domain_code || "";
@@ -1016,7 +1117,10 @@ export class Director {
     request: any,
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
-    const decodedToken = request.plugins.token.id;
+    const decodedToken = {
+      id: request.plugins.token.id,
+      branch: request.plugins.token.branch,
+    };
     try {
       logger.info(`GET URL REQ => ${request.url.href}`);
       const domainCode = request.headers.domain_code || "";
@@ -1046,7 +1150,10 @@ export class Director {
     request: any,
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
-    const decodedToken = request.plugins.token.id;
+    const decodedToken = {
+      id: request.plugins.token.id,
+      branch: request.plugins.token.branch,
+    };
     // const decodedToken = 5;
 
     try {
@@ -1079,7 +1186,10 @@ export class Director {
     request: any,
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
-    const decodedToken = request.plugins.token.id;
+    const decodedToken = {
+      id: request.plugins.token.id,
+      branch: request.plugins.token.branch,
+    };
     // const decodedToken = 3;
 
     logger.info("Router-----store Register Form Data");
@@ -1130,7 +1240,10 @@ export class Director {
     request: any,
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
-    const decodedToken = request.plugins.token.id;
+    const decodedToken = {
+      id: request.plugins.token.id,
+      branch: request.plugins.token.branch,
+    };
     try {
       logger.info(`GET URL REQ => ${request.url.href}`);
       const domainCode = request.headers.domain_code || "";
@@ -1189,7 +1302,10 @@ export class Director {
     request: any,
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
-    const decodedToken = request.plugins.token.id;
+    const decodedToken = {
+      id: request.plugins.token.id,
+      branch: request.plugins.token.branch,
+    };
     try {
       logger.info(`GET URL REQ => ${request.url.href}`);
       const domainCode = request.headers.domain_code || "";
@@ -1219,7 +1335,10 @@ export class Director {
     request: any,
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
-    const decodedToken = request.plugins.token.id;
+    const decodedToken = {
+      id: request.plugins.token.id,
+      branch: request.plugins.token.branch,
+    };
     try {
       logger.info(`GET URL REQ => ${request.url.href}`);
       const domainCode = request.headers.domain_code || "";
@@ -1249,7 +1368,10 @@ export class Director {
     request: any,
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
-    const decodedToken = request.plugins.token.id;
+    const decodedToken = {
+      id: request.plugins.token.id,
+      branch: request.plugins.token.branch,
+    };
     try {
       logger.info(`GET URL REQ => ${request.url.href}`);
       const domainCode = request.headers.domain_code || "";
@@ -1279,7 +1401,10 @@ export class Director {
     request: any,
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
-    const decodedToken = request.plugins.token.id;
+    const decodedToken = {
+      id: request.plugins.token.id,
+      branch: request.plugins.token.branch,
+    };
     try {
       logger.info(`GET URL REQ => ${request.url.href}`);
       const domainCode = request.headers.domain_code || "";
@@ -1309,7 +1434,10 @@ export class Director {
     request: any,
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
-    const decodedToken = request.plugins.token.id;
+    const decodedToken = {
+      id: request.plugins.token.id,
+      branch: request.plugins.token.branch,
+    };
     try {
       logger.info(`GET URL REQ => ${request.url.href}`);
       const domainCode = request.headers.domain_code || "";
@@ -1339,7 +1467,10 @@ export class Director {
     request: any,
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
-    const decodedToken = request.plugins.token.id;
+    const decodedToken = {
+      id: request.plugins.token.id,
+      branch: request.plugins.token.branch,
+    };
     try {
       logger.info(`GET URL REQ => ${request.url.href}`);
       const domainCode = request.headers.domain_code || "";
@@ -1369,7 +1500,10 @@ export class Director {
     request: any,
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
-    const decodedToken = request.plugins.token.id;
+    const decodedToken = {
+      id: request.plugins.token.id,
+      branch: request.plugins.token.branch,
+    };
     try {
       logger.info(`GET URL REQ => ${request.url.href}`);
       const domainCode = request.headers.domain_code || "";
@@ -1399,7 +1533,10 @@ export class Director {
     request: any,
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
-    const decodedToken = request.plugins.token.id;
+    const decodedToken = {
+      id: request.plugins.token.id,
+      branch: request.plugins.token.branch,
+    };
     try {
       logger.info(`GET URL REQ => ${request.url.href}`);
       const domainCode = request.headers.domain_code || "";
@@ -1429,7 +1566,10 @@ export class Director {
     request: any,
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
-    const decodedToken = request.plugins.token.id;
+    const decodedToken = {
+      id: request.plugins.token.id,
+      branch: request.plugins.token.branch,
+    };
     try {
       logger.info(`GET URL REQ => ${request.url.href}`);
       const domainCode = request.headers.domain_code || "";
@@ -1459,7 +1599,10 @@ export class Director {
     request: any,
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
-    const decodedToken = request.plugins.token.id;
+    const decodedToken = {
+      id: request.plugins.token.id,
+      branch: request.plugins.token.branch,
+    };
     try {
       logger.info(`GET URL REQ => ${request.url.href}`);
       const domainCode = request.headers.domain_code || "";
@@ -1489,7 +1632,10 @@ export class Director {
     request: any,
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
-    const decodedToken = request.plugins.token.id;
+    const decodedToken = {
+      id: request.plugins.token.id,
+      branch: request.plugins.token.branch,
+    };
     try {
       logger.info(`GET URL REQ => ${request.url.href}`);
       const domainCode = request.headers.domain_code || "";
@@ -1519,8 +1665,11 @@ export class Director {
     request: any,
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
-    const decodedToken = request.plugins.token.id;
-    // const decodedToken = 1;
+    const decodedToken = {
+      id: request.plugins.token.id,
+      branch: request.plugins.token.branch,
+    };
+    // const decodedToken = {id:1,branch:1};
     try {
       logger.info(`GET URL REQ => ${request.url.href}`);
       const domainCode = request.headers.domain_code || "";
@@ -1550,8 +1699,11 @@ export class Director {
     request: any,
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
-    const decodedToken = request.plugins.token.id;
-    // const decodedToken = 1;
+    const decodedToken = {
+      id: request.plugins.token.id,
+      branch: request.plugins.token.branch,
+    };
+    // const decodedToken = {id:1,branch:1};
     try {
       logger.info(`GET URL REQ => ${request.url.href}`);
       const domainCode = request.headers.domain_code || "";
@@ -1581,8 +1733,11 @@ export class Director {
     request: any,
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
-    // const decodedToken = request.plugins.token.id;
-    const decodedToken = 1;
+    const decodedToken = {
+      id: request.plugins.token.id,
+      branch: request.plugins.token.branch,
+    };
+    // const decodedToken = {id:1,branch:1};
     try {
       logger.info(`GET URL REQ => ${request.url.href}`);
       const domainCode = request.headers.domain_code || "";
@@ -1612,8 +1767,11 @@ export class Director {
     request: any,
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
-    const decodedToken = request.plugins.token.id;
-    // const decodedToken = 1;
+    const decodedToken = {
+      id: request.plugins.token.id,
+      branch: request.plugins.token.branch,
+    };
+    // const decodedToken = {id:1,branch:1};
     try {
       logger.info(`GET URL REQ => ${request.url.href}`);
       const domainCode = request.headers.domain_code || "";
@@ -1650,7 +1808,10 @@ export class userDashBoard {
     request: any,
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
-    // const decodedToken = request.plugins.token.id;
+    // const decodedToken = {
+    //   id: request.plugins.token.id,
+    //   branch: request.plugins.token.branch,
+    // };
     try {
       logger.info(`GET URL REQ => ${request.url.href}`);
       const domainCode = request.headers.domain_code || "";
@@ -1680,7 +1841,10 @@ export class userDashBoard {
     request: any,
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
-    const decodedToken = request.plugins.token.id;
+    const decodedToken = {
+      id: request.plugins.token.id,
+      branch: request.plugins.token.branch,
+    };
     try {
       logger.info(`GET URL REQ line 1133=> ${request.url.href}`);
       const domainCode = request.headers.domain_code || "";
@@ -1711,7 +1875,10 @@ export class userDashBoard {
     request: any,
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
-    const decodedToken = request.plugins.token.id;
+    const decodedToken = {
+      id: request.plugins.token.id,
+      branch: request.plugins.token.branch,
+    };
     // const decodedToken = 13;
     try {
       logger.info(`GET URL REQ => ${request.url.href}`);
@@ -1750,7 +1917,10 @@ export class batchPrograms {
     request: any,
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
-    // const decodedToken = request.plugins.token.id;
+    // const decodedToken = {
+    //   id: request.plugins.token.id,
+    //   branch: request.plugins.token.branch,
+    // };
     try {
       logger.info(`GET URL REQ => ${request.url.href}`);
       const domainCode = request.headers.domain_code || "";
@@ -1788,7 +1958,10 @@ export class financeController {
     request: any,
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
-    const decodedToken = request.plugins.token.id;
+    const decodedToken = {
+      id: request.plugins.token.id,
+      branch: request.plugins.token.branch,
+    };
     try {
       logger.info(`GET URL REQ => ${request.url.href}`);
       const entity = await this.resolver.studentDetailsV1(
@@ -1817,8 +1990,11 @@ export class financeController {
     request: any,
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
-    const decodedToken = request.plugins.token.id;
-    // const decodedToken = 1;
+    const decodedToken = {
+      id: request.plugins.token.id,
+      branch: request.plugins.token.branch,
+    };
+    // const decodedToken = {id:1,branch:1};
     try {
       logger.info(`GET URL REQ => ${request.url.href}`);
       const entity = await this.resolver.studentProfileV1(
@@ -1850,8 +2026,11 @@ export class financeController {
     request: any,
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
-    const decodedToken = request.plugins.token.id;
-    // const decodedToken = 1;
+    const decodedToken = {
+      id: request.plugins.token.id,
+      branch: request.plugins.token.branch,
+    };
+    // const decodedToken = {id:1,branch:1};
     try {
       logger.info(`GET URL REQ => ${request.url.href}`);
       const entity = await this.resolver.studentFeesDetailsV1(
@@ -1883,8 +2062,11 @@ export class financeController {
     request: any,
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
-    const decodedToken = request.plugins.token.id;
-    // const decodedToken = 1;
+    const decodedToken = {
+      id: request.plugins.token.id,
+      branch: request.plugins.token.branch,
+    };
+    // const decodedToken = {id:1,branch:1};
     try {
       logger.info(`GET URL REQ => ${request.url.href}`);
       const entity = await this.resolver.verifyCouponV1(
@@ -1913,8 +2095,11 @@ export class financeController {
     request: any,
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
-    const decodedToken = request.plugins.token.id;
-    // const decodedToken = 1;
+    const decodedToken = {
+      id: request.plugins.token.id,
+      branch: request.plugins.token.branch,
+    };
+    // const decodedToken = {id:1,branch:1};
     try {
       logger.info(`GET URL REQ => ${request.url.href}`);
       const entity = await this.resolver.FeesPaidV1(
@@ -1943,8 +2128,11 @@ export class financeController {
     request: any,
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
-    const decodedToken = request.plugins.token.id;
-    // const decodedToken = 1;
+    const decodedToken = {
+      id: request.plugins.token.id,
+      branch: request.plugins.token.branch,
+    };
+    // const decodedToken = {id:1,branch:1};
     try {
       logger.info(`GET URL REQ => ${request.url.href}`);
       const entity = await this.resolver.invoiceDownloadV1(
@@ -1973,8 +2161,11 @@ export class financeController {
     request: any,
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
-    const decodedToken = request.plugins.token.id;
-    // const decodedToken = 1;
+    const decodedToken = {
+      id: request.plugins.token.id,
+      branch: request.plugins.token.branch,
+    };
+    // const decodedToken = {id:1,branch:1};
     try {
       logger.info(`GET URL REQ => ${request.url.href}`);
       const entity = await this.resolver.userPaymentAuditPgV1(
@@ -2011,8 +2202,11 @@ export class SettingsController {
     request: any,
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
-    // const decodedToken = request.plugins.token.id;
-    const decodedToken = 1;
+    // const decodedToken = {
+    //   id: request.plugins.token.id,
+    //   branch: request.plugins.token.branch,
+    // };
+    const decodedToken = { id: 1, branch: 1 };
     try {
       logger.info(`GET URL REQ => ${request.url.href}`);
       const entity = await this.resolver.SectionDataV1(
@@ -2041,8 +2235,11 @@ export class SettingsController {
     request: any,
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
-    const decodedToken = request.plugins.token.id;
-    // const decodedToken = 1;
+    const decodedToken = {
+      id: request.plugins.token.id,
+      branch: request.plugins.token.branch,
+    };
+    // const decodedToken = {id:1,branch:1};
     try {
       logger.info(`GET URL REQ => ${request.url.href}`);
       const entity = await this.resolver.branchV1(
@@ -2071,8 +2268,11 @@ export class SettingsController {
     request: any,
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
-    const decodedToken = request.plugins.token.id;
-    // const decodedToken = 1;
+    const decodedToken = {
+      id: request.plugins.token.id,
+      branch: request.plugins.token.branch,
+    };
+    // const decodedToken = {id:1,branch:1};
     try {
       logger.info(`GET URL REQ => ${request.url.href}`);
       const entity = await this.resolver.addSectionPageV1(
@@ -2101,8 +2301,11 @@ export class SettingsController {
     request: any,
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
-    // const decodedToken = request.plugins.token.id;
-    const decodedToken = 1;
+    // const decodedToken = {
+    //   id: request.plugins.token.id,
+    //   branch: request.plugins.token.branch,
+    // };
+    const decodedToken = { id: 1, branch: 1 };
     try {
       logger.info(`GET URL REQ => ${request.url.href}`);
       const entity = await this.resolver.addNewSectionV1(
@@ -2131,8 +2334,11 @@ export class SettingsController {
     request: any,
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
-    const decodedToken = request.plugins.token.id;
-    // const decodedToken = 1;
+    const decodedToken = {
+      id: request.plugins.token.id,
+      branch: request.plugins.token.branch,
+    };
+    // const decodedToken = {id:1,branch:1};
     try {
       logger.info(`GET URL REQ => ${request.url.href}`);
       const entity = await this.resolver.editSectionDataV1(
@@ -2161,8 +2367,11 @@ export class SettingsController {
     request: any,
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
-    // const decodedToken = request.plugins.token.id;
-    const decodedToken = 1;
+    // const decodedToken = {
+    //   id: request.plugins.token.id,
+    //   branch: request.plugins.token.branch,
+    // };
+    const decodedToken = { id: 1, branch: 1 };
     try {
       logger.info(`GET URL REQ => ${request.url.href}`);
       const entity = await this.resolver.deleteSectionDataV1(
@@ -2191,8 +2400,11 @@ export class SettingsController {
     request: any,
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
-    const decodedToken = request.plugins.token.id;
-    // const decodedToken = 1;
+    const decodedToken = {
+      id: request.plugins.token.id,
+      branch: request.plugins.token.branch,
+    };
+    // const decodedToken = {id:1,branch:1};
     try {
       logger.info(`GET URL REQ => ${request.url.href}`);
       const entity = await this.resolver.customClassDataV1(
@@ -2221,8 +2433,11 @@ export class SettingsController {
     request: any,
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
-    const decodedToken = request.plugins.token.id;
-    // const decodedToken = 1;
+    const decodedToken = {
+      id: request.plugins.token.id,
+      branch: request.plugins.token.branch,
+    };
+    // const decodedToken = {id:1,branch:1};
     try {
       logger.info(`GET URL REQ => ${request.url.href}`);
       const entity = await this.resolver.addCustomClassDataV1(
@@ -2251,8 +2466,11 @@ export class SettingsController {
     request: any,
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
-    const decodedToken = request.plugins.token.id;
-    // const decodedToken = 1;
+    const decodedToken = {
+      id: request.plugins.token.id,
+      branch: request.plugins.token.branch,
+    };
+    // const decodedToken = {id:1,branch:1};
     try {
       logger.info(`GET URL REQ => ${request.url.href}`);
       const entity = await this.resolver.editCustomClassDataV1(
@@ -2281,8 +2499,11 @@ export class SettingsController {
     request: any,
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
-    const decodedToken = request.plugins.token.id;
-    // const decodedToken = 1;
+    const decodedToken = {
+      id: request.plugins.token.id,
+      branch: request.plugins.token.branch,
+    };
+    // const decodedToken = {id:1,branch:1};
     try {
       logger.info(`GET URL REQ => ${request.url.href}`);
       const entity = await this.resolver.deleteCustomClassDataV1(
@@ -2311,8 +2532,11 @@ export class SettingsController {
     request: any,
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
-    const decodedToken = request.plugins.token.id;
-    // const decodedToken = 1;
+    const decodedToken = {
+      id: request.plugins.token.id,
+      branch: request.plugins.token.branch,
+    };
+    // const decodedToken = {id:1,branch:1};
     try {
       logger.info(`GET URL REQ => ${request.url.href}`);
       const entity = await this.resolver.generalHealthOptionsV1(
@@ -2341,8 +2565,11 @@ export class SettingsController {
     request: any,
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
-    const decodedToken = request.plugins.token.id;
-    // const decodedToken = 1;
+    const decodedToken = {
+      id: request.plugins.token.id,
+      branch: request.plugins.token.branch,
+    };
+    // const decodedToken = {id:1,branch:1};
     try {
       logger.info(`GET URL REQ => ${request.url.href}`);
       const entity = await this.resolver.addGeneralHealthV1(
@@ -2371,8 +2598,11 @@ export class SettingsController {
     request: any,
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
-    const decodedToken = request.plugins.token.id;
-    // const decodedToken = 1;
+    const decodedToken = {
+      id: request.plugins.token.id,
+      branch: request.plugins.token.branch,
+    };
+    // const decodedToken = {id:1,branch:1};
     try {
       logger.info(`GET URL REQ => ${request.url.href}`);
       const entity = await this.resolver.editGeneralHealthV1(
@@ -2401,8 +2631,11 @@ export class SettingsController {
     request: any,
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
-    const decodedToken = request.plugins.token.id;
-    // const decodedToken = 1;
+    const decodedToken = {
+      id: request.plugins.token.id,
+      branch: request.plugins.token.branch,
+    };
+    // const decodedToken = {id:1,branch:1};
     try {
       logger.info(`GET URL REQ => ${request.url.href}`);
       const entity = await this.resolver.deleteGeneralHealthV1(
@@ -2427,6 +2660,303 @@ export class SettingsController {
         .code(500);
     }
   };
+  public addPackageTiming = async (
+    request: any,
+    response: Hapi.ResponseToolkit
+  ): Promise<any> => {
+    const decodedToken = {
+      id: request.plugins.token.id,
+      branch: request.plugins.token.branch,
+    };
+    // const decodedToken = {id:1,branch:1};
+    try {
+      logger.info(`GET URL REQ => ${request.url.href}`);
+      const entity = await this.resolver.addPackageTimingV1(
+        request.payload,
+        decodedToken
+      );
+
+      if (entity.success) {
+        return response.response(entity).code(200);
+      }
+      return response.response(entity).code(200);
+    } catch (error) {
+      logger.error("error in Adding The Package Timing", error);
+      return response
+        .response({
+          success: false,
+          message:
+            error instanceof Error
+              ? error.message
+              : "An unknown error occurred",
+        })
+        .code(500);
+    }
+  };
+  public EditPackageTiming = async (
+    request: any,
+    response: Hapi.ResponseToolkit
+  ): Promise<any> => {
+    const decodedToken = {
+      id: request.plugins.token.id,
+      branch: request.plugins.token.branch,
+    };
+    // const decodedToken = {id:1,branch:1};
+    try {
+      logger.info(`GET URL REQ => ${request.url.href}`);
+      const entity = await this.resolver.EditPackageTimingV1(
+        request.payload,
+        decodedToken
+      );
+
+      if (entity.success) {
+        return response.response(entity).code(200);
+      }
+      return response.response(entity).code(200);
+    } catch (error) {
+      logger.error("error in Editing The Package Timing", error);
+      return response
+        .response({
+          success: false,
+          message:
+            error instanceof Error
+              ? error.message
+              : "An unknown error occurred",
+        })
+        .code(500);
+    }
+  };
+  public timingData = async (
+    request: any,
+    response: Hapi.ResponseToolkit
+  ): Promise<any> => {
+    // const decodedToken = {
+    //   id: request.plugins.token.id,
+    //   branch: request.plugins.token.branch,
+    // };
+    const decodedToken = { id: 1, branch: 1 };
+    try {
+      logger.info(`GET URL REQ => ${request.url.href}`);
+      const entity = await this.resolver.timingDataV1(
+        request.payload,
+        decodedToken
+      );
+
+      if (entity.success) {
+        return response.response(entity).code(200);
+      }
+      return response.response(entity).code(200);
+    } catch (error) {
+      logger.error("error in Getting The Package Timing", error);
+      return response
+        .response({
+          success: false,
+          message:
+            error instanceof Error
+              ? error.message
+              : "An unknown error occurred",
+        })
+        .code(500);
+    }
+  };
+  public deleteTiming = async (
+    request: any,
+    response: Hapi.ResponseToolkit
+  ): Promise<any> => {
+    const decodedToken = {
+      id: request.plugins.token.id,
+      branch: request.plugins.token.branch,
+    };
+    // const decodedToken = {id:1,branch:1};
+    try {
+      logger.info(`GET URL REQ => ${request.url.href}`);
+      const entity = await this.resolver.deleteTimingV1(
+        request.payload,
+        decodedToken
+      );
+
+      if (entity.success) {
+        return response.response(entity).code(200);
+      }
+      return response.response(entity).code(200);
+    } catch (error) {
+      logger.error("error in Delete The Package Timing", error);
+      return response
+        .response({
+          success: false,
+          message:
+            error instanceof Error
+              ? error.message
+              : "An unknown error occurred",
+        })
+        .code(500);
+    }
+  };
+  public packageData = async (
+    request: any,
+    response: Hapi.ResponseToolkit
+  ): Promise<any> => {
+    const decodedToken = {
+      id: request.plugins.token.id,
+      branch: request.plugins.token.branch,
+    };
+    // const decodedToken = {id:1,branch:1};
+    try {
+      logger.info(`GET URL REQ => ${request.url.href}`);
+      const entity = await this.resolver.packageDataV1(
+        request.payload,
+        decodedToken
+      );
+
+      if (entity.success) {
+        return response.response(entity).code(200);
+      }
+      return response.response(entity).code(200);
+    } catch (error) {
+      logger.error("error in Delete The Package Timing", error);
+      return response
+        .response({
+          success: false,
+          message:
+            error instanceof Error
+              ? error.message
+              : "An unknown error occurred",
+        })
+        .code(500);
+    }
+  };
+  public packageAddOptions = async (
+    request: any,
+    response: Hapi.ResponseToolkit
+  ): Promise<any> => {
+    const decodedToken = {
+      id: request.plugins.token.id,
+      branch: request.plugins.token.branch,
+    };
+    // const decodedToken = {id:1,branch:1};
+    try {
+      logger.info(`GET URL REQ => ${request.url.href}`);
+      const entity = await this.resolver.packageAddOptionsV1(
+        request.payload,
+        decodedToken
+      );
+
+      if (entity.success) {
+        return response.response(entity).code(200);
+      }
+      return response.response(entity).code(200);
+    } catch (error) {
+      logger.error("error in Getting the Package Adding Options", error);
+      return response
+        .response({
+          success: false,
+          message:
+            error instanceof Error
+              ? error.message
+              : "An unknown error occurred",
+        })
+        .code(500);
+    }
+  };
+  public addNewPackage = async (
+    request: any,
+    response: Hapi.ResponseToolkit
+  ): Promise<any> => {
+    // const decodedToken = {
+    //   id: request.plugins.token.id,
+    //   branch: request.plugins.token.branch,
+    // };
+    const decodedToken = { id: 1, branch: 1 };
+    try {
+      logger.info(`GET URL REQ => ${request.url.href}`);
+      const entity = await this.resolver.addNewPackageV1(
+        request.payload,
+        decodedToken
+      );
+
+      if (entity.success) {
+        return response.response(entity).code(200);
+      }
+      return response.response(entity).code(200);
+    } catch (error) {
+      logger.error("error in Adding New Package", error);
+      return response
+        .response({
+          success: false,
+          message:
+            error instanceof Error
+              ? error.message
+              : "An unknown error occurred",
+        })
+        .code(500);
+    }
+  };
+  public editPackage = async (
+    request: any,
+    response: Hapi.ResponseToolkit
+  ): Promise<any> => {
+    const decodedToken = {
+      id: request.plugins.token.id,
+      branch: request.plugins.token.branch,
+    };
+    // const decodedToken = {id:1,branch:1};
+    try {
+      logger.info(`GET URL REQ => ${request.url.href}`);
+      const entity = await this.resolver.editPackageV1(
+        request.payload,
+        decodedToken
+      );
+
+      if (entity.success) {
+        return response.response(entity).code(200);
+      }
+      return response.response(entity).code(200);
+    } catch (error) {
+      logger.error("error in editing Package Data", error);
+      return response
+        .response({
+          success: false,
+          message:
+            error instanceof Error
+              ? error.message
+              : "An unknown error occurred",
+        })
+        .code(500);
+    }
+  };
+  public deletePackage = async (
+    request: any,
+    response: Hapi.ResponseToolkit
+  ): Promise<any> => {
+    const decodedToken = {
+      id: request.plugins.token.id,
+      branch: request.plugins.token.branch,
+    };
+    // const decodedToken = {id:1,branch:1};
+    try {
+      logger.info(`GET URL REQ => ${request.url.href}`);
+      const entity = await this.resolver.deletePackageV1(
+        request.payload,
+        decodedToken
+      );
+
+      if (entity.success) {
+        return response.response(entity).code(200);
+      }
+      return response.response(entity).code(200);
+    } catch (error) {
+      logger.error("error in deleting Package Data", error);
+      return response
+        .response({
+          success: false,
+          message:
+            error instanceof Error
+              ? error.message
+              : "An unknown error occurred",
+        })
+        .code(500);
+    }
+  };
 }
 export class NotesController {
   public resolver: any;
@@ -2439,8 +2969,11 @@ export class NotesController {
     request: any,
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
-    // const decodedToken = request.plugins.token.id;
-    const decodedToken = 1;
+    // const decodedToken = {
+    //   id: request.plugins.token.id,
+    //   branch: request.plugins.token.branch,
+    // };
+    const decodedToken = { id: 1, branch: 1 };
     try {
       logger.info(`GET URL REQ => ${request.url.href}`);
       const entity = await this.resolver.addNotesV1(
@@ -2469,7 +3002,10 @@ export class NotesController {
     request: any,
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
-    // const decodedToken = request.plugins.token.id;
+    // const decodedToken = {
+    //   id: request.plugins.token.id,
+    //   branch: request.plugins.token.branch,
+    // };
     const decodedToken = 3;
 
     logger.info("Router-----store Notes Pdf");
@@ -2518,8 +3054,11 @@ export class NotesController {
     request: any,
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
-    // const decodedToken = request.plugins.token.id;
-    const decodedToken = 1;
+    // const decodedToken = {
+    //   id: request.plugins.token.id,
+    //   branch: request.plugins.token.branch,
+    // };
+    const decodedToken = { id: 1, branch: 1 };
     try {
       logger.info(`GET URL REQ => ${request.url.href}`);
       const entity = await this.resolver.deleteNotesV1(
@@ -2556,16 +3095,16 @@ export class FutureClientsController {
     request: any,
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
-    const decodedToken = request.plugins.token.id;
-    // const branchId = request.plugins.token.branchId;
-    // const decodedToken = 1;
-    const branchId = 1;
+    const decodedToken = {
+      id: request.plugins.token.id,
+      branch: request.plugins.token.branch,
+    };
+    // const decodedToken = {id:1,branch:1};
     try {
       logger.info(`GET URL REQ => ${request.url.href}`);
       const entity = await this.resolver.futureClientsDataV1(
         request.payload,
-        decodedToken,
-        branchId
+        decodedToken
       );
 
       if (entity.success) {
@@ -2589,16 +3128,17 @@ export class FutureClientsController {
     request: any,
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
-    const decodedToken = request.plugins.token.id;
-    const branchId = request.plugins.token.branchId;
-    // const decodedToken = 1;
-    // const branchId = 1;
+    const decodedToken = {
+      id: request.plugins.token.id,
+      branch: request.plugins.token.branch,
+    };
+    // const decodedToken = {id:1,branch:1};
+
     try {
       logger.info(`GET URL REQ => ${request.url.href}`);
       const entity = await this.resolver.futureClientsActionBtnV1(
         request.payload,
-        decodedToken,
-        branchId
+        decodedToken
       );
 
       if (entity.success) {
@@ -2625,16 +3165,16 @@ export class FutureClientsController {
     request: any,
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
-    const decodedToken = request.plugins.token.id;
-    const branchId = request.plugins.token.branchId;
-    // const decodedToken = 1;
-    // const branchId = 1;
+    const decodedToken = {
+      id: request.plugins.token.id,
+      branch: request.plugins.token.branch,
+    };
+    // const decodedToken = {id:1,branch:1};
     try {
       logger.info(`GET URL REQ => ${request.url.href}`);
       const entity = await this.resolver.futureClientsAuditPageV1(
         request.payload,
-        decodedToken,
-        branchId
+        decodedToken
       );
 
       if (entity.success) {
@@ -2658,16 +3198,16 @@ export class FutureClientsController {
     request: any,
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
-    const decodedToken = request.plugins.token.id;
-    const branchId = request.plugins.token.branchId;
-    // const decodedToken = 1;
-    // const branchId = 1;
+    const decodedToken = {
+      id: request.plugins.token.id,
+      branch: request.plugins.token.branch,
+    };
+    // const decodedToken = {id:1,branch:1};
     try {
       logger.info(`GET URL REQ => ${request.url.href}`);
       const entity = await this.resolver.futureClientsAuditFollowUpV1(
         request.payload,
-        decodedToken,
-        branchId
+        decodedToken
       );
 
       if (entity.success) {
@@ -2702,8 +3242,11 @@ export class StudentFeesController {
     request: any,
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
-    const decodedToken = request.plugins.token.id;
-    // const decodedToken = 1;
+    const decodedToken = {
+      id: request.plugins.token.id,
+      branch: request.plugins.token.branch,
+    };
+    // const decodedToken = {id:1,branch:1};
     try {
       logger.info(`GET URL REQ => ${request.url.href}`);
       const entity = await this.resolver.studentFeesDataV1(
@@ -2819,20 +3362,53 @@ export class AttendanceController {
     this.resolver = new AttendanceResolver();
   }
 
+  public attendanceOverView = async (
+    request: any,
+    response: Hapi.ResponseToolkit
+  ): Promise<any> => {
+    const decodedToken = {
+      id: request.plugins.token.id,
+      branch: request.plugins.token.branch,
+    };
+    // const decodedToken = { id: 1, branch: 1 };
+    try {
+      logger.info(`GET URL REQ => ${request.url.href}`);
+      const entity = await this.resolver.attendanceOverViewV1(
+        request.payload,
+        decodedToken
+      );
+
+      if (entity.success) {
+        return response.response(entity).code(200);
+      }
+      return response.response(entity).code(200);
+    } catch (error) {
+      logger.error("error in Getting Attendance OverView", error);
+      return response
+        .response({
+          success: false,
+          message:
+            error instanceof Error
+              ? error.message
+              : "An unknown error occurred",
+        })
+        .code(500);
+    }
+  };
   public sessionAttendance = async (
     request: any,
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
-    // const decodedToken = request.plugins.token.id;
-    // const branchId = request.plugins.token.branchId;
-    const decodedToken = 1;
-    const branchId = 1;
+    const decodedToken = {
+      id: request.plugins.token.id,
+      branch: request.plugins.token.branch,
+    };
+    // const decodedToken = { id: 1, branch: 1 };
     try {
       logger.info(`GET URL REQ => ${request.url.href}`);
       const entity = await this.resolver.sessionAttendanceV1(
         request.payload,
-        decodedToken,
-        branchId
+        decodedToken
       );
 
       if (entity.success) {
@@ -2841,6 +3417,138 @@ export class AttendanceController {
       return response.response(entity).code(200);
     } catch (error) {
       logger.error("error in Getting The Student Attendance", error);
+      return response
+        .response({
+          success: false,
+          message:
+            error instanceof Error
+              ? error.message
+              : "An unknown error occurred",
+        })
+        .code(500);
+    }
+  };
+  public userSearch = async (
+    request: any,
+    response: Hapi.ResponseToolkit
+  ): Promise<any> => {
+    const decodedToken = {
+      id: request.plugins.token.id,
+      branch: request.plugins.token.branch,
+    };
+    // const decodedToken = {id:1,branch:1};
+    try {
+      logger.info(`GET URL REQ => ${request.url.href}`);
+      const entity = await this.resolver.userSearchV1(
+        request.payload,
+        decodedToken
+      );
+
+      if (entity.success) {
+        return response.response(entity).code(200);
+      }
+      return response.response(entity).code(200);
+    } catch (error) {
+      logger.error("error in Searching Users", error);
+      return response
+        .response({
+          success: false,
+          message:
+            error instanceof Error
+              ? error.message
+              : "An unknown error occurred",
+        })
+        .code(500);
+    }
+  };
+  public userAttendance = async (
+    request: any,
+    response: Hapi.ResponseToolkit
+  ): Promise<any> => {
+    const decodedToken = {
+      id: request.plugins.token.id,
+      branch: request.plugins.token.branch,
+    };
+    // const decodedToken = { id: 1, branch: 1 };
+    try {
+      logger.info(`GET URL REQ => ${request.url.href}`);
+      const entity = await this.resolver.userAttendanceV1(
+        request.payload,
+        decodedToken
+      );
+
+      if (entity.success) {
+        return response.response(entity).code(200);
+      }
+      return response.response(entity).code(200);
+    } catch (error) {
+      logger.error("error in Getting The User Attendance", error);
+      return response
+        .response({
+          success: false,
+          message:
+            error instanceof Error
+              ? error.message
+              : "An unknown error occurred",
+        })
+        .code(500);
+    }
+  };
+  public attendanceReportOption = async (
+    request: any,
+    response: Hapi.ResponseToolkit
+  ): Promise<any> => {
+    const decodedToken = {
+      id: request.plugins.token.id,
+      branch: request.plugins.token.branch,
+    };
+    // const decodedToken = { id: 1, branch: 1 };
+    try {
+      logger.info(`GET URL REQ => ${request.url.href}`);
+      const entity = await this.resolver.attendanceReportOptionV1(
+        request.payload,
+        decodedToken
+      );
+
+      if (entity.success) {
+        return response.response(entity).code(200);
+      }
+      return response.response(entity).code(200);
+    } catch (error) {
+      logger.error("error in Passing Attendance Options", error);
+      return response
+        .response({
+          success: false,
+          message:
+            error instanceof Error
+              ? error.message
+              : "An unknown error occurred",
+        })
+        .code(500);
+    }
+  };
+  public attendanceReport = async (
+    request: any,
+    response: Hapi.ResponseToolkit
+  ): Promise<any> => {
+    // const decodedToken = {
+    //   id: request.plugins.token.id,
+    //   branch: request.plugins.token.branch,
+    // };
+    const decodedToken = { id: 1, branch: 1 };
+    try {
+      logger.info(`GET URL REQ => ${request.url.href}`);
+      const entity = await this.resolver.attendanceReportV1(
+        request.payload,
+        decodedToken
+      );
+
+      if (entity.success) {
+        return response.response(entity).code(200);
+      }
+      return response.response(entity).code(200);
+    } catch (error) {
+      logger.error("error in Passing Attendance Report Data", error);
       return response
         .response({
           success: false,
@@ -2864,8 +3572,11 @@ export class TestingController {
     request: any,
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
-    // const decodedToken = request.plugins.token.id;
-    const decodedToken = 1;
+    const decodedToken = {
+      id: request.plugins.token.id,
+      branch: request.plugins.token.branch,
+    };
+    // const decodedToken = {id:1,branch:1};
     try {
       logger.info(`GET URL REQ => ${request.url.href}`);
       const entity = await this.resolver.TestingV1(

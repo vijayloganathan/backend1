@@ -2,18 +2,20 @@ export const insertProfileAddressQuery = `
   INSERT INTO public."refUserAddress" (
     "refStId", 
     "refAdAdd1Type", 
+    "refAdFlat1",
     "refAdAdd1", 
     "refAdArea1", 
     "refAdCity1",
      "refAdState1", 
      "refAdPincode1",
      "refAdAdd2Type",
+     "refAdFlat2",
      "refAdAdd2",
      "refAdArea2",
      "refAdCity2",
      "refAdState2",
      "refAdPincode2"
-  ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)
+  ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13,$14,$15)
   RETURNING *;
 `;
 
@@ -77,7 +79,9 @@ SET
   "refWeddingDate" = $16,
   "refClassMode" = $17,
   "refKidsCount" = $19,
-  "refDeliveryType" = $20
+  "refDeliveryType" = $20,
+  "refSeFrom" = $21,
+  "refSeTo" = $22
 WHERE
   "refStId" = $18
 RETURNING
@@ -144,61 +148,62 @@ WHERE rt."refbranchId" = $2
   )
 GROUP BY rt."refTimeMembersID", rm."refTimeMembers";`;
 
-// export const getSectionTimeData = `SELECT "refTimeId" ,"refTime","refTimeMode","refTimeDays" FROM public."refTiming" rt WHERE "refTimeMembersID"=$1`;
 // export const getSectionTimeData = `SELECT
 //     ROW_NUMBER() OVER (ORDER BY to_timestamp(substring("refTime" from '^[0-9:]+ [APM]+'), 'HH12:MI AM')) AS "order",
-//     "refTimeId",
-//     "refTime",
-//     "refTimeMode",
-//     "refTimeDays"
+//     rt."refTimeId",
+//     rt."refTime",
+//     rt."refTimeMode",
+//     sd."refDays" AS "refTimeDays"
 // FROM
 //     public."refTiming" rt
+//     INNER JOIN public."refSessionDays" sd ON CAST (rt."refTimeDays" AS INTEGER) = sd."refSDId"
 // WHERE
-//     "refTimeMembersID" = $1
+//     "refTimeMembersID" = $1 AND (rt."refDeleteAt" is null
+//     OR rt."refDeleteAt" = 0)
 // ORDER BY
 //     to_timestamp(
 //         substring("refTime" from '^[0-9:]+ [APM]+'),
 //         'HH12:MI AM'
 //     ) ASC;`;
-export const getSectionTimeData = `SELECT 
-    ROW_NUMBER() OVER (ORDER BY to_timestamp(substring("refTime" from '^[0-9:]+ [APM]+'), 'HH12:MI AM')) AS "order",
-    rt."refTimeId", 
-    rt."refTime",
-    rt."refTimeMode",
-    sd."refDays" AS "refTimeDays"
-FROM 
-    public."refTiming" rt
-    INNER JOIN public."refSessionDays" sd ON CAST (rt."refTimeDays" AS INTEGER) = sd."refSDId"
-WHERE 
-    "refTimeMembersID" = $1 AND (rt."refDeleteAt" is null
-    OR rt."refDeleteAt" = 0)
-ORDER BY 
-    to_timestamp(
-        substring("refTime" from '^[0-9:]+ [APM]+'), 
-        'HH12:MI AM'
-    ) ASC;`;
 
-// export const getCustTime = `SELECT * FROM public."refCustTime"`;
+export const getSectionTimeData = `SELECT
+  "refPaId","refPackageName"
+FROM
+  public."refPackage"
+WHERE
+  ("refSessionMode" IN ('Offline & Online', $1))
+  AND "refBranchId" = $2
+  AND $3 = ANY (
+    string_to_array(
+      trim(
+        both '{}'
+        FROM
+          "refMemberType"
+      ),
+      ','
+    )::int[]
+  )
+  AND ("refDeleteAt" is null OR "refDeleteAt" = 0)`;
+
+export const PackageTiming = `SELECT "refTimingId" FROM public."refPackage" WHERE "refPaId"=$1`;
 
 // export const getCustTime = `SELECT
 //   *
 // FROM
 //   public."refCustTime"
 // WHERE
-//   "refDeleteAt" is null
-//   OR "refDeleteAt" = 0`;
-export const getCustTime = `SELECT
-  *
-FROM
-  public."refCustTime"
-WHERE
-  "refBranchId"=$1 AND ("refDeleteAt" IS NULL
-  OR "refDeleteAt" = 0)
-ORDER BY
-  "refMonthDuration" IS NULL, 
-  "refMonthDuration",         
-  "refClassCount" IS NULL,    
-  "refClassCount";`;
+//   "refBranchId"=$1 AND ("refDeleteAt" IS NULL
+//   OR "refDeleteAt" = 0)
+// ORDER BY
+//   "refMonthDuration" IS NULL,
+//   "refMonthDuration",
+//   "refClassCount" IS NULL,
+//   "refClassCount";`;
+export const getCustTime = `SELECT "refTimeId", "refTime"
+FROM public."refPaTiming"
+WHERE "refTimeId" = ANY($1)
+ORDER BY 
+  TO_TIMESTAMP(SPLIT_PART("refTime", ' ', 1) || ' ' || SPLIT_PART("refTime", ' ', 2), 'HH:MI AM') ASC;`;
 
 export const storeMedicalDoc = `insert into
   "public"."refMedicalDocuments" ("refMedDocName", "refMedDocPath", "refStId")

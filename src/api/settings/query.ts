@@ -145,3 +145,223 @@ SET
   "refIsDeleted" = 1
 WHERE
   "refHealthId" = $1;`;
+
+export const addPackageTimeQuery = `insert into
+  "public"."refPaTiming" ("refTime")
+values
+  ($1);`;
+
+export const editPackageTimeQuery = `UPDATE public."refPaTiming"
+SET "refTime" = $1
+WHERE "refTimeId" = $2;`;
+
+export const getTimingData = `SELECT
+  *
+FROM
+  public."refPaTiming"
+WHERE
+  "refDeleteAt" is null
+  or "refDeleteAt" = 0;`;
+
+// export const deleteCheck = `SELECT
+//   *
+// FROM
+//   public."refPackage"
+// WHERE
+//   $1 = ANY (
+//     string_to_array(
+//       trim(
+//         both '{}'
+//         FROM
+//           "refTimingId"
+//       ),
+//       ','
+//     )::integer[]
+//   )`;
+export const deleteCheck = `SELECT * 
+FROM public."refPackage" 
+WHERE ("refDeleteAt" IS NULL OR "refDeleteAt" = 0) 
+  AND $1 = ANY(
+      string_to_array(
+          trim(both '{}' FROM "refTimingId"), ','
+      )::INTEGER[]
+  );`;
+
+export const deleteTimingQuery = `UPDATE public."refPaTiming" SET "refDeleteAt"=1 WHERE "refTimeId"=$1;`;
+
+// export const addNewPackageQuery = `INSERT INTO
+//   public."refPackage" (
+//     "refPackageName",
+//     "refTimingId",
+//     "refSessionMode",
+//     "refSessionDays",
+//     "refMemberType",
+//     "refBranchId",
+//     "refFeesType",
+//     "refFees"
+//   )
+// VALUES
+//   (
+//     $1,$2,$3,$4,$5,$6,$7,$8
+//   );`;
+
+export const addNewPackageQuery = `INSERT INTO
+  public."refPackage" (
+    "refPackageName",
+    "refTimingId",
+    "refSessionMode",
+    "refSessionDays",
+    "refMemberType",
+    "refBranchId",
+    "refFeesType",
+    "refFees"
+  )
+VALUES
+  (
+    $1,
+    $2::integer[], -- Store as an integer array
+    $3,
+    $4::integer[], -- Store as an integer array
+    $5::integer[], -- Store as an integer array
+    $6,
+    $7,
+    $8
+  );
+`;
+
+// export const getPackageData = `SELECT
+//     rp.*,
+//     JSONB_AGG(DISTINCT rpt."refTime") AS "timingDetails",
+//     JSONB_AGG(DISTINCT rs."refDays") AS "sessionDaysDetails",
+//     JSONB_AGG(DISTINCT rm."refTimeMembers") AS "memberTypeDetails"
+// FROM
+//     public."refPackage" rp
+// LEFT JOIN
+//     public."refPaTiming" rpt
+// ON
+//     rpt."refTimeId" = ANY(
+//         STRING_TO_ARRAY(
+//             REPLACE(
+//                 REPLACE(
+//                     REPLACE(rp."refTimingId", '{', ''), '}', ''
+//                 ), '"', ''
+//             ), ','
+//         )::INTEGER[]
+//     )
+// LEFT JOIN
+//     public."refSessionDays" rs
+// ON
+//     rs."refSDId" = ANY(
+//         STRING_TO_ARRAY(
+//             REPLACE(
+//                 REPLACE(
+//                     REPLACE(rp."refSessionDays", '{', ''), '}', ''
+//                 ), '"', ''
+//             ), ','
+//         )::INTEGER[]
+//     )
+// LEFT JOIN
+//     public."refMembers" rm
+// ON
+//     rm."refTimeMembersID" = ANY(
+//         STRING_TO_ARRAY(
+//             REPLACE(
+//                 REPLACE(
+//                     REPLACE(rp."refMemberType", '{', ''), '}', ''
+//                 ), '"', ''
+//             ), ','
+//         )::INTEGER[]
+//     )
+// WHERE
+//     rp."refBranchId" = $1
+// GROUP BY
+//     rp."refPaId";`;
+export const getPackageData = `SELECT
+  rp.*,
+  array_to_json(
+    string_to_array(
+      trim(
+        both '{}'
+        FROM
+          rp."refTimingId"
+      ),
+      ','
+    )::integer[]
+  ) AS "refTimingId",
+  array_to_json(
+    string_to_array(
+      trim(
+        both '{}'
+        FROM
+          rp."refSessionDays"
+      ),
+      ','
+    )::integer[]
+  ) AS "refSessionDays",
+  array_to_json(
+    string_to_array(
+      trim(
+        both '{}'
+        FROM
+          rp."refMemberType"
+      ),
+      ','
+    )::integer[]
+  ) AS "refMemberType",
+  JSONB_AGG(DISTINCT rpt."refTime") AS "timingDetails",
+  JSONB_AGG(DISTINCT rs."refDays") AS "sessionDaysDetails",
+  JSONB_AGG(DISTINCT rm."refTimeMembers") AS "memberTypeDetails",
+  br."refBranchName"
+FROM
+  public."refPackage" rp
+  LEFT JOIN public."refPaTiming" rpt ON rpt."refTimeId" = ANY (
+    string_to_array(
+      trim(
+        both '{}'
+        FROM
+        rp."refTimingId"
+      ),
+      ','
+    )::integer[]
+  )
+  LEFT JOIN public."refSessionDays" rs ON rs."refSDId" = ANY (
+    string_to_array(
+      trim(
+        both '{}'
+        FROM
+        rp."refSessionDays"
+      ),
+      ','
+    )::integer[]
+  )
+  LEFT JOIN public."refMembers" rm ON rm."refTimeMembersID" = ANY (
+    string_to_array(
+      trim(
+        both '{}'
+        FROM
+        rp."refMemberType"
+      ),
+      ','
+    )::integer[]
+  )
+  LEFT JOIN public.branch br ON CAST(rp."refBranchId" AS INTEGER) = br."refbranchId"
+WHERE
+  rp."refBranchId" = $1 AND (rp."refDeleteAt" is null or rp."refDeleteAt" = 0 )
+GROUP BY
+  rp."refPaId", br."refBranchName";`;
+
+export const PackageDataUpdate = `UPDATE
+  public."refPackage"
+SET
+  "refPackageName" = $1,
+  "refTimingId" = $2::integer[], -- Update as an integer array
+  "refSessionMode" = $3,
+  "refSessionDays" = $4::integer[], -- Update as an integer array
+  "refMemberType" = $5::integer[], -- Update as an integer array
+  "refFeesType" = $6,
+  "refFees" = $7
+WHERE
+  "refPaId" = $8; -- Condition to specify which record to update
+`;
+
+export const deletePackage = `UPDATE public."refPackage" SET "refDeleteAt"=1 WHERE "refPaId"=$1;`;

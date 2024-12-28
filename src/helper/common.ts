@@ -1,3 +1,5 @@
+import { parse } from "date-fns";
+
 export function generateCouponCode() {
   const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
   let couponCode = "";
@@ -143,4 +145,121 @@ export function generateClassDurationString(
   return `${refClassCount} Class${
     refClassCount > 1 ? "es" : ""
   } in ${refMonthDuration} Month${refMonthDuration > 1 ? "s" : ""} Duration`;
+}
+
+// function parseTime(timeStr: string): Date {
+//   const [time, modifier] = timeStr.split(" ");
+//   let [hours, minutes] = time.split(":").map(Number);
+
+//   if (modifier === "PM" && hours !== 12) {
+//     hours += 12;
+//   } else if (modifier === "AM" && hours === 12) {
+//     hours = 0;
+//   }
+
+//   const date = new Date();
+//   date.setHours(hours, minutes, 0, 0);
+//   return date;
+// }
+
+export function getMatchingData(
+  registerCount: any[],
+  passedDateTime: string
+): any | null {
+  console.log("registerCount", registerCount);
+
+  const passedTimeStr = passedDateTime.split(", ")[1];
+  console.log("passedTimeStr", passedTimeStr);
+  const passedTime = parseTime(
+    passedTimeStr.split(":").slice(0, 2).join(":") +
+      " " +
+      passedTimeStr.split(" ")[1]
+  );
+  console.log("passedTime", passedTime);
+
+  let selectedData = null;
+  console.log("Initial selectedData", selectedData);
+
+  for (let item of registerCount) {
+    const [startTimeStr, endTimeStr] = item.refTime.split(" to ");
+    const startTime = parseTime(startTimeStr);
+    const endTime = parseTime(endTimeStr);
+
+    if (passedTime >= startTime && passedTime <= endTime) {
+      selectedData = item;
+      break;
+    }
+  }
+
+  if (!selectedData) {
+    for (let item of [...registerCount].reverse()) {
+      const [startTimeStr, endTimeStr] = item.refTime.split(" to ");
+      const endTime = parseTime(endTimeStr);
+
+      if (passedTime > endTime) {
+        selectedData = item;
+        break;
+      }
+    }
+  }
+
+  if (!selectedData) {
+    for (let item of registerCount) {
+      const [startTimeStr] = item.refTime.split(" to ");
+      const startTime = parseTime(startTimeStr);
+
+      if (passedTime < startTime) {
+        selectedData = item;
+        break;
+      }
+    }
+  }
+
+  console.log("Final selectedData", selectedData);
+
+  return selectedData;
+}
+
+function parseTime(timeStr: string): number {
+  const [time, period] = timeStr.split(" ");
+  let [hours, minutes] = time.split(":").map(Number);
+
+  if (period === "PM" && hours !== 12) {
+    hours += 12;
+  } else if (period === "AM" && hours === 12) {
+    hours = 0;
+  }
+
+  return hours * 60 + minutes;
+}
+
+export function generateDateArray(
+  fromMonthYear: string,
+  toMonthYear: string
+): string[] {
+  const dateArray: string[] = [];
+  const fromParts = fromMonthYear.split("/");
+  const toParts = toMonthYear.split("/");
+
+  const fromYear = parseInt(fromParts[1], 10);
+  const fromMonth = parseInt(fromParts[0], 10) - 1; // Months are 0-based in JS
+  const toYear = parseInt(toParts[1], 10);
+  const toMonth = parseInt(toParts[0], 10) - 1;
+
+  let currentDate = new Date(fromYear, fromMonth, 1); // Start from the first day
+  const endDate = new Date(toYear, toMonth + 1, 0); // Include all days in the 'To' month
+
+  while (currentDate <= endDate) {
+    const day = String(currentDate.getDate()).padStart(2, "0");
+    const month = String(currentDate.getMonth() + 1).padStart(2, "0"); // Months are 0-based
+    const year = currentDate.getFullYear();
+
+    // Use the required time for each date
+    const formattedDate = `${day}/${month}/${year}, 3:45:30 PM`;
+    dateArray.push(formattedDate);
+
+    currentDate.setDate(currentDate.getDate() + 1); // Increment by one day
+  }
+
+  return dateArray;
 }

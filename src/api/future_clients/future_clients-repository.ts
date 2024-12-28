@@ -16,14 +16,11 @@ import { CurrentTime } from "../../helper/common";
 export class FutureClientsRepository {
   public async futureClientsDataV1(
     userData: any,
-    decodedToken: number,
-    branchId: number
+    decodedToken: any
   ): Promise<any> {
-    const refStId = decodedToken;
-    const branch = branchId;
     const tokenData = {
-      id: refStId,
-      branchId: branch,
+      id: decodedToken.id,
+      branch: decodedToken.branch,
     };
     const token = generateToken(tokenData, true);
     try {
@@ -68,14 +65,11 @@ export class FutureClientsRepository {
   }
   public async futureClientsActionBtnV1(
     userData: any,
-    decodedToken: number,
-    branchId: number
+    decodedToken: any
   ): Promise<any> {
-    const refStId = decodedToken;
-    const branch = branchId;
     const tokenData = {
-      id: refStId,
-      branchId: branch,
+      id: decodedToken.id,
+      branch: decodedToken.branch,
     };
     const token = generateToken(tokenData, true);
     try {
@@ -117,14 +111,11 @@ export class FutureClientsRepository {
   }
   public async futureClientsAuditPageV1(
     userData: any,
-    decodedToken: number,
-    branchId: number
+    decodedToken: any
   ): Promise<any> {
-    const refStId = decodedToken;
-    const branch = branchId;
     const tokenData = {
-      id: refStId,
-      branchId: branch,
+      id: decodedToken.id,
+      branch: decodedToken.branch,
     };
     const token = generateToken(tokenData, true);
 
@@ -156,14 +147,12 @@ export class FutureClientsRepository {
   }
   public async futureClientsAuditFollowUpV1(
     userData: any,
-    decodedToken: number,
-    branchId: number
+    decodedToken: any
   ): Promise<any> {
-    const refStId = decodedToken;
-    const branch = branchId;
+    const refStId = decodedToken.id;
     const tokenData = {
-      id: refStId,
-      branchId: branch,
+      id: decodedToken.id,
+      branch: decodedToken.branch,
     };
     const token = generateToken(tokenData, true);
     const client: PoolClient = await getClient();

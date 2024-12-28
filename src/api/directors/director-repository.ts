@@ -60,11 +60,12 @@ import { generateCouponCode, formatDate } from "../../helper/common";
 export class DirectorRepository {
   public async directorStaffPgV1(
     userData: any,
-    decodedToken: number
+    decodedToken: any
   ): Promise<any> {
-    const refStId = decodedToken;
+    const refStId = decodedToken.id;
     const tokenData = {
-      id: refStId,
+      id: decodedToken.id,
+      branch: decodedToken.branch,
     };
     const token = generateToken(tokenData, true);
     try {
@@ -94,11 +95,12 @@ export class DirectorRepository {
       return encrypt(results, true);
     }
   }
-  public async userDataV1(userData: any, decodedToken: number): Promise<any> {
-    const staffId = decodedToken;
+  public async userDataV1(userData: any, decodedToken: any): Promise<any> {
+    const staffId = decodedToken.id;
     const Id = userData.refStId;
-    const tokenData = {
-      id: staffId,
+    let tokenData = {
+      id: decodedToken.id,
+      branch: decodedToken.branch,
     };
     const token = generateToken(tokenData, true);
 
@@ -144,11 +146,12 @@ export class DirectorRepository {
   }
   public async therapistApprovalDataV1(
     userData: any,
-    decodedToken: number
+    decodedToken: any
   ): Promise<any> {
-    const refStId = decodedToken;
+    const refStId = decodedToken.id;
     const tokenData = {
-      id: refStId,
+      id: decodedToken.id,
+      branch: decodedToken.branch,
     };
     const token = generateToken(tokenData, true);
     try {
@@ -187,11 +190,12 @@ export class DirectorRepository {
   }
   public async approvalButtonV1(
     userData: any,
-    decodedToken: number
+    decodedToken: any
   ): Promise<any> {
-    const refStId = decodedToken;
+    const refStId = decodedToken.id;
     const tokenData = {
-      id: refStId,
+      id: decodedToken.id,
+      branch: decodedToken.branch,
     };
     const token = generateToken(tokenData, true);
     try {
@@ -270,13 +274,11 @@ export class DirectorRepository {
       );
     }
   }
-  public async userTypeLabelV1(
-    userData: any,
-    decodedToken: number
-  ): Promise<any> {
-    const refStId = decodedToken;
+  public async userTypeLabelV1(userData: any, decodedToken: any): Promise<any> {
+    const refStId = decodedToken.id;
     const tokenData = {
-      id: refStId,
+      id: decodedToken.id,
+      branch: decodedToken.branch,
     };
     const token = generateToken(tokenData, true);
     try {
@@ -304,13 +306,11 @@ export class DirectorRepository {
       );
     }
   }
-  public async addEmployeeV1(
-    userData: any,
-    decodedToken: number
-  ): Promise<any> {
-    const refStId = decodedToken;
+  public async addEmployeeV1(userData: any, decodedToken: any): Promise<any> {
+    const refStId = decodedToken.id;
     const tokenData = {
-      id: refStId,
+      id: decodedToken.id,
+      branch: decodedToken.branch,
     };
     const token = generateToken(tokenData, true);
     try {
@@ -410,7 +410,10 @@ export class DirectorRepository {
         const updateHistory = await executeQuery(updateHistoryQuery, history);
 
         if (updateHistory && updateHistory.length > 0) {
-          const tokenData = { id: 30 };
+          const tokenData = {
+            id: decodedToken.id,
+            branch: decodedToken.branch,
+          };
           const encryptedResponse = encrypt(
             {
               success: true,
@@ -444,10 +447,12 @@ export class DirectorRepository {
     userData: any,
     decodedToken: any
   ): Promise<any> {
-    const refStId = userData.decodedToken;
+    const refStId = userData.decodedToken.id;
     const tokenData = {
-      id: refStId,
+      id: userData.decodedToken.id,
+      branch: userData.decodedToken.branch,
     };
+    console.log("tokenData", tokenData);
     const token = generateToken(tokenData, true);
     try {
       const params = [userData.filePath, refStId];
@@ -510,13 +515,11 @@ export class DirectorRepository {
       );
     }
   }
-  public async userAuditListV1(
-    userData: any,
-    decodedToken: number
-  ): Promise<any> {
-    const refStId = decodedToken;
+  public async userAuditListV1(userData: any, decodedToken: any): Promise<any> {
+    const refStId = decodedToken.id;
     const tokenData = {
-      id: refStId,
+      id: decodedToken.id,
+      branch: decodedToken.branch,
     };
     const token = generateToken(tokenData, true);
 
@@ -548,11 +551,12 @@ export class DirectorRepository {
   }
   public async staffAuditListV1(
     userData: any,
-    decodedToken: number
+    decodedToken: any
   ): Promise<any> {
-    const refStId = decodedToken;
+    const refStId = decodedToken.id;
     const tokenData = {
-      id: refStId,
+      id: decodedToken.id,
+      branch: decodedToken.branch,
     };
     const token = generateToken(tokenData, true);
 
@@ -584,12 +588,13 @@ export class DirectorRepository {
   }
   public async userUpdateAuditListV1(
     userData: any,
-    decodedToken: number
+    decodedToken: any
   ): Promise<any> {
     const id = userData.refStId;
-    const refStId = decodedToken;
+    const refStId = decodedToken.id;
     const tokenData = {
-      id: refStId,
+      id: decodedToken.id,
+      branch: decodedToken.branch,
     };
     const token = generateToken(tokenData, true);
 
@@ -617,12 +622,13 @@ export class DirectorRepository {
   }
   public async userDataListApprovalV1(
     userData: any,
-    decodedToken: number
+    decodedToken: any
   ): Promise<any> {
     const id = userData.refStId;
-    const refStId = decodedToken;
+    const refStId = decodedToken.id;
     const tokenData = {
-      id: refStId,
+      id: decodedToken.id,
+      branch: decodedToken.branch,
     };
     const token = generateToken(tokenData, true);
 
@@ -675,11 +681,12 @@ export class DirectorRepository {
   }
   public async userUpdateAuditListReadV1(
     userData: any,
-    decodedToken: number
+    decodedToken: any
   ): Promise<any> {
-    const refStId = decodedToken;
+    const refStId = decodedToken.id;
     const tokenData = {
-      id: refStId,
+      id: decodedToken.id,
+      branch: decodedToken.branch,
     };
     const token = generateToken(tokenData, true);
     try {
@@ -718,14 +725,15 @@ export class DirectorRepository {
   }
   public async userDataUpdateApprovalBtnV1(
     userData: any,
-    decodedToken: number
+    decodedToken: any
   ): Promise<any> {
     const client: PoolClient = await getClient();
-    const staffId = decodedToken;
+    const staffId = decodedToken.id;
     const id = userData.refStId;
     const userAppId = userData.userAppId;
     let tokenData = {
-      id: staffId,
+      id: decodedToken.id,
+      branch: decodedToken.branch,
     };
     const token = generateToken(tokenData, true);
     try {
@@ -877,14 +885,15 @@ export class DirectorRepository {
   }
   public async userDataUpdateRejectBtnV1(
     userData: any,
-    decodedToken: number
+    decodedToken: any
   ): Promise<any> {
     const client: PoolClient = await getClient();
-    const staffId = decodedToken;
+    const staffId = decodedToken.id;
     const id = userData.refStId;
     const userAppId = userData.userAppId;
     let tokenData = {
-      id: staffId,
+      id: decodedToken.id,
+      branch: decodedToken.branch,
     };
     const token = generateToken(tokenData, true);
     try {
@@ -1013,13 +1022,11 @@ export class DirectorRepository {
       client.release();
     }
   }
-  public async feesStructureV1(
-    userData: any,
-    decodedToken: number
-  ): Promise<any> {
-    const refStId = decodedToken;
+  public async feesStructureV1(userData: any, decodedToken: any): Promise<any> {
+    const refStId = decodedToken.id;
     const tokenData = {
-      id: refStId,
+      id: decodedToken.id,
+      branch: decodedToken.branch,
     };
     const token = generateToken(tokenData, true);
     try {
@@ -1050,11 +1057,12 @@ export class DirectorRepository {
   }
   public async addFeesStructureV1(
     userData: any,
-    decodedToken: number
+    decodedToken: any
   ): Promise<any> {
-    const refStId = decodedToken;
+    const refStId = decodedToken.id;
     const tokenData = {
-      id: refStId,
+      id: decodedToken.id,
+      branch: decodedToken.branch,
     };
     const token = generateToken(tokenData, true);
     try {
@@ -1082,11 +1090,12 @@ export class DirectorRepository {
   }
   public async addNewFeesStructureV1(
     userData: any,
-    decodedToken: number
+    decodedToken: any
   ): Promise<any> {
-    const refStId = decodedToken;
+    const refStId = decodedToken.id;
     const tokenData = {
-      id: refStId,
+      id: decodedToken.id,
+      branch: decodedToken.branch,
     };
     const token = generateToken(tokenData, true);
     try {
@@ -1147,11 +1156,12 @@ export class DirectorRepository {
   }
   public async editFeesStructureV1(
     userData: any,
-    decodedToken: number
+    decodedToken: any
   ): Promise<any> {
-    const refStId = decodedToken;
+    const refStId = decodedToken.id;
     const tokenData = {
-      id: refStId,
+      id: decodedToken.id,
+      branch: decodedToken.branch,
     };
     const token = generateToken(tokenData, true);
     try {
@@ -1184,11 +1194,12 @@ export class DirectorRepository {
   }
   public async deleteFeesStructureV1(
     userData: any,
-    decodedToken: number
+    decodedToken: any
   ): Promise<any> {
-    const refStId = decodedToken;
+    const refStId = decodedToken.id;
     const tokenData = {
-      id: refStId,
+      id: decodedToken.id,
+      branch: decodedToken.branch,
     };
     const token = generateToken(tokenData, true);
     try {
@@ -1214,11 +1225,12 @@ export class DirectorRepository {
   }
   public async offerStructureV1(
     userData: any,
-    decodedToken: number
+    decodedToken: any
   ): Promise<any> {
-    const refStId = decodedToken;
+    const refStId = decodedToken.id;
     const tokenData = {
-      id: refStId,
+      id: decodedToken.id,
+      branch: decodedToken.branch,
     };
     const token = generateToken(tokenData, true);
     function formatDate(isoDate: any) {
@@ -1267,11 +1279,12 @@ export class DirectorRepository {
   }
   public async addNewOffersStructureV1(
     userData: any,
-    decodedToken: number
+    decodedToken: any
   ): Promise<any> {
-    const refStId = decodedToken;
+    const refStId = decodedToken.id;
     const tokenData = {
-      id: refStId,
+      id: decodedToken.id,
+      branch: decodedToken.branch,
     };
 
     const token = generateToken(tokenData, true);
@@ -1308,11 +1321,12 @@ export class DirectorRepository {
   }
   public async validateCouponCodeV1(
     userData: any,
-    decodedToken: number
+    decodedToken: any
   ): Promise<any> {
-    const refStId = decodedToken;
+    const refStId = decodedToken.id;
     const tokenData = {
-      id: refStId,
+      id: decodedToken.id,
+      branch: decodedToken.branch,
     };
     const token = generateToken(tokenData, true);
     try {
@@ -1352,11 +1366,12 @@ export class DirectorRepository {
   }
   public async editOfferStructureV1(
     userData: any,
-    decodedToken: number
+    decodedToken: any
   ): Promise<any> {
-    const refStId = decodedToken;
+    const refStId = decodedToken.id;
     const tokenData = {
-      id: refStId,
+      id: decodedToken.id,
+      branch: decodedToken.branch,
     };
     const token = generateToken(tokenData, true);
     function formatDate(isoDate: any) {
@@ -1401,11 +1416,12 @@ export class DirectorRepository {
   }
   public async deleteOfferStructureV1(
     userData: any,
-    decodedToken: number
+    decodedToken: any
   ): Promise<any> {
-    const refStId = decodedToken;
+    const refStId = decodedToken.id;
     const tokenData = {
-      id: refStId,
+      id: decodedToken.id,
+      branch: decodedToken.branch,
     };
     const token = generateToken(tokenData, true);
     try {

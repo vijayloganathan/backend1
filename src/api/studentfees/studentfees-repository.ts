@@ -7,11 +7,11 @@ import { formatDate } from "../../helper/common";
 export class StudentFeesRepository {
   public async studentFeesDataV1(
     userData: any,
-    decodedToken: number
+    decodedToken: any
   ): Promise<any> {
-    const refStId = decodedToken;
     const tokenData = {
-      id: refStId,
+      id: decodedToken.id,
+        branch: decodedToken.branch,
     };
     const token = generateToken(tokenData, true);
     try {

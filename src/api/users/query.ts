@@ -62,8 +62,15 @@ export const selectUserByEmailQuery = `
 // export const selectUserByUsername =
 //   'SELECT * FROM public."refUsersDomain" WHERE "refUserName" = $1;';
 
-export const selectUserByUsername =
-  'SELECT * FROM public."refUsersDomain" WHERE "refUserName" = $1 OR "refCustPrimEmail" =$1;';
+export const selectUserByUsername = `SELECT
+  ud.*,
+  u."refBranchId"
+FROM
+  public."refUsersDomain" ud
+  INNER JOIN public.users u ON CAST(ud."refStId" AS INTEGER) = u."refStId"
+WHERE
+  "refUserName" = $1
+  OR "refCustPrimEmail" = $1;`;
 export const selectUserByrefStId =
   'SELECT * FROM public."refUsersDomain" WHERE "refStId" = $1;';
 

@@ -34,13 +34,10 @@ import {
 import { timeFormat } from "../../helper/common";
 
 export class SettingsRepository {
-  public async SectionDataV1(
-    userData: any,
-    decodedToken: any
-  ): Promise<any> {
+  public async SectionDataV1(userData: any, decodedToken: any): Promise<any> {
     const tokenData = {
       id: decodedToken.id,
-        branch: decodedToken.branch,
+      branch: decodedToken.branch,
     };
     const token = generateToken(tokenData, true);
     const branchId = userData.branchId || 1;
@@ -72,7 +69,7 @@ export class SettingsRepository {
   public async branchV1(userData: any, decodedToken: any): Promise<any> {
     const tokenData = {
       id: decodedToken.id,
-        branch: decodedToken.branch,
+      branch: decodedToken.branch,
     };
     const token = generateToken(tokenData, true);
 
@@ -101,7 +98,7 @@ export class SettingsRepository {
   ): Promise<any> {
     const tokenData = {
       id: decodedToken.id,
-        branch: decodedToken.branch,
+      branch: decodedToken.branch,
     };
     const token = generateToken(tokenData, true);
     // const branchId = userData.branchId || 1;
@@ -129,15 +126,12 @@ export class SettingsRepository {
       return encrypt(results, true);
     }
   }
-  public async addNewSectionV1(
-    userData: any,
-    decodedToken: any
-  ): Promise<any> {
+  public async addNewSectionV1(userData: any, decodedToken: any): Promise<any> {
     const client: PoolClient = await getClient(); // Get the database client
 
     const tokenData = {
       id: decodedToken.id,
-        branch: decodedToken.branch,
+      branch: decodedToken.branch,
     };
     const token = generateToken(tokenData, true);
 
@@ -198,7 +192,7 @@ export class SettingsRepository {
   ): Promise<any> {
     const tokenData = {
       id: decodedToken.id,
-        branch: decodedToken.branch,
+      branch: decodedToken.branch,
     };
     const token = generateToken(tokenData, true);
 
@@ -236,7 +230,7 @@ export class SettingsRepository {
   ): Promise<any> {
     const tokenData = {
       id: decodedToken.id,
-        branch: decodedToken.branch,
+      branch: decodedToken.branch,
     };
     const token = generateToken(tokenData, true);
 
@@ -266,7 +260,7 @@ export class SettingsRepository {
   ): Promise<any> {
     const tokenData = {
       id: decodedToken.id,
-        branch: decodedToken.branch,
+      branch: decodedToken.branch,
     };
     const token = generateToken(tokenData, true);
 
@@ -299,7 +293,7 @@ export class SettingsRepository {
   ): Promise<any> {
     const tokenData = {
       id: decodedToken.id,
-        branch: decodedToken.branch,
+      branch: decodedToken.branch,
     };
     const token = generateToken(tokenData, true);
 
@@ -344,7 +338,7 @@ export class SettingsRepository {
   ): Promise<any> {
     const tokenData = {
       id: decodedToken.id,
-        branch: decodedToken.branch,
+      branch: decodedToken.branch,
     };
     const token = generateToken(tokenData, true);
 
@@ -374,7 +368,7 @@ export class SettingsRepository {
   ): Promise<any> {
     const tokenData = {
       id: decodedToken.id,
-        branch: decodedToken.branch,
+      branch: decodedToken.branch,
     };
     const token = generateToken(tokenData, true);
 
@@ -404,7 +398,7 @@ export class SettingsRepository {
   ): Promise<any> {
     const tokenData = {
       id: decodedToken.id,
-        branch: decodedToken.branch,
+      branch: decodedToken.branch,
     };
     const token = generateToken(tokenData, true);
 
@@ -463,7 +457,7 @@ export class SettingsRepository {
   ): Promise<any> {
     const tokenData = {
       id: decodedToken.id,
-        branch: decodedToken.branch,
+      branch: decodedToken.branch,
     };
     const token = generateToken(tokenData, true);
 
@@ -496,7 +490,7 @@ export class SettingsRepository {
   ): Promise<any> {
     const tokenData = {
       id: decodedToken.id,
-        branch: decodedToken.branch,
+      branch: decodedToken.branch,
     };
     const token = generateToken(tokenData, true);
 
@@ -528,7 +522,7 @@ export class SettingsRepository {
   ): Promise<any> {
     const tokenData = {
       id: decodedToken.id,
-        branch: decodedToken.branch,
+      branch: decodedToken.branch,
     };
     const token = generateToken(tokenData, true);
 
@@ -560,7 +554,7 @@ export class SettingsRepository {
   ): Promise<any> {
     const tokenData = {
       id: decodedToken.id,
-        branch: decodedToken.branch,
+      branch: decodedToken.branch,
     };
     const token = generateToken(tokenData, true);
 
@@ -589,7 +583,7 @@ export class SettingsRepository {
   public async timingDataV1(userData: any, decodedToken: any): Promise<any> {
     const tokenData = {
       id: decodedToken.id,
-        branch: decodedToken.branch,
+      branch: decodedToken.branch,
     };
     const token = generateToken(tokenData, true);
 
@@ -612,13 +606,10 @@ export class SettingsRepository {
       return encrypt(results, true);
     }
   }
-  public async deleteTimingV1(
-    userData: any,
-    decodedToken: any
-  ): Promise<any> {
+  public async deleteTimingV1(userData: any, decodedToken: any): Promise<any> {
     const tokenData = {
       id: decodedToken.id,
-        branch: decodedToken.branch,
+      branch: decodedToken.branch,
     };
     const token = generateToken(tokenData, true);
 
@@ -661,20 +652,17 @@ export class SettingsRepository {
 
   // -------------------------------------------------------------------------------
   // Package Module
-  public async packageDataV1(
-    userData: any,
-    decodedToken: any
-  ): Promise<any> {
+  public async packageDataV1(userData: any, decodedToken: any): Promise<any> {
     const tokenData = {
       id: decodedToken.id,
-        branch: decodedToken.branch,
+      branch: decodedToken.branch,
     };
     const token = generateToken(tokenData, true);
     const branch = userData.branchId || 1;
     console.log("branch", branch);
     try {
       const packageTimeResult = await executeQuery(getPackageData, [branch]);
-      console.log("packageTimeResult", packageTimeResult);
+      console.log("packageTimeResult line ---- 665", packageTimeResult);
 
       const results = {
         success: true,
@@ -698,7 +686,7 @@ export class SettingsRepository {
   ): Promise<any> {
     const tokenData = {
       id: decodedToken.id,
-        branch: decodedToken.branch,
+      branch: decodedToken.branch,
     };
     const token = generateToken(tokenData, true);
 
@@ -727,19 +715,17 @@ export class SettingsRepository {
       return encrypt(results, true);
     }
   }
-  public async addNewPackageV1(
-    userData: any,
-    decodedToken: any
-  ): Promise<any> {
+  public async addNewPackageV1(userData: any, decodedToken: any): Promise<any> {
     const tokenData = {
       id: decodedToken.id,
-        branch: decodedToken.branch,
+      branch: decodedToken.branch,
     };
     const token = generateToken(tokenData, true);
 
     try {
       console.log("userData", userData);
       const Data = userData.newPackageData;
+      console.log("Data", Data);
 
       for (let i = 0; i < Data.branch.length; i++) {
         const params = [
@@ -772,13 +758,10 @@ export class SettingsRepository {
       return encrypt(results, true);
     }
   }
-  public async editPackageV1(
-    userData: any,
-    decodedToken: any
-  ): Promise<any> {
+  public async editPackageV1(userData: any, decodedToken: any): Promise<any> {
     const tokenData = {
       id: decodedToken.id,
-        branch: decodedToken.branch,
+      branch: decodedToken.branch,
     };
     const token = generateToken(tokenData, true);
 
@@ -817,13 +800,10 @@ export class SettingsRepository {
       return encrypt(results, true);
     }
   }
-  public async deletePackageV1(
-    userData: any,
-    decodedToken: any
-  ): Promise<any> {
+  public async deletePackageV1(userData: any, decodedToken: any): Promise<any> {
     const tokenData = {
       id: decodedToken.id,
-        branch: decodedToken.branch,
+      branch: decodedToken.branch,
     };
     const token = generateToken(tokenData, true);
 

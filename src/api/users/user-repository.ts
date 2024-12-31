@@ -155,7 +155,7 @@ export class UserRepository {
         if (updateHistory && updateHistory.length > 0) {
           const tokenData = {
             id: decodedToken.id,
-        branch: decodedToken.branch,
+            branch: decodedToken.branch,
           };
 
           return encrypt(
@@ -561,7 +561,8 @@ export class UserRepository {
         refStFName: Data.refStFName,
         refStLName: Data.refStLName,
         refStMName: Data.refStMName,
-        refStDOB: formatDate(Data.refStDOB),
+        // refStDOB: formatDate(Data.refStDOB),
+        refStDOB: Data.refStDOB == null ? null : formatDate(Data.refStDOB),
         refStSex: Data.refStSex,
         refStAge: Data.refStAge,
         refQualification: Data.refQualification,
@@ -570,11 +571,18 @@ export class UserRepository {
         refguardian: Data.refguardian,
         refUserName: Data.refUserName,
         refMaritalStatus: Data.refMaritalStatus,
-        refWeddingDate: formatDate(Data.refWeddingDate),
+        refWeddingDate:
+          Data.refWeddingDate == null ? null : formatDate(Data.refWeddingDate),
         refBranchId: Data.refBranchId,
         refDeliveryType: Data.refDeliveryType,
         refKidsCount: Data.refKidsCount,
       };
+      console.log(
+        "formatDate(Data.refWeddingDate)",
+        formatDate(Data.refWeddingDate)
+      );
+      console.log("Data.refWeddingDate", Data.refWeddingDate);
+      console.log("personalData", personalData);
 
       profileData = { ...profileData, personalData };
 
@@ -719,8 +727,7 @@ export class UserRepository {
   ): Promise<any> {
     const client: PoolClient = await getClient();
     const refStId = decodedToken.id;
-    const tokenData = { id: decodedToken.id,
-      branch: decodedToken.branch, };
+    const tokenData = { id: decodedToken.id, branch: decodedToken.branch };
     const token = generateToken(tokenData, true);
 
     let refUtId: string;

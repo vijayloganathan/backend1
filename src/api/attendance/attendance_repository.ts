@@ -284,22 +284,26 @@ export class AttendanceRepository {
     const token = generateToken(tokenData, true);
     try {
       let dates;
+      console.log("userData", userData);
       if (userData.refRepDuType == 1) {
         dates = [userData.refRepDuration];
       } else {
         const splitData = userData.refRepDuration.split(",");
+        console.log("splitData", splitData);
         dates = generateDateArray(splitData[0], splitData[1]);
       }
-      console.log("dates", dates);
       let reportData = [];
       for (let i = 0; i < userData.refSessionMod.length; i++) {
+        // Online or Offline Loop
         for (let j = 0; j < userData.refPackageId.length; j++) {
+          // Tming Loop
           const ids = userData.refPackageId[j].split(",");
           const time = await executeQuery(getPackageTime, [
             parseInt(ids[0]),
             parseInt(ids[1]),
             userData.refSessionMod[i] == 1 ? "Online" : "Offline",
           ]);
+          console.log("time", time);
           if (time.length > 0) {
             const newData = {
               packageName: time[0].refPackageName,

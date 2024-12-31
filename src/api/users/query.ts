@@ -179,8 +179,8 @@ WHERE
 `;
 
 export const fetchPresentHealthProblem = `
-  SELECT "refHealthId", "refHealth"
-  FROM public."refHealthIssues";
+ SELECT "refHealthId", "refHealth"
+  FROM public."refHealthIssues" WHERE "refIsDeleted" is null OR "refIsDeleted"=0;
 `;
 
 export const getCommunicationType = `

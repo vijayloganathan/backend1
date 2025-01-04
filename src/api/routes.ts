@@ -218,6 +218,16 @@ export class UserProfile implements IRoute {
             auth: false,
           },
         },
+        {
+          method: "POST",
+          path: "/api/v1/profile/SessionUpdate",
+          config: {
+            pre: [{ method: validateToken, assign: "token" }],
+            handler: controller.sessionUpdate,
+            description: "Updating The Session Detail",
+            auth: false,
+          },
+        },
       ]);
       resolve(true);
     });
@@ -1142,7 +1152,7 @@ export class Attendance implements IRoute {
           method: "GET",
           path: "/api/v1/attendance/overView",
           config: {
-            pre: [{ method: validateToken, assign: "token" }],
+            // pre: [{ method: validateToken, assign: "token" }],
             handler: AttendancePage.attendanceOverView,
             description: "To get the Attendance Over View",
             auth: false,
@@ -1179,6 +1189,16 @@ export class Attendance implements IRoute {
           },
         },
         {
+          method: "GET",
+          path: "/api/v1/attendance/userData",
+          config: {
+            pre: [{ method: validateToken, assign: "token" }],
+            handler: AttendancePage.userData,
+            description: "gry userdata",
+            auth: false,
+          },
+        },
+        {
           method: "POST",
           path: "/api/v1/attendance/reportOptions",
           config: {
@@ -1192,7 +1212,7 @@ export class Attendance implements IRoute {
           method: "POST",
           path: "/api/v1/attendance/report",
           config: {
-            // pre: [{ method: validateToken, assign: "token" }],
+            pre: [{ method: validateToken, assign: "token" }],
             handler: AttendancePage.attendanceReport,
             description: "To get the Attendance Report",
             auth: false,

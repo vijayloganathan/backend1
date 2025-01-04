@@ -144,6 +144,9 @@ export class ProfileResolver {
       domainCode
     );
   }
+  public async sessionUpdateV1(userData: any, domainCode: any): Promise<any> {
+    return await this.profileRepository.sessionUpdateV1(userData, domainCode);
+  }
 }
 
 export class FrontDeskResolver {
@@ -737,6 +740,9 @@ export class AttendanceResolver {
   }
   public async userSearchV1(user_data: any, token_data: any): Promise<any> {
     return await this.AttendanceRepository.userSearchV1(user_data, token_data);
+  }
+  public async userDataV1(user_data: any, token_data: any): Promise<any> {
+    return await this.AttendanceRepository.userDataV1(user_data, token_data);
   }
   public async userAttendanceV1(user_data: any, token_data: any): Promise<any> {
     return await this.AttendanceRepository.userAttendanceV1(

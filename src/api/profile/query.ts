@@ -222,3 +222,15 @@ where
   "refMedDocId" = $1`;
 
 export const getMedDoc = `SELECt * FROM public."refMedicalDocuments" WHERE "refMedDocId"=$1`;
+
+export const updateSessionData = `update
+  "public"."users"
+set
+  "refClassMode" = $1,
+  "refSessionMode" = $2,
+  "refTimingId" = $3,
+  "refSPreferTimeId" = $3,
+  "refSessionType" = $4,
+  "refBranchId" = $5
+where
+  "refStId" = $6;`;

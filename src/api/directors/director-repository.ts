@@ -521,6 +521,7 @@ export class DirectorRepository {
       id: decodedToken.id,
       branch: decodedToken.branch,
     };
+    console.log("tokenData", tokenData);
     const token = generateToken(tokenData, true);
 
     try {

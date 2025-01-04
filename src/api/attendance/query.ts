@@ -1,15 +1,4 @@
-export const getAttendanceData = `SELECT
-  *
-FROM
-  public.test
-WHERE
-  TO_CHAR(TO_DATE(LEFT($1, 10), 'DD/MM/YYYY'), 'DD/MM/YYYY') = TO_CHAR(
-    TO_DATE(LEFT("punch_time", 10), 'DD-MM-YYY'),
-    'DD/MM/YYYY'
-  )`;
 
-export const getSession = `SELECT * FROM public."refCustTime" WHERE "refDeleteAt" is null
-    OR "refDeleteAt" = 0`;
 
 export const searchUser = `SELECT
   u."refStId",u."refSCustId",
@@ -185,140 +174,239 @@ WHERE
     AND punch_time >= TO_TIMESTAMP(SPLIT_PART($1, ',', 1) || ' ' || SPLIT_PART($2, ' to ', 1), 'DD/MM/YYYY HH12:MI AM') - INTERVAL '30 minutes'
     AND punch_time <= TO_TIMESTAMP(SPLIT_PART($1, ',', 1) || ' ' || SPLIT_PART($2, ' to ', 1), 'DD/MM/YYYY HH12:MI AM') + INTERVAL '30 minutes';`;
 
-export const getPackageTimingOptions = `SELECT
-  rp."refPaId", 
-  rp."refPackageName", 
-  pt."refTimeId", 
-  pt."refTime",
-  rp."refPaId" || ',' || pt."refTimeId" AS "value"
-FROM
-  public."refPackage" rp
-  INNER JOIN public."refPaTiming" pt 
-    ON pt."refTimeId" = ANY (
-      string_to_array(
-        REPLACE(REPLACE(rp."refTimingId", '{', ''), '}', ''),
-        ','
-      )::INTEGER[]
-    )
-WHERE
-  rp."refBranchId"=$1 AND (rp."refDeleteAt" IS NULL OR rp."refDeleteAt" = 0)
-  AND rp."refSessionMode" IN ('Offline & Online',$2)
-ORDER BY
-  rp."refPaId",
-  TO_TIMESTAMP(SUBSTRING(pt."refTime" FROM '^[0-9:APM ]+'), 'HH:MI AM');`;
-export const getPackageTimingOptionsPerDay = `SELECT
-  rp."refPaId",
+
+
+
+
+
+// -----------  ATTENDANCE REWORK ----------------------------------
+
+export const getUserData = `SELECT
+  u."refStId",
+  u."refSCustId",
+  u."refStFName",
+  u."refStLName",
+  uc."refCtMobile",
+  uc."refCtEmail",
   rp."refPackageName",
-  pt."refTimeId",
-  pt."refTime",
-  rp."refPaId" || ',' || pt."refTimeId" AS "value", sd."refSDId",
-  sd."refDays"
+  pt."refTime"
+FROM
+  public.users u
+  INNER JOIN public."refUserCommunication" uc ON CAST (u."refStId" AS INTEGER) = uc."refStId"
+  LEFT JOIN public."refPackage" rp ON CAST (u."refSessionMode" AS INTEGER ) = rp."refPaId"
+  LEFT JOIN public."refPaTiming" pt ON CAST (u."refSPreferTimeId" AS INTEGER ) = pt."refTimeId"
+WHERE
+  u."refStId" = $1`;
+
+export const packageOptions = `SELECT
+  rp."refPaId" AS "optionId",
+  rp."refPackageName" AS "optionName"
 FROM
   public."refPackage" rp
-  INNER JOIN public."refPaTiming" pt ON pt."refTimeId" = ANY (
-    string_to_array(
-      REPLACE(REPLACE(rp."refTimingId", '{', ''), '}', ''),
-      ','
-    )::INTEGER[]
-  )
-  INNER JOIN public."refSessionDays" sd ON sd."refSDId" = ANY (
-    string_to_array(
-      REPLACE(REPLACE(rp."refSessionDays", '{', ''), '}', ''),
-      ','
-    )::INTEGER[]
-  )
+LEFT JOIN
+  public."refSessionDays" rsd
+ON
+  rsd."refSDId" = ANY(string_to_array(REPLACE(REPLACE(rp."refSessionDays", '{', ''), '}', ''), ',')::INTEGER[])
 WHERE
-  rp."refBranchId" = $1
+  rsd."refDays" IN (
+    'All Days',
+    CASE
+      WHEN TO_CHAR(TO_TIMESTAMP($2, 'DD/MM/YYYY, HH12:MI:SS AM'), 'FMDay') IN ('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday')
+        THEN 'Weekdays'
+      WHEN TO_CHAR(TO_TIMESTAMP($2, 'DD/MM/YYYY, HH12:MI:SS AM'), 'FMDay') IN ('Saturday', 'Sunday')
+        THEN 'Weekend'
+    END,
+    TO_CHAR(TO_TIMESTAMP($2, 'DD/MM/YYYY, HH12:MI:SS AM'), 'FMDay')
+  )
   AND
-  (rp."refSessionMode" IN ('Offline & Online',$3))
+  rp."refBranchId" = $3
+AND
+  rp."refSessionMode" IN ('Offline & Online', $1)
   AND (
     rp."refDeleteAt" IS NULL
     OR rp."refDeleteAt" = 0
   )
-  AND sd."refDays" IN (
-    'All Days',
-    TRIM(
-      TO_CHAR(
-        TO_TIMESTAMP($2, 'DD/MM/YYYY, HH12:MI:SS AM'),
-        'Day'
-      )
-    )
-  )
-ORDER BY
-  TO_TIMESTAMP(
-    SUBSTRING(
-      pt."refTime"
-      FROM
-        '^[0-9:APM ]+'
-    ),
-    'HH:MI AM'
+GROUP BY
+  rp."refPaId", rp."refPackageName";`;
+
+export const packageOptionsMonth = `SELECT
+  "refPaId" AS "optionId",
+  "refPackageName" AS "optionName"
+FROM
+  public."refPackage"
+WHERE
+  "refBranchId" = $1
+  AND (
+    "refDeleteAt" is null
+    OR "refDeleteAt" = 0
   );`;
 
-export const getPackageTime = `SELECT
-  rp."refPaId",
-  rp."refPackageName",
-  rp."refSessionMode",
-  rpt."refTimeId",
-  rpt."refTime",
-  STRING_AGG(sd."refDays", ' , ') AS "refDays",
-  b."refBranchName"
+export const timingOptions = `SELECT
+  "refTimeId" AS "optionId",
+  "refTime" AS "optionName"
 FROM
-  public."refPackage" rp
-  INNER JOIN LATERAL UNNEST(rp."refTimingId"::INT[]) AS t (refTimingId) ON true
-  INNER JOIN public."refPaTiming" rpt ON rpt."refTimeId" = t.refTimingId
-  INNER JOIN public."refSessionDays" sd 
-    ON sd."refSDId" = ANY (
-      string_to_array(
-        REPLACE(REPLACE(rp."refSessionDays", '{', ''), '}',''),
-        ','
-      )::INTEGER[]
-    )
-    INNER JOIN public.branch b ON CAST (rp."refBranchId" AS INTEGER) = b."refbranchId"
+  public."refPaTiming"
 WHERE
-  rp."refPaId" = $1
-  AND t.refTimingId = $2
-  AND (
-    rp."refDeleteAt" IS NULL
-    OR rp."refDeleteAt" = 0
-  )
-  AND rp."refSessionMode" IN ('Offline & Online', $3)
-  
-GROUP BY
-  rp."refPaId",
-  rp."refPackageName",
-  rp."refSessionMode",
-  rpt."refTimeId",
-  rpt."refTime",
-  b."refBranchName";`;
+  "refDeleteAt" is null
+  OR "refDeleteAt" = 0;`;
 
-export const getDateWiseAttendance = `SELECT
+export const packageListData = `SELECT
+    u."refStId", u."refSCustId", u."refStFName", u."refStLName",
+    rp."refPaId",
+    rp."refPackageName"
+FROM
+    public."refPackage" rp
+LEFT JOIN public.users u
+    ON CAST(u."refSessionMode" AS INTEGER) = rp."refPaId"
+WHERE
+    rp."refSessionMode" IN ('Offline & Online', $1)
+    AND (rp."refDeleteAt" IS NULL OR rp."refDeleteAt" = 0)
+    AND rp."refPaId" = ANY($2::INTEGER[])
+GROUP BY
+    rp."refPaId", rp."refPackageName", u."refStId", u."refSCustId", u."refStFName", u."refStLName";
+    
+`;
+
+
+
+// export const mapUserData = `
+// SELECT
+//     pt.*,
+//     input_data.emp_code,
+//     input_data.punch_timestamp AS punch_time,
+//     u."refSCustId",
+//     u."refStFName",
+//     u."refStLName"
+// FROM
+//     public."refPaTiming" pt
+// JOIN (
+//     SELECT
+//         SPLIT_PART(data, ',', 1) AS emp_code,
+//         TO_TIMESTAMP(SPLIT_PART(data, ',', 2), 'DD/MM/YYYY, HH:MI:SS AM') AS punch_timestamp
+//     FROM
+//         unnest($1::text[]) AS data  -- Ensure input is passed as an array of text
+// ) input_data
+// ON
+//     input_data.punch_timestamp::TIME BETWEEN
+//         (TO_TIMESTAMP(SPLIT_PART(pt."refTime", ' to ', 1), 'HH:MI AM')::TIME - INTERVAL '30 minutes')
+//         AND
+//         (TO_TIMESTAMP(SPLIT_PART(pt."refTime", ' to ', 1), 'HH:MI AM')::TIME + INTERVAL '30 minutes')
+// JOIN
+//     public."users" u
+// ON
+//     u."refSCustId" = input_data.emp_code
+// WHERE
+//     pt."refTimeId" IN (2, 3, 4);
+
+// `;
+export const mapUserData = `
+WITH raw_data AS (
+    SELECT unnest($1::text[]) AS combined_data
+),
+user_data AS (
+    SELECT
+        split_part(rd.combined_data, ',', 1) AS user_id,
+        split_part(rd.combined_data, ',', 2) AS date,
+        split_part(rd.combined_data, ',', 3) AS time
+    FROM raw_data rd
+),
+parsed_ref_time AS (
+    SELECT
+        "refTimeId",
+        "refTime",
+        split_part("refTime", ' to ', 1) AS start_time -- Extract start time
+    FROM public."refPaTiming"
+    WHERE "refTimeId" = ANY($2::int[]) -- Filter by refTimeId passed in the array
+),
+adjusted_times AS (
+    SELECT
+        ud.user_id,
+        ud.date,
+        ud.time,
+        u."refSCustId",
+        u."refStFName",
+        u."refStLName",
+        prt."refTimeId",
+        prt."refTime",
+        TO_TIMESTAMP(TRIM(ud.time), 'HH12:MI:SS AM') AS user_timestamp,
+        TO_TIMESTAMP(TRIM(prt.start_time), 'HH12:MI AM') AS ref_timestamp
+    FROM user_data ud
+    LEFT JOIN users u
+        ON TRIM(ud.user_id) = TRIM(u."refSCustId")
+    LEFT JOIN parsed_ref_time prt
+        ON TRUE
+)
+SELECT
+    at.user_id,
+    at.date,
+    at.time,
+    at."refSCustId",
+    at."refStFName",
+    at."refStLName",
+    at."refTimeId",
+    at."refTime"
+FROM adjusted_times at
+WHERE
+    at.ref_timestamp BETWEEN at.user_timestamp - INTERVAL '30 minutes'
+                          AND at.user_timestamp + INTERVAL '30 minutes';
+
+
+`;
+
+export const getAttendanceDatas = `WITH
+  filtered_data AS (
+    SELECT
+      emp_code,
+      punch_time,
+      LAG(punch_time) OVER (
+        PARTITION BY
+          emp_code
+        ORDER BY
+          punch_time
+      ) AS prev_punch_time
+    FROM
+      public.iclock_transaction
+    WHERE
+      punch_time::date >= TO_TIMESTAMP(
+        $1,
+        'DD/MM/YYYY'
+      )
+      AND punch_time::date <= TO_TIMESTAMP(
+        $2,
+        'DD/MM/YYYY'
+      )
+      AND emp_code = ANY($3::text[])
+  )
+SELECT
   emp_code,
-  TO_CHAR(MIN(punch_time), 'DD/MM/YYYY') AS punch_date,  -- Only the date part
-  TO_CHAR(MIN(punch_time), 'HH12:MI:SS AM') AS punch_time,  -- Only the time part
-  TO_CHAR(
-    (
-      TO_TIMESTAMP(SPLIT_PART($2, ' to ', 1), 'HH12:MI AM') - INTERVAL '30 minutes'
-    )::time,
-    'HH12:MI AM'
-  ) AS interval_start,
-  TO_CHAR(
-    (
-      TO_TIMESTAMP(SPLIT_PART($2, ' to ', 1), 'HH12:MI AM') + INTERVAL '30 minutes'
-    )::time,
-    'HH12:MI AM'
-  ) AS interval_end
+  json_agg(TO_CHAR(punch_time, 'DD/MM/YYYY, HH:MI:SS PM')) AS attendance
 FROM
-  public.iclock_transaction
+  filtered_data
 WHERE
-  DATE(punch_time) = DATE(TO_TIMESTAMP($1, 'DD/MM/YYYY, HH12:MI:SS AM'))
-  AND punch_time::time >= (
-    TO_TIMESTAMP(SPLIT_PART($2, ' to ', 1), 'HH12:MI AM')::time - INTERVAL '30 minutes'
-  )
-  AND punch_time::time <= (
-    TO_TIMESTAMP(SPLIT_PART($2, ' to ', 2), 'HH12:MI AM')::time + INTERVAL '30 minutes'
-  )
-  AND emp_code NOT LIKE '%S%'
+  prev_punch_time IS NULL
+  OR EXTRACT(
+    EPOCH
+    FROM
+      punch_time - prev_punch_time
+  ) > 1200
 GROUP BY
-  emp_code;`;
+  emp_code;
+`;
 
-export const getUserName = `SELECT "refStFName","refStLName","refSCustId" FROM public.users`;
+export const getAttendanceDataTiming = `SELECT
+  emp_code,
+  TO_CHAR(punch_time, 'DD/MM/YYYY, HH:MI:SS AM') AS punch_time
+FROM (
+  SELECT
+    emp_code,
+    punch_time,
+    LAG(punch_time) OVER (PARTITION BY emp_code, DATE(punch_time) ORDER BY punch_time) AS prev_punch_time
+  FROM
+    public.iclock_transaction
+  WHERE
+    DATE(punch_time) BETWEEN TO_DATE($1, 'DD/MM/YYYY') AND TO_DATE($2, 'DD/MM/YYYY')
+    AND emp_code NOT LIKE '%S%'
+) subquery
+WHERE
+  prev_punch_time IS NULL OR EXTRACT(EPOCH FROM (punch_time - prev_punch_time)) > 1200;
+`;

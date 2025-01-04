@@ -17,6 +17,7 @@ import {
   deleteMedDoc,
   getMedDoc,
   PackageTiming,
+  updateSessionData,
 } from "./query";
 import path from "path";
 
@@ -551,7 +552,9 @@ export class ProfileRepository {
     try {
       const refStId = userData.refStId;
       const packageId = userData.packageId;
+      console.log("packageId", packageId);
       const packageTimingData = await executeQuery(PackageTiming, [packageId]);
+      console.log("packageTimingData", packageTimingData);
       const custTime = await executeQuery(getCustTime, [
         packageTimingData[0].refTimingId,
       ]);
@@ -659,6 +662,60 @@ export class ProfileRepository {
         },
         true
       );
+    }
+  }
+  public async sessionUpdateV1(userData: any, decodedToken: any): Promise<any> {
+    const client: PoolClient = await getClient();
+    const refStId = decodedToken.id;
+    const tokenData = { id: decodedToken.id, branch: decodedToken.branch };
+    const token = generateToken(tokenData, true);
+
+    try {
+      const params = [
+        userData.personalData.refClassMode, // 
+        userData.personalData.refSessionMode,
+        userData.personalData.refTimingId,
+        userData.personalData.refSessionType,
+        userData.personalData.refBranchId,
+        userData.refStId,
+      ];
+      console.log("params", params);
+      console.log("params", params);
+      await client.query(updateSessionData, params);
+      const transTypeId = 24,
+        transData = "update Session Data",
+        refUpdatedBy = "Staff";
+
+      const parasHistory = [
+        transTypeId,
+        transData,
+        userData.refStId,
+        CurrentTime(),
+        refUpdatedBy,
+      ];
+      console.log("parasHistory", parasHistory);
+      await client.query(updateHistoryQuery, parasHistory);
+
+      await client.query("COMMIT");
+
+      const results = {
+        success: true,
+        message: "Session Data Is Updated Successfully",
+        token: token,
+      };
+      return encrypt(results, true);
+    } catch (error) {
+      console.log("error", error);
+      await client.query("ROLLBACK");
+
+      const results = {
+        success: false,
+        message: "Error in updating the Session Data",
+        token: token,
+      };
+      return encrypt(results, true);
+    } finally {
+      client.release();
     }
   }
 }

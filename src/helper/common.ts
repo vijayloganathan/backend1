@@ -263,3 +263,54 @@ export function generateDateArray(
 
   return dateArray;
 }
+
+export function getDateRange(monthYearRange:string) {
+  const [startMonthYear, endMonthYear] = monthYearRange.split(',').map(str => str.trim());
+
+  const [startMonth, startYear] = startMonthYear.split('/').map(num => parseInt(num));
+  const [endMonth, endYear] = endMonthYear.split('/').map(num => parseInt(num));
+
+  const startDate = new Date(startYear, startMonth - 1, 1);
+
+  const endDate = new Date(endYear, endMonth, 0); 
+
+  const formatDate = (date:any) => {
+      const day = String(date.getDate()).padStart(2, '0');
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const year = date.getFullYear();
+      let hours = date.getHours();
+      const minutes = String(date.getMinutes()).padStart(2, '0');
+      const seconds = String(date.getSeconds()).padStart(2, '0');
+      const ampm = hours >= 12 ? 'PM' : 'AM';
+
+      hours = hours % 12;
+      hours = hours ? hours : 12; 
+      return `${day}/${month}/${year}, ${String(hours).padStart(2, '0')}:${minutes}:${seconds} ${ampm}`;
+  };
+
+  startDate.setHours(0, 0, 0, 0);
+  endDate.setHours(0, 0, 0, 0);
+
+  return [formatDate(startDate), formatDate(endDate)];
+}
+
+export function mapAttendanceData(userMapData: any[]) {
+  const groupedData = userMapData.reduce((acc, curr) => {
+    const { refTimeId, refTime, refSCustId, refStFName, refStLName, date, time } = curr;
+    if (!acc[refTimeId]) {
+      acc[refTimeId] = { refTimeId, refTime, users: [] };
+    }
+    if (refSCustId) {
+      let user = acc[refTimeId].users.find((user: any) => user.refSCustId === refSCustId);
+      if (!user) {
+        user = { refSCustId, refStFName, refStLName, attendance: [] };
+        acc[refTimeId].users.push(user);
+      }
+      user.attendance.push(`${date}, ${time}`);
+    }
+
+    return acc;
+  }, {});
+
+  return Object.values(groupedData);
+}

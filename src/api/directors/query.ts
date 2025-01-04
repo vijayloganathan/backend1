@@ -10,6 +10,16 @@ export const getUserStatusLabel = `SELECT * FROM public."refUserType"`;
 
 export const getUserData = ``;
 
+// export const getDataForUserManagement = `
+// SELECT DISTINCT ON (u."refSCustId") *
+// FROM public.users u
+// LEFT JOIN public."refUserCommunication" uc
+//   ON CAST(u."refStId" AS INTEGER) = uc."refStId"
+// LEFT JOIN public."refUserAddress" ad
+//   ON CAST(u."refStId" AS INTEGER) = ad."refStId"
+// LEFT JOIN public."refGeneralHealth" gh
+//   ON CAST(u."refStId" AS INTEGER) = gh."refStId"
+// WHERE u."refStId" = $1;`;
 export const getDataForUserManagement = `
 SELECT DISTINCT ON (u."refSCustId") *
 FROM public.users u
@@ -19,6 +29,10 @@ LEFT JOIN public."refUserAddress" ad
   ON CAST(u."refStId" AS INTEGER) = ad."refStId"
 LEFT JOIN public."refGeneralHealth" gh
   ON CAST(u."refStId" AS INTEGER) = gh."refStId"
+  INNER JOIN public.branch br ON CAST (u."refBranchId" AS INTEGER) =br."refbranchId"
+  INNER JOIN public."refMembers" rm ON CAST (u."refSessionType" AS INTEGER) =rm."refTimeMembersID"
+  INNER JOIN public."refPackage" rp ON CAST (u."refSessionMode" AS INTEGER) = rp."refPaId"
+INNER JOIN public."refPaTiming" pt ON CAST (u."refTimingId" AS INTEGER) = pt."refTimeId"
 WHERE u."refStId" = $1;`;
 
 export const getUserTransaction = `

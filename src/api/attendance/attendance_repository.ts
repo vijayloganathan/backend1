@@ -3,22 +3,25 @@ import { encrypt } from "../../helper/encrypt";
 import { executeQuery, getClient } from "../../helper/db";
 import { attendanceQuery, getAttendance } from "../../helper/attendanceDb";
 import {
-  getAttendanceData,
-  getSession,
   searchUser,
   userAttendance,
   getRegisterCount,
   getOfflineCount,
-  getPackageTimingOptions,
-  getPackageTimingOptionsPerDay,
-  getPackageTime,
-  getDateWiseAttendance,
-  getUserName,
+  packageListData,
+  getAttendanceDatas,
+  packageOptions,
+  packageOptionsMonth,
+  getAttendanceDataTiming,
+  timingOptions,
+  mapUserData,
+  getUserData,
 } from "./query";
 import {
   CurrentTime,
   getMatchingData,
   generateDateArray,
+  getDateRange,
+  mapAttendanceData,
 } from "../../helper/common";
 
 export class AttendanceRepository {
@@ -146,6 +149,30 @@ export class AttendanceRepository {
       return encrypt(results, true);
     }
   }
+  public async userDataV1(userData: any, decodedToken: any): Promise<any> {
+    const tokenData = {
+      id: decodedToken.id,
+      branch: decodedToken.branch,
+    };
+    const token = generateToken(tokenData, true);
+    try {
+      let userData = await executeQuery(getUserData, [decodedToken.id]);
+      const results = {
+        success: true,
+        message: "Passing The User Data",
+        token: token,
+        data: userData[0],
+      };
+      return encrypt(results, true);
+    } catch (error) {
+      const results = {
+        success: false,
+        message: "Error in sending User Data",
+        token: token,
+      };
+      return encrypt(results, true);
+    }
+  }
   public async userAttendanceV1(
     userData: any,
     decodedToken: any
@@ -155,6 +182,7 @@ export class AttendanceRepository {
       branch: decodedToken.branch,
     };
     const token = generateToken(tokenData, true);
+    console.log("userData", userData);
     try {
       function formatMonthYear(dateString: string) {
         console.log("dateString", dateString);
@@ -231,28 +259,32 @@ export class AttendanceRepository {
     const token = generateToken(tokenData, true);
     try {
       let attendanceOptions;
-
-      const mode =
-        userData.mode.length > 1
-          ? "'Online', 'Offline'"
-          : userData.mode[0] == 1
-          ? "Online"
-          : "Offline";
-      console.log("mode", mode);
-      console.log("decodedToken.branch", decodedToken.branch);
-      if (userData.date == "") {
-        console.log("line ----- 232");
-        attendanceOptions = await executeQuery(getPackageTimingOptions, [
-          decodedToken.branch,
-          mode,
-        ]);
+      console.log("userData.reportType", userData.reportType);
+      if (userData.reportType.code == 1) {
+        console.log("here 1");
+        const mode =
+          userData.mode.length > 1
+            ? "'Online', 'Offline'"
+            : userData.mode[0] == 1
+            ? "Online"
+            : "Offline";
+        console.log("mode", mode);
+        console.log("userData.date", userData.date);
+        if (userData.date == "") {
+          console.log("Here 2");
+          attendanceOptions = await executeQuery(packageOptionsMonth, [
+            decodedToken.branch,
+          ]);
+        } else {
+          console.log("Here 3");
+          attendanceOptions = await executeQuery(packageOptions, [
+            mode,
+            userData.date,
+            decodedToken.branch,
+          ]);
+        }
       } else {
-        console.log("line -------- 239");
-        attendanceOptions = await executeQuery(getPackageTimingOptionsPerDay, [
-          decodedToken.branch,
-          userData.date,
-          mode,
-        ]);
+        attendanceOptions = await executeQuery(timingOptions, []);
       }
 
       console.log("attendanceOptions", attendanceOptions);
@@ -282,97 +314,104 @@ export class AttendanceRepository {
       branch: decodedToken.branch,
     };
     const token = generateToken(tokenData, true);
+
     try {
-      let dates;
-      console.log("userData", userData);
-      if (userData.refRepDuType == 1) {
-        dates = [userData.refRepDuration];
-      } else {
-        const splitData = userData.refRepDuration.split(",");
-        console.log("splitData", splitData);
-        dates = generateDateArray(splitData[0], splitData[1]);
-      }
-      let reportData = [];
-      for (let i = 0; i < userData.refSessionMod.length; i++) {
-        // Online or Offline Loop
-        for (let j = 0; j < userData.refPackageId.length; j++) {
-          // Tming Loop
-          const ids = userData.refPackageId[j].split(",");
-          const time = await executeQuery(getPackageTime, [
-            parseInt(ids[0]),
-            parseInt(ids[1]),
-            userData.refSessionMod[i] == 1 ? "Online" : "Offline",
-          ]);
-          console.log("time", time);
-          if (time.length > 0) {
-            const newData = {
-              packageName: time[0].refPackageName,
-              timing: time[0].refTime,
-              days: time[0].refDays,
-              sessionMode:
-                userData.refSessionMod[i] == 1 ? "Online" : "Offline",
-              branch: time[0].refBranchName,
+      let Data;
+      const resultMap: any = {};
+      let allCustomerIds: string[] = [];
+      let finalData;
+      if (userData.reportType.code == 1) {
+        const sessionMod =
+          userData.refSessionMod.length > 1
+            ? "Online,Offline"
+            : userData.refSessionMod[0] === 1
+            ? "Online"
+            : "Offline";
+
+        Data = await executeQuery(packageListData, [
+          sessionMod,
+          userData.refPackageId,
+        ]);
+
+        Data.forEach((item: any) => {
+          if (!resultMap[item.refPaId]) {
+            resultMap[item.refPaId] = {
+              refPaId: item.refPaId,
+              refPackageName: item.refPackageName,
+              users: [],
             };
-
-            reportData.push(newData);
-
-            if (userData.refSessionMod[i] != 1) {
-              for (let k = 0; k < dates.length; k++) {
-                try {
-                  let data = await attendanceQuery(getDateWiseAttendance, [
-                    dates[k],
-                    time[0].refTime,
-                  ]);
-
-                  const nameData = await executeQuery(getUserName, []);
-
-                  const nameMap = new Map(
-                    nameData.map((item) => [
-                      item.refSCustId,
-                      {
-                        refStFName: item.refStFName,
-                        refStLName: item.refStLName,
-                      },
-                    ])
-                  );
-
-                  if (data.length > 0) {
-                    const mappedData = data.map((item) => {
-                      const name = nameMap.get(item.emp_code);
-                      return {
-                        ...item,
-                        refStFName: name?.refStFName || null,
-                        refStLName: name?.refStLName || null,
-                      };
-                    });
-
-                    reportData[reportData.length - 1] = {
-                      ...reportData[reportData.length - 1],
-                      attendance: mappedData,
-                    };
-                  }
-                } catch (error) {
-                  console.error(
-                    `Error fetching attendance for date ${dates[k]}:`,
-                    error
-                  );
-                }
-              }
-            } else {
-              console.log("Online Report Want to Create Her e");
-            }
           }
+          if (item.refStId !== null) {
+            resultMap[item.refPaId].users.push({
+              refStId: item.refStId,
+              refSCustId: item.refSCustId,
+              refStFName: item.refStFName,
+              refStLName: item.refStLName,
+            });
+
+            allCustomerIds.push(item.refSCustId);
+          }
+        });
+        let date: string[] = [];
+
+        if (userData.refRepDurationType == 1) {
+          date[0] = userData.refRepDuration;
+          date[1] = userData.refRepDuration;
+        } else {
+          [date[0], date[1]] = getDateRange(userData.refRepDuration);
+        }
+
+        const params = [date[0], date[1], allCustomerIds];
+        const attendance = await attendanceQuery(getAttendanceDatas, params);
+        attendance.forEach((att: any) => {
+          const { emp_code, attendance: empAttendance } = att;
+
+          Object.values(resultMap).forEach((packageItem: any) => {
+            const user = packageItem.users.find(
+              (user: any) => user.refSCustId === emp_code
+            );
+
+            if (user) {
+              user.attendance = empAttendance;
+            }
+          });
+        });
+
+        finalData = Object.values(resultMap);
+      } else {
+        let dates: string[] = [];
+        try {
+          if (userData.refRepDurationType === 1) {
+            dates[0] = userData.refRepDuration;
+            dates[1] = userData.refRepDuration;
+          } else {
+            [dates[0], dates[1]] = getDateRange(userData.refRepDuration);
+          }
+          const params = [dates[0], dates[1]];
+          const data = await attendanceQuery(getAttendanceDataTiming, params);
+          const formattedAttendanceData = data.map(
+            (item) => `${item.emp_code},${item.punch_time}`
+          );
+          const userMapData = await executeQuery(mapUserData, [
+            formattedAttendanceData,
+            userData.refPackageId,
+          ]);
+          finalData = mapAttendanceData(userMapData);
+        } catch (error) {
+          console.error("Error fetching or processing data:", error);
+          throw error;
         }
       }
+
       const results = {
         success: true,
-        message: "Session Wise Attendance is passed successfully",
+        message: "Attendance Report Data IS Passed Successfully",
         token: token,
-        reportData: reportData,
+        attendanceData: finalData,
       };
       return encrypt(results, true);
     } catch (error) {
-      console.log("error", error);
+      console.error(error);
       const results = {
         success: false,
         message: "Error in passing the Session Attendance Report Data",

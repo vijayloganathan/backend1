@@ -552,7 +552,10 @@ export class StaffRepository {
   ): Promise<any> {
     const client: PoolClient = await getClient();
     let id;
-    const staffId = userData.decodedToken.id || decodedToken.id;
+    console.log("userData", userData);
+    console.log("decodedToken.id", decodedToken.id);
+    const staffId = decodedToken.id;
+    console.log("staffId", staffId);
     if (userData.refStId == undefined || userData.refStId == null) {
       id = staffId;
     } else {
@@ -562,6 +565,7 @@ export class StaffRepository {
       id: decodedToken.id,
       branch: decodedToken.branch,
     };
+    console.log("userData", userData);
 
     const token = generateToken(tokenData, true);
 

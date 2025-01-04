@@ -504,6 +504,7 @@ export class UserRepository {
       id: decodedToken.id,
       branch: decodedToken.branch,
     };
+    console.log("tokenData line ---- 507", tokenData);
 
     let refStId;
     const checkUser = await executeQuery(getUserType, [id]);
@@ -517,6 +518,7 @@ export class UserRepository {
     } else {
       refStId = userData.refStId;
     }
+    console.log("refStId line ---- 521", refStId);
 
     const token = generateToken(tokenData, true);
 
@@ -524,6 +526,7 @@ export class UserRepository {
       let profileData = {};
       const Datas = await executeQuery(getProfileData, [refStId]);
       const Data = Datas[0];
+      console.log('Data line ---- 529', Data)
       let addresstype = false;
       if (Data.refAdAdd1Type == 3) {
         addresstype = true;
@@ -576,13 +579,13 @@ export class UserRepository {
         refBranchId: Data.refBranchId,
         refDeliveryType: Data.refDeliveryType,
         refKidsCount: Data.refKidsCount,
+        refBranchName: Data.refBranchName,
+        refTimeMembers: Data.refTimeMembers,
+        refClassMode: Data.refClassMode,
+        refPackageName: Data.refPackageName,
+        refTime: Data.refTime,
+        refStId: Data.refStId,
       };
-      console.log(
-        "formatDate(Data.refWeddingDate)",
-        formatDate(Data.refWeddingDate)
-      );
-      console.log("Data.refWeddingDate", Data.refWeddingDate);
-      console.log("personalData", personalData);
 
       profileData = { ...profileData, personalData };
 
@@ -692,10 +695,9 @@ export class UserRepository {
           const profileFile = {
             filename: path.basename(filePath),
             content: fileBase64,
-            contentType: getFileType(filePath), // Dynamically set content type
+            contentType: getFileType(filePath),
           };
 
-          // Add profileFile to the current object
           getMedDocument[i].refMedDocFile = profileFile;
         }
       }
@@ -759,10 +761,8 @@ export class UserRepository {
               console.log("newData", newData);
 
               olddata = newData[0];
-              console.log("olddata line ------- 746", olddata);
 
               userData = { ...userData, olddata };
-              console.log("userData line ------------ 749", userData);
 
               transTypeId = 9;
               let refAdAdd1Type: number = 3;
@@ -773,7 +773,6 @@ export class UserRepository {
                 refAdAdd2Type = 2;
               }
 
-              console.log("userData", userData);
               if (userData.olddata.addresstype === false) {
                 refAdAdd1Type = 1;
                 refAdAdd2Type = 2;

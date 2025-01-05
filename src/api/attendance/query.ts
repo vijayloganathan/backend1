@@ -1,5 +1,3 @@
-
-
 export const searchUser = `SELECT
   u."refStId",u."refSCustId",
   u."refStFName",
@@ -165,19 +163,41 @@ GROUP BY
   sd."refSDId", sd."refDays",
   pt."refTimeId", pt."refTime";`;
 
-export const getOfflineCount = `SELECT 
-    COUNT(DISTINCT emp_code) AS attend_count
-FROM 
-    public.iclock_transaction
-WHERE 
-    DATE(punch_time) = DATE(TO_TIMESTAMP($1, 'DD/MM/YYYY, HH12:MI:SS AM'))
-    AND punch_time >= TO_TIMESTAMP(SPLIT_PART($1, ',', 1) || ' ' || SPLIT_PART($2, ' to ', 1), 'DD/MM/YYYY HH12:MI AM') - INTERVAL '30 minutes'
-    AND punch_time <= TO_TIMESTAMP(SPLIT_PART($1, ',', 1) || ' ' || SPLIT_PART($2, ' to ', 1), 'DD/MM/YYYY HH12:MI AM') + INTERVAL '30 minutes';`;
+// export const getOfflineCount = `SELECT
+//     COUNT(DISTINCT emp_code) AS attend_count
+// FROM
+//     public.iclock_transaction
+// WHERE
+//     DATE(punch_time) = DATE(TO_TIMESTAMP($1, 'DD/MM/YYYY, HH12:MI:SS AM'))
+//     AND punch_time >= TO_TIMESTAMP(SPLIT_PART($1, ',', 1) || ' ' || SPLIT_PART($2, ' to ', 1), 'DD/MM/YYYY HH12:MI AM') - INTERVAL '30 minutes'
+//     AND punch_time <= TO_TIMESTAMP(SPLIT_PART($1, ',', 1) || ' ' || SPLIT_PART($2, ' to ', 1), 'DD/MM/YYYY HH12:MI AM') + INTERVAL '30 minutes';`;
 
+export const getOfflineCount = `
+SELECT JSON_AGG(
+    JSON_BUILD_OBJECT(
+        'refTimeId', time_data.refTimeId,
+        'refTime', time_data.refTime,
+        'usercount', time_data.usercount,
+        'attendancecount', (
+            SELECT COUNT(DISTINCT emp_code)
+            FROM public.iclock_transaction
+            WHERE 
+                DATE(punch_time) = DATE(TO_TIMESTAMP($1, 'DD/MM/YYYY, HH12:MI:SS AM'))
+                AND punch_time >= TO_TIMESTAMP(SPLIT_PART($1, ',', 1) || ' ' || SPLIT_PART(time_data.refTime, ' to ', 1), 'DD/MM/YYYY HH12:MI AM') - INTERVAL '30 minutes'
+                AND punch_time <= TO_TIMESTAMP(SPLIT_PART($1, ',', 1) || ' ' || SPLIT_PART(time_data.refTime, ' to ', 2), 'DD/MM/YYYY HH12:MI AM') + INTERVAL '30 minutes'
+                AND emp_code NOT LIKE '%S%'
+        )
+    )
+) AS count
+FROM (
+    SELECT 
+        (refTimeData->>'refTimeId')::INTEGER AS refTimeId,
+        refTimeData->>'refTime' AS refTime,
+        (refTimeData->>'usercount')::INTEGER AS usercount
+    FROM JSONB_ARRAY_ELEMENTS($2::JSONB) AS refTimeData
+) AS time_data;
 
-
-
-
+`;
 
 // -----------  ATTENDANCE REWORK ----------------------------------
 
@@ -266,8 +286,6 @@ GROUP BY
     rp."refPaId", rp."refPackageName", u."refStId", u."refSCustId", u."refStFName", u."refStLName";
     
 `;
-
-
 
 // export const mapUserData = `
 // SELECT
@@ -409,4 +427,53 @@ FROM (
 ) subquery
 WHERE
   prev_punch_time IS NULL OR EXTRACT(EPOCH FROM (punch_time - prev_punch_time)) > 1200;
+`;
+
+//  Attendance OverView ----------------------------------------------------------------------
+
+export const getTodayPackageList = `SELECT DISTINCT ON (pt."refTimeId")
+pt."refTimeId",
+  pt."refTime"
+FROM
+  public."refPackage" rp
+  INNER JOIN public."refSessionDays" sd ON sd."refSDId" = ANY (rp."refSessionDays"::INTEGER[])
+  INNER JOIN public."refPaTiming" pt ON pt."refTimeId" = ANY (rp."refTimingId"::INTEGER[])
+WHERE
+  COALESCE(rp."refDeleteAt", 0) = 0
+  AND sd."refDays" IN (
+    'All Days',
+    TRIM(
+      TO_CHAR(
+        TO_TIMESTAMP($1, 'DD/MM/YYYY, HH12:MI:SS AM'),
+        'Day'
+      )
+    ),
+    CASE
+      WHEN EXTRACT(
+        DOW
+        FROM TO_TIMESTAMP($1, 'DD/MM/YYYY, HH12:MI:SS AM')
+      ) BETWEEN 1 AND 5 THEN 'Weekdays'
+      WHEN EXTRACT(
+        DOW
+        FROM TO_TIMESTAMP($1, 'DD/MM/YYYY, HH12:MI:SS AM')
+      ) IN (0, 6) THEN 'Weekend'
+      ELSE NULL
+    END
+  )
+  GROUP BY
+  pt."refTimeId",
+  pt."refTime";`;
+
+export const getUserCount = `
+  SELECT
+    pt."refTimeId",
+    pt."refTime",
+    COUNT(u.*) AS userCount
+  FROM
+    public."refPaTiming" pt
+    LEFT JOIN public.users u ON u."refTimingId" = pt."refTimeId"
+  WHERE
+    pt."refTimeId" = ANY ($1::INTEGER[])
+  GROUP BY
+    pt."refTimeId", pt."refTime";
 `;

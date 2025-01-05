@@ -264,28 +264,37 @@ export function generateDateArray(
   return dateArray;
 }
 
-export function getDateRange(monthYearRange:string) {
-  const [startMonthYear, endMonthYear] = monthYearRange.split(',').map(str => str.trim());
+export function getDateRange(monthYearRange: string) {
+  const [startMonthYear, endMonthYear] = monthYearRange
+    .split(",")
+    .map((str) => str.trim());
 
-  const [startMonth, startYear] = startMonthYear.split('/').map(num => parseInt(num));
-  const [endMonth, endYear] = endMonthYear.split('/').map(num => parseInt(num));
+  const [startMonth, startYear] = startMonthYear
+    .split("/")
+    .map((num) => parseInt(num));
+  const [endMonth, endYear] = endMonthYear
+    .split("/")
+    .map((num) => parseInt(num));
 
   const startDate = new Date(startYear, startMonth - 1, 1);
 
-  const endDate = new Date(endYear, endMonth, 0); 
+  const endDate = new Date(endYear, endMonth, 0);
 
-  const formatDate = (date:any) => {
-      const day = String(date.getDate()).padStart(2, '0');
-      const month = String(date.getMonth() + 1).padStart(2, '0');
-      const year = date.getFullYear();
-      let hours = date.getHours();
-      const minutes = String(date.getMinutes()).padStart(2, '0');
-      const seconds = String(date.getSeconds()).padStart(2, '0');
-      const ampm = hours >= 12 ? 'PM' : 'AM';
+  const formatDate = (date: any) => {
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const year = date.getFullYear();
+    let hours = date.getHours();
+    const minutes = String(date.getMinutes()).padStart(2, "0");
+    const seconds = String(date.getSeconds()).padStart(2, "0");
+    const ampm = hours >= 12 ? "PM" : "AM";
 
-      hours = hours % 12;
-      hours = hours ? hours : 12; 
-      return `${day}/${month}/${year}, ${String(hours).padStart(2, '0')}:${minutes}:${seconds} ${ampm}`;
+    hours = hours % 12;
+    hours = hours ? hours : 12;
+    return `${day}/${month}/${year}, ${String(hours).padStart(
+      2,
+      "0"
+    )}:${minutes}:${seconds} ${ampm}`;
   };
 
   startDate.setHours(0, 0, 0, 0);
@@ -296,12 +305,22 @@ export function getDateRange(monthYearRange:string) {
 
 export function mapAttendanceData(userMapData: any[]) {
   const groupedData = userMapData.reduce((acc, curr) => {
-    const { refTimeId, refTime, refSCustId, refStFName, refStLName, date, time } = curr;
+    const {
+      refTimeId,
+      refTime,
+      refSCustId,
+      refStFName,
+      refStLName,
+      date,
+      time,
+    } = curr;
     if (!acc[refTimeId]) {
       acc[refTimeId] = { refTimeId, refTime, users: [] };
     }
     if (refSCustId) {
-      let user = acc[refTimeId].users.find((user: any) => user.refSCustId === refSCustId);
+      let user = acc[refTimeId].users.find(
+        (user: any) => user.refSCustId === refSCustId
+      );
       if (!user) {
         user = { refSCustId, refStFName, refStLName, attendance: [] };
         acc[refTimeId].users.push(user);
@@ -313,4 +332,55 @@ export function mapAttendanceData(userMapData: any[]) {
   }, {});
 
   return Object.values(groupedData);
+}
+
+type AttendanceCount = {
+  refTime: string; // e.g., "10:00 AM to 11:00 AM"
+  refTimeId: string | number; // Replace with the actual type (string or number)
+  [key: string]: any; // Allow additional properties
+};
+
+export function findNearestTimeRange(
+  attendanceCounts: AttendanceCount[],
+  currentTime: string
+) {
+  const currentDate = new Date(currentTime);
+
+  function parseTimeToToday(timeStr: string): Date {
+    const [time, meridian] = timeStr.split(" ");
+    const [hours, minutes] = time.split(":").map(Number);
+    const adjustedHours =
+      meridian === "PM" && hours !== 12
+        ? hours + 12
+        : hours === 12 && meridian === "AM"
+        ? 0
+        : hours;
+    return new Date(
+      currentDate.getFullYear(),
+      currentDate.getMonth(),
+      currentDate.getDate(),
+      adjustedHours,
+      minutes
+    );
+  }
+
+  const mappedData = attendanceCounts.map((item) => {
+    const [startTime] = item.refTime.split(" to ");
+    return { ...item, startTime: parseTimeToToday(startTime) };
+  });
+
+  let nearest: AttendanceCount | null = null;
+  let smallestDiff = Infinity;
+
+  mappedData.forEach((item) => {
+    const timeDiff = Math.abs(item.startTime.getTime() - currentDate.getTime());
+    if (timeDiff < smallestDiff) {
+      smallestDiff = timeDiff;
+      nearest = item;
+    }
+  });
+
+  const cleanData = mappedData.map(({ startTime, ...rest }) => rest);
+
+  return [...cleanData, { nearestRefTimeId: nearest }];
 }

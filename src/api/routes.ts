@@ -1152,7 +1152,7 @@ export class Attendance implements IRoute {
           method: "GET",
           path: "/api/v1/attendance/overView",
           config: {
-            // pre: [{ method: validateToken, assign: "token" }],
+            pre: [{ method: validateToken, assign: "token" }],
             handler: AttendancePage.attendanceOverView,
             description: "To get the Attendance Over View",
             auth: false,

@@ -15,6 +15,8 @@ import {
   timingOptions,
   mapUserData,
   getUserData,
+  getTodayPackageList,
+  getUserCount,
 } from "./query";
 import {
   CurrentTime,
@@ -22,60 +24,105 @@ import {
   generateDateArray,
   getDateRange,
   mapAttendanceData,
+  findNearestTimeRange,
 } from "../../helper/common";
 
 export class AttendanceRepository {
-  public async attendanceOverViewV1(
-    userData: any,
-    decodedToken: any
-  ): Promise<any> {
+  // public async attendanceOverViewV1(
+  //   userData: any,
+  //   decodedToken: any
+  // ): Promise<any> {
+  //   console.log("decodedToken", decodedToken);
+  //   const tokenData = {
+  //     id: decodedToken.id,
+  //     branch: decodedToken.branch,
+  //   };
+  //   const token = generateToken(tokenData, true);
+  //   try {
+  //     const date = CurrentTime();
+  //     // const date = "23/12/2024, 11:45:30 AM";
+  //     const sessionMode = "Offline";
+  //     const params = [sessionMode, date, decodedToken.branch];
+
+  //     const registerCount = await executeQuery(getRegisterCount, params);
+
+  //     let matchedData;
+  //     console.log("registerCount.length", registerCount);
+  //     if (registerCount.length > 0) {
+  //       matchedData = getMatchingData(registerCount, date);
+
+  //       console.log("matchedData line ---- 40", matchedData);
+
+  //       const count = await attendanceQuery(getOfflineCount, [
+  //         date,
+  //         matchedData.refTime,
+  //       ]);
+  //       matchedData = {
+  //         ...matchedData,
+  //         attend_count: count[0].attend_count,
+  //       };
+  //     } else {
+  //       matchedData = [];
+  //     }
+  //     console.log("matchedData line ------ 53", matchedData);
+
+  //     const results = {
+  //       success: true,
+  //       message: "OverView Attendance Count is passed successfully",
+  //       token: token,
+  //       attendanceCount: matchedData,
+  //     };
+  //     return encrypt(results, true);
+  //   } catch (error) {
+  //     console.log("error", error);
+  //     const results = {
+  //       success: false,
+  //       message: "Error in passing the OverView Attendance",
+  //       token: token,
+  //     };
+  //     return encrypt(results, true);
+  //   }
+  // }
+  public async attendanceOverViewV1(userData: any, decodedToken: any) {
     console.log("decodedToken", decodedToken);
     const tokenData = {
       id: decodedToken.id,
       branch: decodedToken.branch,
     };
     const token = generateToken(tokenData, true);
+
     try {
-      const date = CurrentTime();
-      // const date = "23/12/2024, 11:45:30 AM";
-      const sessionMode = "Offline";
-      const params = [sessionMode, date, decodedToken.branch];
+      const todayDate = CurrentTime();
+      const packageList = await executeQuery(getTodayPackageList, [todayDate]);
+      const refTimeIds = packageList.map((item: any) => item.refTimeId);
+      const getUserCountResult = await executeQuery(getUserCount, [refTimeIds]);
+      const timeRanges = getUserCountResult.map((item: any) => ({
+        refTimeId: item.refTimeId,
+        refTime: item.refTime,
+        usercount: item.usercount,
+      }));
+      const attendanceCounts = await attendanceQuery(getOfflineCount, [
+        todayDate,
+        JSON.stringify(timeRanges),
+      ]);
 
-      const registerCount = await executeQuery(getRegisterCount, params);
-
-      let matchedData;
-      console.log("registerCount.length", registerCount);
-      if (registerCount.length > 0) {
-        matchedData = getMatchingData(registerCount, date);
-
-        console.log("matchedData line ---- 40", matchedData);
-
-        const count = await attendanceQuery(getOfflineCount, [
-          date,
-          matchedData.refTime,
-        ]);
-        matchedData = {
-          ...matchedData,
-          attend_count: count[0].attend_count,
-        };
-      } else {
-        matchedData = [];
-      }
-      console.log("matchedData line ------ 53", matchedData);
-
+      const finalData = findNearestTimeRange(
+        attendanceCounts[0].count,
+        todayDate
+      );
       const results = {
         success: true,
         message: "OverView Attendance Count is passed successfully",
-        token: token,
-        attendanceCount: matchedData,
+        token,
+        attendanceCount: finalData,
       };
       return encrypt(results, true);
     } catch (error) {
-      console.log("error", error);
+      console.error("Error", error);
       const results = {
         success: false,
         message: "Error in passing the OverView Attendance",
-        token: token,
+        token,
       };
       return encrypt(results, true);
     }
@@ -229,6 +276,7 @@ export class AttendanceRepository {
         custId,
         Month,
       ]);
+      console.log("Month", Month);
       console.log("attendanceResult", attendanceResult);
       const results = {
         success: true,

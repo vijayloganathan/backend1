@@ -3403,11 +3403,11 @@ export class AttendanceController {
     request: any,
     response: Hapi.ResponseToolkit
   ): Promise<any> => {
-    // const decodedToken = {
-    //   id: request.plugins.token.id,
-    //   branch: request.plugins.token.branch,
-    // };
-    const decodedToken = { id: 1, branch: 1 };
+    const decodedToken = {
+      id: request.plugins.token.id,
+      branch: request.plugins.token.branch,
+    };
+    // const decodedToken = { id: 1, branch: 1 };
     try {
       logger.info(`GET URL REQ => ${request.url.href}`);
       const entity = await this.resolver.attendanceOverViewV1(

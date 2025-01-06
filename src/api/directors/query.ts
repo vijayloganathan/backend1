@@ -29,9 +29,9 @@ LEFT JOIN public."refUserAddress" ad
   ON CAST(u."refStId" AS INTEGER) = ad."refStId"
 LEFT JOIN public."refGeneralHealth" gh
   ON CAST(u."refStId" AS INTEGER) = gh."refStId"
-  INNER JOIN public.branch br ON CAST (u."refBranchId" AS INTEGER) =br."refbranchId"
-  INNER JOIN public."refMembers" rm ON CAST (u."refSessionType" AS INTEGER) =rm."refTimeMembersID"
-  INNER JOIN public."refPackage" rp ON CAST (u."refSessionMode" AS INTEGER) = rp."refPaId"
+  LEFT JOIN public.branch br ON CAST (u."refBranchId" AS INTEGER) =br."refbranchId"
+  LEFT JOIN public."refMembers" rm ON CAST (u."refSessionType" AS INTEGER) =rm."refTimeMembersID"
+  LEFT JOIN public."refPackage" rp ON CAST (u."refSessionMode" AS INTEGER) = rp."refPaId"
 INNER JOIN public."refPaTiming" pt ON CAST (u."refTimingId" AS INTEGER) = pt."refTimeId"
 WHERE u."refStId" = $1;`;
 

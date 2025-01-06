@@ -96,8 +96,11 @@ export class DirectorRepository {
     }
   }
   public async userDataV1(userData: any, decodedToken: any): Promise<any> {
+    console.log("userData line ------------- 99", userData);
     const staffId = decodedToken.id;
     const Id = userData.refStId;
+
+    console.log("line ------------- 102");
     let tokenData = {
       id: decodedToken.id,
       branch: decodedToken.branch,
@@ -106,12 +109,14 @@ export class DirectorRepository {
 
     try {
       const userTypeLabel = await executeQuery(getUserStatusLabel, []);
+      console.log("userTypeLabel", userTypeLabel);
       const userData = await executeQuery(getDataForUserManagement, [Id]);
       console.log("userData", userData);
       const userTypeMap = new Map(
         userTypeLabel.map((item) => [item.refUtId, item.refUserType])
       );
 
+      console.log("userTypeMap", userTypeMap);
       // console.log("userData", userData);
       userData.forEach((user) => {
         user.refUtIdLabel = userTypeMap.get(user.refUtId) || "Unknown";
@@ -123,6 +128,7 @@ export class DirectorRepository {
         UserData: userData,
         userTransaction: userTransaction,
       };
+      console.log("data", data);
 
       return encrypt(
         {

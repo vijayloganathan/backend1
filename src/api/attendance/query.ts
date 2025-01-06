@@ -121,47 +121,47 @@ WHERE
 
 // session attendance Query
 
-export const getRegisterCount = `SELECT
-  COUNT(u."refTimingId") AS user_count,
-  rp."refPaId", rp."refPackageName", rp."refTimingId", rp."refSessionDays", rp."refSessionMode",
-  sd."refSDId", sd."refDays",
-  pt."refTimeId", pt."refTime"
-FROM
-  public."refPackage" rp
-  INNER JOIN public."refPaTiming" pt 
-    ON pt."refTimeId" = ANY (
-      string_to_array(
-        REPLACE(REPLACE(rp."refTimingId", '{', ''), '}', ''),
-        ','
-      )::INTEGER[]
-    )
-  INNER JOIN public."refSessionDays" sd 
-    ON sd."refSDId" = ANY (
-      string_to_array(
-        REPLACE(REPLACE(rp."refSessionDays", '{', ''), '}',''),
-        ','
-      )::INTEGER[]
-    )
-  LEFT JOIN public.users u 
-    ON CAST(u."refTimingId" AS INTEGER) = pt."refTimeId" 
-   AND CAST(u."refSessionMode" AS INTEGER) = rp."refPaId" 
-WHERE
-  rp."refSessionMode" IN ('Offline & Online', $1) 
-  AND sd."refDays" IN (
-    'All Days', 
-    TRIM(TO_CHAR(TO_TIMESTAMP($2, 'DD/MM/YYYY, HH12:MI:SS AM'), 'Day')),
-    CASE 
-      WHEN EXTRACT(DOW FROM TO_TIMESTAMP($2, 'DD/MM/YYYY, HH12:MI:SS AM')) BETWEEN 1 AND 5 THEN 'Weekdays'
-      WHEN EXTRACT(DOW FROM TO_TIMESTAMP($2, 'DD/MM/YYYY, HH12:MI:SS AM')) IN (0, 6) THEN 'Weekend'
-      ELSE NULL
-    END
-  )
-  AND (rp."refDeleteAt" IS NULL OR rp."refDeleteAt" = 0) 
-  AND rp."refBranchId" = $3
-GROUP BY 
-  rp."refPaId", rp."refTimingId", rp."refSessionDays", rp."refSessionMode",
-  sd."refSDId", sd."refDays",
-  pt."refTimeId", pt."refTime";`;
+// export const getRegisterCount = `SELECT
+//   COUNT(u."refTimingId") AS user_count,
+//   rp."refPaId", rp."refPackageName", rp."refTimingId", rp."refSessionDays", rp."refSessionMode",
+//   sd."refSDId", sd."refDays",
+//   pt."refTimeId", pt."refTime"
+// FROM
+//   public."refPackage" rp
+//   INNER JOIN public."refPaTiming" pt 
+//     ON pt."refTimeId" = ANY (
+//       string_to_array(
+//         REPLACE(REPLACE(rp."refTimingId", '{', ''), '}', ''),
+//         ','
+//       )::INTEGER[]
+//     )
+//   INNER JOIN public."refSessionDays" sd 
+//     ON sd."refSDId" = ANY (
+//       string_to_array(
+//         REPLACE(REPLACE(rp."refSessionDays", '{', ''), '}',''),
+//         ','
+//       )::INTEGER[]
+//     )
+//   LEFT JOIN public.users u 
+//     ON CAST(u."refTimingId" AS INTEGER) = pt."refTimeId" 
+//    AND CAST(u."refSessionMode" AS INTEGER) = rp."refPaId" 
+// WHERE
+//   rp."refSessionMode" IN ('Offline & Online', $1) 
+//   AND sd."refDays" IN (
+//     'All Days', 
+//     TRIM(TO_CHAR(TO_TIMESTAMP($2, 'DD/MM/YYYY, HH12:MI:SS AM'), 'Day')),
+//     CASE 
+//       WHEN EXTRACT(DOW FROM TO_TIMESTAMP($2, 'DD/MM/YYYY, HH12:MI:SS AM')) BETWEEN 1 AND 5 THEN 'Weekdays'
+//       WHEN EXTRACT(DOW FROM TO_TIMESTAMP($2, 'DD/MM/YYYY, HH12:MI:SS AM')) IN (0, 6) THEN 'Weekend'
+//       ELSE NULL
+//     END
+//   )
+//   AND (rp."refDeleteAt" IS NULL OR rp."refDeleteAt" = 0) 
+//   AND rp."refBranchId" = $3
+// GROUP BY 
+//   rp."refPaId", rp."refTimingId", rp."refSessionDays", rp."refSessionMode",
+//   sd."refSDId", sd."refDays",
+//   pt."refTimeId", pt."refTime";`;
 
 // export const getOfflineCount = `SELECT
 //     COUNT(DISTINCT emp_code) AS attend_count
@@ -476,4 +476,98 @@ export const getUserCount = `
     pt."refTimeId" = ANY ($1::INTEGER[])
   GROUP BY
     pt."refTimeId", pt."refTime";
+`;
+
+export const getPackageList = `SELECT
+  rp."refPaId",
+  rp."refPackageName",
+  COUNT(u.*) AS usercount,
+  ARRAY_AGG(u."refSCustId") AS staff_ids
+FROM
+  public."refPackage" rp
+  INNER JOIN public."refSessionDays" sd ON sd."refSDId" = ANY (rp."refSessionDays"::INTEGER[])
+  INNER JOIN public.users u ON CAST(u."refSessionType" AS INTEGER) = rp."refPaId"
+WHERE
+rp."refBranchId" = $1
+AND
+u."refSCustId" NOT LIKE '%S%'
+AND
+	rp."refSessionMode" IN ('Offline & Online',$2)
+	AND
+  sd."refDays" IN (
+    'All Days',
+    TRIM(
+      TO_CHAR(
+        TO_TIMESTAMP($3, 'DD/MM/YYYY, HH12:MI:SS AM'),
+        'Day'
+      )
+    ),
+    CASE
+      WHEN EXTRACT(
+        DOW
+        FROM
+          TO_TIMESTAMP($3, 'DD/MM/YYYY, HH12:MI:SS AM')
+      ) BETWEEN 1 AND 5 THEN 'Weekdays'
+      WHEN EXTRACT(
+        DOW
+        FROM
+          TO_TIMESTAMP($3, 'DD/MM/YYYY, HH12:MI:SS AM')
+      ) IN (0, 6) THEN 'Weekend'
+      ELSE NULL
+    END
+  )
+GROUP BY
+  rp."refPaId", rp."refPackageName";`;
+
+export const petUserAttendCount = `WITH register_data AS (
+  SELECT
+    (package->>'refPaId')::INT AS refPaId,  -- Explicitly extract refPaId
+    package  -- Keep the full package for later use
+  FROM
+    jsonb_array_elements($2::jsonb) AS package
+),
+staff_list AS (
+  SELECT
+    s.refPaId,
+    UNNEST(
+      ARRAY(
+        SELECT jsonb_array_elements_text(s.package->'staff_ids')
+      )
+    ) AS staff_id -- Extract all staff_ids with the associated refPaId
+  FROM
+    register_data s
+),
+filtered_transactions AS (
+  SELECT
+    *,
+    LAG(punch_time) OVER (PARTITION BY emp_code ORDER BY punch_time) AS prev_punch_time
+  FROM
+    public.iclock_transaction
+  WHERE
+    emp_code NOT LIKE '%S%'
+    AND punch_time::date = TO_TIMESTAMP($1, 'DD/MM/YYYY, HH:MI:SS AM')::date
+),
+matching_transactions AS (
+  SELECT
+    s.refPaId,
+    COUNT(DISTINCT t.emp_code) AS match_count
+  FROM
+    filtered_transactions t
+  JOIN
+    staff_list s ON t.emp_code = s.staff_id
+  WHERE
+    (t.prev_punch_time IS NULL OR EXTRACT(EPOCH FROM (t.punch_time - t.prev_punch_time)) >= 600)
+  GROUP BY
+    s.refPaId
+)
+SELECT
+  r.refPaId,
+  r.package->>'refPackageName' AS refPackageName,
+  r.package->>'usercount' AS usercount,
+  COALESCE(m.match_count, 0) AS match_count -- Handle cases with no matches
+FROM
+  register_data r
+LEFT JOIN
+  matching_transactions m ON r.refPaId = m.refPaId;
+
 `;

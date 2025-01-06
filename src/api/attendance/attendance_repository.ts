@@ -5,7 +5,6 @@ import { attendanceQuery, getAttendance } from "../../helper/attendanceDb";
 import {
   searchUser,
   userAttendance,
-  getRegisterCount,
   getOfflineCount,
   packageListData,
   getAttendanceDatas,
@@ -17,6 +16,8 @@ import {
   getUserData,
   getTodayPackageList,
   getUserCount,
+  getPackageList,
+  petUserAttendCount,
 } from "./query";
 import {
   CurrentTime,
@@ -127,6 +128,50 @@ export class AttendanceRepository {
       return encrypt(results, true);
     }
   }
+  // public async sessionAttendanceV1(
+  //   userData: any,
+  //   decodedToken: any
+  // ): Promise<any> {
+  //   console.log("decodedToken", decodedToken);
+  //   const tokenData = {
+  //     id: decodedToken.id,
+  //     branch: decodedToken.branch,
+  //   };
+  //   const token = generateToken(tokenData, true);
+  //   try {
+  //     const date = userData.date == "" ? CurrentTime() : userData.date;
+  //     const sessionMode = userData.sessionMode == 1 ? "Online" : "Offline";
+  //     const params = [sessionMode, date, decodedToken.branch];
+  //     console.log("params", params);
+
+  //     let registerCount = await executeQuery(getRegisterCount, params);
+  //     for (let i = 0; i < registerCount.length; i++) {
+  //       const count = await attendanceQuery(getOfflineCount, [
+  //         date,
+  //         registerCount[i].refTime,
+  //       ]);
+  //       registerCount[i] = {
+  //         ...registerCount[i],
+  //         attend_count: count[0].attend_count,
+  //       };
+  //     }
+  //     const results = {
+  //       success: true,
+  //       message: "Overall Attendance Count is passed successfully",
+  //       token: token,
+  //       attendanceCount: registerCount,
+  //     };
+  //     return encrypt(results, true);
+  //   } catch (error) {
+  //     console.log("error", error);
+  //     const results = {
+  //       success: false,
+  //       message: "Error in passing the Session Attendance",
+  //       token: token,
+  //     };
+  //     return encrypt(results, true);
+  //   }
+  // }
   public async sessionAttendanceV1(
     userData: any,
     decodedToken: any
@@ -140,25 +185,19 @@ export class AttendanceRepository {
     try {
       const date = userData.date == "" ? CurrentTime() : userData.date;
       const sessionMode = userData.sessionMode == 1 ? "Online" : "Offline";
-      const params = [sessionMode, date, decodedToken.branch];
-      console.log("params", params);
+      const params = [decodedToken.branch, sessionMode, date];
 
-      let registerCount = await executeQuery(getRegisterCount, params);
-      for (let i = 0; i < registerCount.length; i++) {
-        const count = await attendanceQuery(getOfflineCount, [
-          date,
-          registerCount[i].refTime,
-        ]);
-        registerCount[i] = {
-          ...registerCount[i],
-          attend_count: count[0].attend_count,
-        };
-      }
+      let registerCount = await executeQuery(getPackageList, params);
+      console.log("registerCount", registerCount);
+      const attendCount = await attendanceQuery(petUserAttendCount, [
+        date,
+        JSON.stringify(registerCount),
+      ]);
       const results = {
         success: true,
         message: "Overall Attendance Count is passed successfully",
         token: token,
-        attendanceCount: registerCount,
+        attendanceCount: attendCount,
       };
       return encrypt(results, true);
     } catch (error) {

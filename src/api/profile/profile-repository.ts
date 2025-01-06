@@ -162,15 +162,20 @@ export class ProfileRepository {
         userData.personalData.ref_su_fromMonth, //21
         userData.personalData.ref_su_toMonth, //22
       ];
+      console.log("paramsProfile", paramsProfile);
+
+      console.log(" line ----------------------- 167");
 
       const userResult1 = await client.query(
         insertProfilePersonalData,
         paramsProfile
       );
+      console.log(" line ----------------------- 173");
 
       if (!userResult1.rowCount) {
         throw new Error("Failed to update personal data in the users table.");
       }
+      console.log(" line ----------------------- 178");
 
       const communicationType = 3;
       //step2: Insert Communication Data into the refCommunication table
@@ -182,17 +187,20 @@ export class ProfileRepository {
         communicationType, //5
         userData.personalData.ref_su_emgContaxt, //6
       ];
+      console.log(" line ----------------------- 190");
 
       const userResult2 = await client.query(
         insertCommunicationData,
         parasCommunication
       );
+      console.log(" line ----------------------- 196");
 
       if (!userResult2.rowCount) {
         throw new Error(
           "Failed to insert Communication  data into the refUserCommunication table."
         );
       }
+      console.log(" line ----------------------- 203");
 
       let refAdAdd1Type: number = 1;
       let refAdAdd2Type: number = 2;
@@ -200,6 +208,7 @@ export class ProfileRepository {
         refAdAdd1Type = 3;
         refAdAdd2Type = 0;
       }
+      console.log(" line ----------------------- 211");
 
       const paramsAddress = [
         userData.refStId,
@@ -218,22 +227,27 @@ export class ProfileRepository {
         userData.address.refAdState2,
         userData.address.refAdPincode2,
       ];
+      console.log(" line ----------------------- 230");
 
       const userResult3 = await client.query(
         insertProfileAddressQuery,
         paramsAddress
       );
+      console.log(" line ----------------------- 236");
 
       if (!userResult3.rowCount) {
         throw new Error(
           "Failed to insert address data into the refUserAddress table."
         );
       }
+      console.log(" line ----------------------- 243");
 
       // Step 3: Insert health-related data into the refGeneralHealth table
       const refPresentHealthJson = JSON.stringify(
         userData.generalhealth.refPresentHealth
       );
+      console.log(" line ----------------------- 249");
+
       const paramsHealth = [
         userData.refStId,
         userData.generalhealth.refHeight,
@@ -260,16 +274,20 @@ export class ProfileRepository {
         userData.generalhealth.refAnythingelse,
         userData.generalhealth.refBackPainValue,
       ];
+      console.log(" line ----------------------- 277");
+
       const userResult4 = await client.query(
         insertProfileGeneralHealth,
         paramsHealth
       );
+      console.log(" line ----------------------- 283");
 
       if (!userResult4.rowCount) {
         throw new Error(
           "Failed to insert health data into the refGeneralHealth table."
         );
       }
+      console.log(" line ----------------------- 290");
 
       for (
         let i = 0;
@@ -286,6 +304,7 @@ export class ProfileRepository {
           paramsMedicalDocuments
         );
       }
+      console.log(" line ----------------------- 307");
 
       const transTypeId = 3,
         transData = "Registered Form Data",
@@ -297,15 +316,19 @@ export class ProfileRepository {
         CurrentTime(),
         refUpdatedBy,
       ];
+      console.log(" line ----------------------- 319");
 
       const userResult5 = await client.query(updateHistoryQuery, parasHistory);
+      console.log(" line ----------------------- 322");
 
       if (!userResult5.rowCount) {
         throw new Error("Failed to insert The History In refUserTxnHistory.");
       }
+      console.log(" line ----------------------- 327");
 
       // Commit the transaction if all queries succeeded
       await client.query("COMMIT");
+      console.log(" line ----------------------- 331");
 
       const results = {
         success: true,
@@ -672,7 +695,7 @@ export class ProfileRepository {
 
     try {
       const params = [
-        userData.personalData.refClassMode, // 
+        userData.personalData.refClassMode, //
         userData.personalData.refSessionMode,
         userData.personalData.refTimingId,
         userData.personalData.refSessionType,

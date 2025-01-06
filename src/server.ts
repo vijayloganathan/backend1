@@ -38,8 +38,6 @@ const init = async () => {
       },
     });
 
-    //text
-
     // const server = Hapi.server({
     //   host: process.env.HOST || "localhost",
     //   port: process.env.PORT || 6201,

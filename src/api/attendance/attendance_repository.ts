@@ -186,13 +186,15 @@ export class AttendanceRepository {
       const date = userData.date == "" ? CurrentTime() : userData.date;
       const sessionMode = userData.sessionMode == 1 ? "Online" : "Offline";
       const params = [decodedToken.branch, sessionMode, date];
+      console.log('params', params)
 
       let registerCount = await executeQuery(getPackageList, params);
-      console.log("registerCount", registerCount);
+      console.log("registerCount line --------- 191", registerCount);
       const attendCount = await attendanceQuery(petUserAttendCount, [
         date,
         JSON.stringify(registerCount),
       ]);
+      console.log("attendCount", attendCount);
       const results = {
         success: true,
         message: "Overall Attendance Count is passed successfully",

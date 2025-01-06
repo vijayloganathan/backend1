@@ -75,11 +75,12 @@ WHERE
 export const userAttendance = `WITH
   cte AS (
     SELECT
-      TO_CHAR(punch_time, 'DD/MM/YYYY, HH:MI:SS PM') AS attendance,
-      punch_time,
-      LAG(punch_time) OVER (
+      -- Convert punch_time from UTC to the desired time zone and format
+      TO_CHAR(punch_time AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Kolkata', 'DD/MM/YYYY, HH:MI:SS PM') AS attendance,
+      punch_time AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Kolkata' AS local_punch_time,
+      LAG(punch_time AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Kolkata') OVER (
         PARTITION BY
-          TO_CHAR(punch_time, 'DD/MM/YYYY')
+          TO_CHAR(punch_time AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Kolkata', 'DD/MM/YYYY')
         ORDER BY
           punch_time
       ) AS previous_punch_time
@@ -90,24 +91,24 @@ export const userAttendance = `WITH
       AND EXTRACT(
         MONTH
         FROM
-          punch_time
+          punch_time AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Kolkata'
       ) = EXTRACT(
         MONTH
         FROM
-          TO_TIMESTAMP($2, 'Month YYYY')
+          TO_TIMESTAMP($2, 'Month YYYY') AT TIME ZONE 'Asia/Kolkata'
       )
       AND EXTRACT(
         YEAR
         FROM
-          punch_time
+          punch_time AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Kolkata'
       ) = EXTRACT(
         YEAR
         FROM
-          TO_TIMESTAMP($2, 'Month YYYY')
+          TO_TIMESTAMP($2, 'Month YYYY') AT TIME ZONE 'Asia/Kolkata'
       )
   )
 SELECT
-  TO_CHAR(punch_time, 'DD/MM/YYYY, HH:MI:SS PM') AS formatted_punch_time
+  TO_CHAR(local_punch_time, 'DD/MM/YYYY, HH:MI:SS PM') AS formatted_punch_time
 FROM
   cte
 WHERE
@@ -115,8 +116,9 @@ WHERE
   OR EXTRACT(
     EPOCH
     FROM
-      (punch_time - previous_punch_time)
+      (local_punch_time - previous_punch_time)
   ) > 600;
+
 `;
 
 // session attendance Query
@@ -128,37 +130,37 @@ WHERE
 //   pt."refTimeId", pt."refTime"
 // FROM
 //   public."refPackage" rp
-//   INNER JOIN public."refPaTiming" pt 
+//   INNER JOIN public."refPaTiming" pt
 //     ON pt."refTimeId" = ANY (
 //       string_to_array(
 //         REPLACE(REPLACE(rp."refTimingId", '{', ''), '}', ''),
 //         ','
 //       )::INTEGER[]
 //     )
-//   INNER JOIN public."refSessionDays" sd 
+//   INNER JOIN public."refSessionDays" sd
 //     ON sd."refSDId" = ANY (
 //       string_to_array(
 //         REPLACE(REPLACE(rp."refSessionDays", '{', ''), '}',''),
 //         ','
 //       )::INTEGER[]
 //     )
-//   LEFT JOIN public.users u 
-//     ON CAST(u."refTimingId" AS INTEGER) = pt."refTimeId" 
-//    AND CAST(u."refSessionMode" AS INTEGER) = rp."refPaId" 
+//   LEFT JOIN public.users u
+//     ON CAST(u."refTimingId" AS INTEGER) = pt."refTimeId"
+//    AND CAST(u."refSessionMode" AS INTEGER) = rp."refPaId"
 // WHERE
-//   rp."refSessionMode" IN ('Offline & Online', $1) 
+//   rp."refSessionMode" IN ('Offline & Online', $1)
 //   AND sd."refDays" IN (
-//     'All Days', 
+//     'All Days',
 //     TRIM(TO_CHAR(TO_TIMESTAMP($2, 'DD/MM/YYYY, HH12:MI:SS AM'), 'Day')),
-//     CASE 
+//     CASE
 //       WHEN EXTRACT(DOW FROM TO_TIMESTAMP($2, 'DD/MM/YYYY, HH12:MI:SS AM')) BETWEEN 1 AND 5 THEN 'Weekdays'
 //       WHEN EXTRACT(DOW FROM TO_TIMESTAMP($2, 'DD/MM/YYYY, HH12:MI:SS AM')) IN (0, 6) THEN 'Weekend'
 //       ELSE NULL
 //     END
 //   )
-//   AND (rp."refDeleteAt" IS NULL OR rp."refDeleteAt" = 0) 
+//   AND (rp."refDeleteAt" IS NULL OR rp."refDeleteAt" = 0)
 //   AND rp."refBranchId" = $3
-// GROUP BY 
+// GROUP BY
 //   rp."refPaId", rp."refTimingId", rp."refSessionDays", rp."refSessionMode",
 //   sd."refSDId", sd."refDays",
 //   pt."refTimeId", pt."refTime";`;
@@ -182,9 +184,13 @@ SELECT JSON_AGG(
             SELECT COUNT(DISTINCT emp_code)
             FROM public.iclock_transaction
             WHERE 
-                DATE(punch_time) = DATE(TO_TIMESTAMP($1, 'DD/MM/YYYY, HH12:MI:SS AM'))
-                AND punch_time >= TO_TIMESTAMP(SPLIT_PART($1, ',', 1) || ' ' || SPLIT_PART(time_data.refTime, ' to ', 1), 'DD/MM/YYYY HH12:MI AM') - INTERVAL '30 minutes'
-                AND punch_time <= TO_TIMESTAMP(SPLIT_PART($1, ',', 1) || ' ' || SPLIT_PART(time_data.refTime, ' to ', 2), 'DD/MM/YYYY HH12:MI AM') + INTERVAL '30 minutes'
+                -- Convert punch_time from UTC to the desired time zone and format
+                (punch_time AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Kolkata')::date = 
+                (TO_TIMESTAMP($1, 'DD/MM/YYYY, HH12:MI:SS AM') AT TIME ZONE 'Asia/Kolkata')::date
+                AND (punch_time AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Kolkata') >= 
+                    (TO_TIMESTAMP(SPLIT_PART($1, ',', 1) || ' ' || SPLIT_PART(time_data.refTime, ' to ', 1), 'DD/MM/YYYY HH12:MI AM') AT TIME ZONE 'Asia/Kolkata') - INTERVAL '30 minutes'
+                AND (punch_time AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Kolkata') <= 
+                    (TO_TIMESTAMP(SPLIT_PART($1, ',', 1) || ' ' || SPLIT_PART(time_data.refTime, ' to ', 2), 'DD/MM/YYYY HH12:MI AM') AT TIME ZONE 'Asia/Kolkata') + INTERVAL '30 minutes'
                 AND emp_code NOT LIKE '%S%'
         )
     )
@@ -196,6 +202,7 @@ FROM (
         (refTimeData->>'usercount')::INTEGER AS usercount
     FROM JSONB_ARRAY_ELEMENTS($2::JSONB) AS refTimeData
 ) AS time_data;
+
 
 `;
 
@@ -375,8 +382,9 @@ export const getAttendanceDatas = `WITH
   filtered_data AS (
     SELECT
       emp_code,
-      punch_time,
-      LAG(punch_time) OVER (
+      -- Convert punch_time from UTC to the desired time zone
+      punch_time AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Kolkata' AS local_punch_time,
+      LAG(punch_time AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Kolkata') OVER (
         PARTITION BY
           emp_code
         ORDER BY
@@ -385,19 +393,13 @@ export const getAttendanceDatas = `WITH
     FROM
       public.iclock_transaction
     WHERE
-      punch_time::date >= TO_TIMESTAMP(
-        $1,
-        'DD/MM/YYYY'
-      )
-      AND punch_time::date <= TO_TIMESTAMP(
-        $2,
-        'DD/MM/YYYY'
-      )
+      punch_time::date >= (TO_TIMESTAMP($1, 'DD/MM/YYYY') AT TIME ZONE 'Asia/Kolkata')::date
+      AND punch_time::date <= (TO_TIMESTAMP($2, 'DD/MM/YYYY') AT TIME ZONE 'Asia/Kolkata')::date
       AND emp_code = ANY($3::text[])
   )
 SELECT
   emp_code,
-  json_agg(TO_CHAR(punch_time, 'DD/MM/YYYY, HH:MI:SS PM')) AS attendance
+  json_agg(TO_CHAR(local_punch_time, 'DD/MM/YYYY, HH:MI:SS PM')) AS attendance
 FROM
   filtered_data
 WHERE
@@ -405,28 +407,36 @@ WHERE
   OR EXTRACT(
     EPOCH
     FROM
-      punch_time - prev_punch_time
+      local_punch_time - prev_punch_time
   ) > 1200
 GROUP BY
   emp_code;
+
 `;
 
 export const getAttendanceDataTiming = `SELECT
   emp_code,
-  TO_CHAR(punch_time, 'DD/MM/YYYY, HH:MI:SS AM') AS punch_time
+  TO_CHAR(local_punch_time, 'DD/MM/YYYY, HH:MI:SS AM') AS punch_time
 FROM (
   SELECT
     emp_code,
-    punch_time,
-    LAG(punch_time) OVER (PARTITION BY emp_code, DATE(punch_time) ORDER BY punch_time) AS prev_punch_time
+    -- Convert punch_time from UTC to the desired time zone
+    punch_time AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Kolkata' AS local_punch_time,
+    LAG(punch_time AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Kolkata') OVER (
+      PARTITION BY emp_code, DATE(punch_time AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Kolkata')
+      ORDER BY punch_time
+    ) AS prev_punch_time
   FROM
     public.iclock_transaction
   WHERE
-    DATE(punch_time) BETWEEN TO_DATE($1, 'DD/MM/YYYY') AND TO_DATE($2, 'DD/MM/YYYY')
+    DATE(punch_time AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Kolkata') BETWEEN 
+      (TO_DATE($1, 'DD/MM/YYYY') AT TIME ZONE 'Asia/Kolkata') AND 
+      (TO_DATE($2, 'DD/MM/YYYY') AT TIME ZONE 'Asia/Kolkata')
     AND emp_code NOT LIKE '%S%'
 ) subquery
 WHERE
-  prev_punch_time IS NULL OR EXTRACT(EPOCH FROM (punch_time - prev_punch_time)) > 1200;
+  prev_punch_time IS NULL OR EXTRACT(EPOCH FROM (local_punch_time - prev_punch_time)) > 1200;
+
 `;
 
 //  Attendance OverView ----------------------------------------------------------------------
@@ -540,12 +550,15 @@ staff_list AS (
 filtered_transactions AS (
   SELECT
     *,
-    LAG(punch_time) OVER (PARTITION BY emp_code ORDER BY punch_time) AS prev_punch_time
+    LAG(punch_time) OVER (PARTITION BY emp_code ORDER BY punch_time) AS prev_punch_time,
+    -- Convert punch_time to the desired format and time zone
+    (punch_time AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Kolkata')::timestamp AS local_punch_time
   FROM
     public.iclock_transaction
   WHERE
     emp_code NOT LIKE '%S%'
-    AND punch_time::date = TO_TIMESTAMP($1, 'DD/MM/YYYY, HH:MI:SS AM')::date
+    AND (punch_time AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Kolkata')::date = 
+        (TO_TIMESTAMP($1, 'DD/MM/YYYY, HH:MI:SS AM') AT TIME ZONE 'Asia/Kolkata')::date
 ),
 matching_transactions AS (
   SELECT
@@ -569,5 +582,6 @@ FROM
   register_data r
 LEFT JOIN
   matching_transactions m ON r.refPaId = m.refPaId;
+
 
 `;

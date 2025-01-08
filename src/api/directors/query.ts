@@ -90,7 +90,7 @@ export const getUserTransaction = `
 SELECT * FROM public."refUserTxnHistory" WHERE "refStId"=$1
 ORDER BY "transTime"`;
 
-export const getUserTypeLabel = `SELECT * FROM public."refUserType" WHERE "refUtId" IN (4,7,8,10,11)`;
+export const getUserTypeLabel = `SELECT * FROM public."refUserType" WHERE "refUtId" IN (12,4,7,8,10,11)`;
 
 // export const getCustomerCount = `SELECT COUNT(*)
 // FROM public.users

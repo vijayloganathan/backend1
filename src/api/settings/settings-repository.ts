@@ -431,6 +431,7 @@ export class SettingsRepository {
     const token = generateToken(tokenData, true);
 
     try {
+      console.log("userData line ---------- 434", userData);
       console.log("userData.healthText", userData.healthText);
       const healthOptions = await executeQuery(addNewHealthIssue, [
         userData.healthText,
@@ -443,6 +444,7 @@ export class SettingsRepository {
       };
       return encrypt(results, true);
     } catch (error) {
+      console.log('error', error)
       const results = {
         success: false,
         message: "Error in Adding new Health Issue",

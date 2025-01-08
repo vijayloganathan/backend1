@@ -72,53 +72,25 @@ WHERE
 //     FROM
 //       (punch_time - previous_punch_time)
 //   ) > 600;`;
-export const userAttendance = `WITH
-  cte AS (
-    SELECT
-      -- Convert punch_time from UTC to the desired time zone and format
-      TO_CHAR(punch_time AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Kolkata', 'DD/MM/YYYY, HH:MI:SS PM') AS attendance,
-      punch_time AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Kolkata' AS local_punch_time,
-      LAG(punch_time AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Kolkata') OVER (
-        PARTITION BY
-          TO_CHAR(punch_time AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Kolkata', 'DD/MM/YYYY')
-        ORDER BY
-          punch_time
-      ) AS previous_punch_time
-    FROM
-      public."iclock_transaction"
-    WHERE
-      emp_code = $1
-      AND EXTRACT(
-        MONTH
-        FROM
-          punch_time AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Kolkata'
-      ) = EXTRACT(
-        MONTH
-        FROM
-          TO_TIMESTAMP($2, 'Month YYYY') AT TIME ZONE 'Asia/Kolkata'
-      )
-      AND EXTRACT(
-        YEAR
-        FROM
-          punch_time AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Kolkata'
-      ) = EXTRACT(
-        YEAR
-        FROM
-          TO_TIMESTAMP($2, 'Month YYYY') AT TIME ZONE 'Asia/Kolkata'
-      )
-  )
-SELECT
-  TO_CHAR(local_punch_time, 'DD/MM/YYYY, HH:MI:SS PM') AS formatted_punch_time
-FROM
-  cte
-WHERE
-  previous_punch_time IS NULL
-  OR EXTRACT(
-    EPOCH
-    FROM
-      (local_punch_time - previous_punch_time)
-  ) > 600;
-
+export const userAttendance = `WITH ordered_punch_times AS (
+    SELECT 
+        punch_time,
+        TO_CHAR(punch_time AT TIME ZONE 'Asia/Kolkata', 'DD/MM/YYYY, HH12:MI:SS AM') AS "formatted_punch_time",
+        LAG(punch_time) OVER (PARTITION BY emp_code, TO_CHAR(punch_time AT TIME ZONE 'Asia/Kolkata', 'DD/MM/YYYY') ORDER BY punch_time) AS prev_punch_time
+    FROM 
+        public.iclock_transaction
+    WHERE 
+        TO_CHAR(punch_time AT TIME ZONE 'Asia/Kolkata', 'Month/YYYY') = TO_CHAR(TO_TIMESTAMP($2, 'Month/YYYY'), 'Month/YYYY')
+        AND emp_code = $1
+)
+SELECT 
+    "formatted_punch_time"
+FROM 
+    ordered_punch_times
+WHERE 
+    prev_punch_time IS NULL OR EXTRACT(EPOCH FROM punch_time - prev_punch_time) > 1200
+ORDER BY 
+    punch_time;
 `;
 
 // session attendance Query

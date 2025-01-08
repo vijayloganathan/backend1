@@ -102,6 +102,7 @@ export class AttendanceRepository {
         refTime: item.refTime,
         usercount: item.usercount,
       }));
+      console.log("timeRanges line --------- 105", timeRanges);
       const attendanceCounts = await attendanceQuery(getOfflineCount, [
         todayDate,
         JSON.stringify(timeRanges),
@@ -186,7 +187,7 @@ export class AttendanceRepository {
       const date = userData.date == "" ? CurrentTime() : userData.date;
       const sessionMode = userData.sessionMode == 1 ? "Online" : "Offline";
       const params = [decodedToken.branch, sessionMode, date];
-      console.log('params', params)
+      console.log("params", params);
 
       let registerCount = await executeQuery(getPackageList, params);
       console.log("registerCount line --------- 191", registerCount);
@@ -313,10 +314,12 @@ export class AttendanceRepository {
       } else {
         Month = userData.month;
       }
+      console.log("Month", Month);
       const attendanceResult = await attendanceQuery(userAttendance, [
         custId,
         Month,
       ]);
+      console.log("attendanceResult line ------- 321", attendanceResult);
       console.log("Month", Month);
       console.log("attendanceResult", attendanceResult);
       const results = {
@@ -451,6 +454,7 @@ export class AttendanceRepository {
         }
 
         const params = [date[0], date[1], allCustomerIds];
+        console.log('params', params)
         const attendance = await attendanceQuery(getAttendanceDatas, params);
         attendance.forEach((att: any) => {
           const { emp_code, attendance: empAttendance } = att;

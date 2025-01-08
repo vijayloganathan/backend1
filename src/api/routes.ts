@@ -17,6 +17,7 @@ import {
   StudentFeesController,
   ForgotPasswordController,
   AttendanceController,
+  UserPaymentController,
 } from "./controller";
 import { Logger } from "winston";
 import { decodeToken, validateToken } from "../helper/token";
@@ -1235,6 +1236,39 @@ export class Testing implements IRoute {
             // pre: [{ method: validateToken, assign: "token" }],
             handler: UserPage.testing,
             description: "For testing",
+            auth: false,
+          },
+        },
+      ]);
+      resolve(true);
+    });
+  }
+}
+
+export class UserPayment implements IRoute {
+  public async register(server: any): Promise<any> {
+    return new Promise((resolve) => {
+      const controller = new UserPaymentController();
+      server.route([
+        {
+          method: "POST",
+          path: "/api/v1/users/payment",
+          config: {
+            pre: [{ method: validateToken, assign: "token" }],
+            handler: controller.payment,
+            description: "Payment Paylload",
+            tags: ["api", "Users"],
+            auth: false,
+          },
+        },
+        {
+          method: "POST",
+          path: "/api/v1/users/otherPackage",
+          config: {
+            pre: [{ method: validateToken, assign: "token" }],
+            handler: controller.otherPackages,
+            description: "Payment Paylload",
+            tags: ["api", "Users"],
             auth: false,
           },
         },

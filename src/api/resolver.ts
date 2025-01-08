@@ -11,6 +11,7 @@ import { FutureClientsRepository } from "./future_clients/future_clients-reposit
 import { StudentFeesRepository } from "./studentfees/studentfees-repository";
 import { ForgotPasswordRepository } from "./forgotpassword/forgot_password";
 import { AttendanceRepository } from "./attendance/attendance_repository";
+import { UserPaymentRepository } from "./userPayment/userPayment";
 
 export class Resolver {
   public userRepository: any;
@@ -776,5 +777,32 @@ export class TestingResolver {
   }
   public async TestingV1(user_data: any, token_data: any): Promise<any> {
     return await this.TestingRepository.TestingV1(user_data, token_data);
+  }
+}
+
+export class UserPaymentResolver {
+  public UserPaymentRepository: any;
+  constructor() {
+    this.UserPaymentRepository = new UserPaymentRepository();
+  }
+
+  public async userPaymentResolver(
+    user_data: any,
+    token_data: any
+  ): Promise<any> {
+    return await this.UserPaymentRepository.userPaymentV1(
+      user_data,
+      token_data
+    );
+  }
+
+  public async userPaymentPackageResolver(
+    user_data: any,
+    token_data: any
+  ): Promise<any> {
+    return await this.UserPaymentRepository.userOtherPaymentV1(
+      user_data,
+      token_data
+    );
   }
 }

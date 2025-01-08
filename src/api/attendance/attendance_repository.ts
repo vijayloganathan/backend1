@@ -186,7 +186,7 @@ export class AttendanceRepository {
       const date = userData.date == "" ? CurrentTime() : userData.date;
       const sessionMode = userData.sessionMode == 1 ? "Online" : "Offline";
       const params = [decodedToken.branch, sessionMode, date];
-      console.log('params', params)
+      console.log("params", params);
 
       let registerCount = await executeQuery(getPackageList, params);
       console.log("registerCount line --------- 191", registerCount);

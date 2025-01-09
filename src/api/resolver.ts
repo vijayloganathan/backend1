@@ -434,9 +434,9 @@ export class FinanceResolver {
       token_data
     );
   }
-  public async verifyCouponV1(user_data: any, token_data: any): Promise<any> {
-    return await this.FinanceRepository.verifyCouponV1(user_data, token_data);
-  }
+  // public async verifyCouponV1(user_data: any, token_data: any): Promise<any> {
+  //   return await this.FinanceRepository.verifyCouponV1(user_data, token_data);
+  // }
   public async FeesPaidV1(user_data: any, token_data: any): Promise<any> {
     return await this.FinanceRepository.FeesPaidV1(user_data, token_data);
   }
@@ -801,6 +801,34 @@ export class UserPaymentResolver {
     token_data: any
   ): Promise<any> {
     return await this.UserPaymentRepository.userOtherPaymentV1(
+      user_data,
+      token_data
+    );
+  }
+
+  public async verifyCouponV1(user_data: any, token_data: any): Promise<any> {
+    return await this.UserPaymentRepository.verifyCouponV1(
+      user_data,
+      token_data
+    );
+  }
+  public async addPaymentV1(user_data: any, token_data: any): Promise<any> {
+    return await this.UserPaymentRepository.addPaymentV1(user_data, token_data);
+  }
+  public async invoiceAuditDataV1(
+    user_data: any,
+    token_data: any
+  ): Promise<any> {
+    return await this.UserPaymentRepository.invoiceAuditDataV1(
+      user_data,
+      token_data
+    );
+  }
+  public async downloadInvoiceV1(
+    user_data: any,
+    token_data: any
+  ): Promise<any> {
+    return await this.UserPaymentRepository.downloadInvoiceV1(
       user_data,
       token_data
     );

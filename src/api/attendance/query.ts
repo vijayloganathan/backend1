@@ -175,7 +175,6 @@ FROM (
     FROM JSONB_ARRAY_ELEMENTS($2::JSONB) AS refTimeData
 ) AS time_data;
 
-
 `;
 
 // -----------  ATTENDANCE REWORK ----------------------------------
@@ -354,24 +353,22 @@ export const getAttendanceDatas = `WITH
   filtered_data AS (
     SELECT
       emp_code,
-      -- Convert punch_time from UTC to the desired time zone
-      punch_time AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Kolkata' AS local_punch_time,
-      LAG(punch_time AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Kolkata') OVER (
-        PARTITION BY
-          emp_code
-        ORDER BY
-          punch_time
+      punch_time,
+      TO_CHAR(punch_time AT TIME ZONE 'Asia/Kolkata', 'DD/MM/YYYY, HH12:MI:SS AM') AS local_punch_time,
+      LAG(punch_time) OVER (
+        PARTITION BY emp_code
+        ORDER BY punch_time
       ) AS prev_punch_time
     FROM
       public.iclock_transaction
     WHERE
-      punch_time::date >= (TO_TIMESTAMP($1, 'DD/MM/YYYY') AT TIME ZONE 'Asia/Kolkata')::date
-      AND punch_time::date <= (TO_TIMESTAMP($2, 'DD/MM/YYYY') AT TIME ZONE 'Asia/Kolkata')::date
+      punch_time::date >= TO_DATE($1, 'DD/MM/YYYY')
+      AND punch_time::date <= TO_DATE($2, 'DD/MM/YYYY')
       AND emp_code = ANY($3::text[])
   )
 SELECT
   emp_code,
-  json_agg(TO_CHAR(local_punch_time, 'DD/MM/YYYY, HH:MI:SS PM')) AS attendance
+  json_agg(local_punch_time) AS attendance
 FROM
   filtered_data
 WHERE
@@ -379,35 +376,38 @@ WHERE
   OR EXTRACT(
     EPOCH
     FROM
-      local_punch_time - prev_punch_time
+      punch_time - prev_punch_time
   ) > 1200
 GROUP BY
   emp_code;
+
 
 `;
 
 export const getAttendanceDataTiming = `SELECT
   emp_code,
-  TO_CHAR(local_punch_time, 'DD/MM/YYYY, HH:MI:SS AM') AS punch_time
+  TO_CHAR(punch_time AT TIME ZONE 'Asia/Kolkata', 'DD/MM/YYYY, HH12:MI:SS AM') AS punch_time
 FROM (
   SELECT
     emp_code,
-    -- Convert punch_time from UTC to the desired time zone
-    punch_time AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Kolkata' AS local_punch_time,
-    LAG(punch_time AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Kolkata') OVER (
-      PARTITION BY emp_code, DATE(punch_time AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Kolkata')
+    punch_time,
+    LAG(punch_time) OVER (
+      PARTITION BY emp_code, TO_CHAR(punch_time AT TIME ZONE 'Asia/Kolkata', 'DD/MM/YYYY')
       ORDER BY punch_time
     ) AS prev_punch_time
   FROM
     public.iclock_transaction
   WHERE
-    DATE(punch_time AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Kolkata') BETWEEN 
-      (TO_DATE($1, 'DD/MM/YYYY') AT TIME ZONE 'Asia/Kolkata') AND 
-      (TO_DATE($2, 'DD/MM/YYYY') AT TIME ZONE 'Asia/Kolkata')
+    TO_CHAR(punch_time AT TIME ZONE 'Asia/Kolkata', 'DD/MM/YYYY') BETWEEN TO_CHAR(TO_DATE($1, 'DD/MM/YYYY') AT TIME ZONE 'Asia/Kolkata', 'DD/MM/YYYY') AND TO_CHAR(TO_DATE($2, 'DD/MM/YYYY') AT TIME ZONE 'Asia/Kolkata', 'DD/MM/YYYY')
     AND emp_code NOT LIKE '%S%'
 ) subquery
 WHERE
-  prev_punch_time IS NULL OR EXTRACT(EPOCH FROM (local_punch_time - prev_punch_time)) > 1200;
+  prev_punch_time IS NULL OR EXTRACT(EPOCH FROM (punch_time - prev_punch_time)) > 1200
+ORDER BY
+  punch_time;
+
+
+
 
 `;
 

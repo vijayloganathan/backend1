@@ -706,16 +706,16 @@ export class Finance implements IRoute {
             auth: false,
           },
         },
-        {
-          method: "POST",
-          path: "/api/v1/finance/verifyCoupon",
-          config: {
-            pre: [{ method: validateToken, assign: "token" }],
-            handler: UserPage.verifyCoupon,
-            description: "Verify coupon data",
-            auth: false,
-          },
-        },
+        // {
+        //   method: "POST",
+        //   path: "/api/v1/finance/verifyCoupon",
+        //   config: {
+        //     pre: [{ method: validateToken, assign: "token" }],
+        //     handler: UserPage.verifyCoupon,
+        //     description: "Verify coupon data",
+        //     auth: false,
+        //   },
+        // },
         {
           method: "POST",
           path: "/api/v1/finance/FeesPaid",
@@ -1224,26 +1224,6 @@ export class Attendance implements IRoute {
     });
   }
 }
-export class Testing implements IRoute {
-  public async register(server: any): Promise<any> {
-    return new Promise((resolve) => {
-      const UserPage = new TestingController();
-      server.route([
-        {
-          method: "GET",
-          path: "/api/v1/test",
-          config: {
-            // pre: [{ method: validateToken, assign: "token" }],
-            handler: UserPage.testing,
-            description: "For testing",
-            auth: false,
-          },
-        },
-      ]);
-      resolve(true);
-    });
-  }
-}
 
 export class UserPayment implements IRoute {
   public async register(server: any): Promise<any> {
@@ -1269,6 +1249,67 @@ export class UserPayment implements IRoute {
             handler: controller.otherPackages,
             description: "Payment Paylload",
             tags: ["api", "Users"],
+            auth: false,
+          },
+        },
+        {
+          method: "POST",
+          path: "/api/v1/userPayment/verifyCoupon",
+          config: {
+            pre: [{ method: validateToken, assign: "token" }],
+            handler: controller.verifyCoupon,
+            description: "Verify coupon data",
+            auth: false,
+          },
+        },
+       
+        {
+          method: "POST",
+          path: "/api/v1/userPayment/addPayment",
+          config: {
+            pre: [{ method: validateToken, assign: "token" }],
+            handler: controller.addPayment,
+            description: "Verify coupon data",
+            auth: false,
+          },
+        },
+        {
+          method: "POST",
+          path: "/api/v1/userPayment/invoiceAudit",
+          config: {
+            pre: [{ method: validateToken, assign: "token" }],
+            handler: controller.invoiceAudit,
+            description: "get the user Payment Audit ",
+            auth: false,
+          },
+        },
+        {
+          method: "POST",
+          path: "/api/v1/userPayment/downloadUserInvoice",
+          config: {
+            pre: [{ method: validateToken, assign: "token" }],
+            handler: controller.downloadInvoice,
+            description: "Downloading the User Invoice",
+            auth: false,
+          },
+        },
+      ]);
+      resolve(true);
+    });
+  }
+}
+export class Testing implements IRoute {
+  public async register(server: any): Promise<any> {
+    return new Promise((resolve) => {
+      const UserPage = new TestingController();
+      server.route([
+        {
+          method: "GET",
+          path: "/api/v1/test",
+          config: {
+            // pre: [{ method: validateToken, assign: "token" }],
+            handler: UserPage.testing,
+            description: "For testing",
             auth: false,
           },
         },

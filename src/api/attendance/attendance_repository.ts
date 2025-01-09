@@ -107,6 +107,7 @@ export class AttendanceRepository {
         todayDate,
         JSON.stringify(timeRanges),
       ]);
+      console.log("attendanceCounts line ------- 110 \n\n", attendanceCounts[0].count);
 
       const finalData = findNearestTimeRange(
         attendanceCounts[0].count,
@@ -454,7 +455,7 @@ export class AttendanceRepository {
         }
 
         const params = [date[0], date[1], allCustomerIds];
-        console.log('params', params)
+        console.log("params", params);
         const attendance = await attendanceQuery(getAttendanceDatas, params);
         attendance.forEach((att: any) => {
           const { emp_code, attendance: empAttendance } = att;

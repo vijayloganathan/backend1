@@ -34,8 +34,7 @@ import {
 export class FinanceRepository {
   public async studentDetailsV1(
     userData: any,
-    decodedToken: any,
-    
+    decodedToken: any
   ): Promise<any> {
     const branchId = decodedToken.branch;
     const tokenData = {
@@ -75,13 +74,11 @@ export class FinanceRepository {
   }
   public async studentProfileV1(
     userData: any,
-    decodedToken: any,
-    
+    decodedToken: any
   ): Promise<any> {
-
     const tokenData = {
       id: decodedToken.id,
-        branch: decodedToken.branch,
+      branch: decodedToken.branch,
     };
     const token = generateToken(tokenData, true);
     try {
@@ -110,10 +107,8 @@ export class FinanceRepository {
   }
   public async studentFeesDetailsV1(
     userData: any,
-    decodedToken: any,
-    
+    decodedToken: any
   ): Promise<any> {
-
     const tokenData = {
       id: decodedToken.id,
       branch: decodedToken.branch,
@@ -152,158 +147,142 @@ export class FinanceRepository {
       return encrypt(results, true);
     }
   }
-  public async verifyCouponV1(
-    userData: any,
-    decodedToken: any,
-    
-  ): Promise<any> {
+  // public async verifyCouponV1(userData: any, decodedToken: any): Promise<any> {
+  //   const tokenData = {
+  //     id: decodedToken.id,
+  //     branch: decodedToken.branch,
+  //   };
+  //   const token = generateToken(tokenData, true);
+  //   const couponData = userData.refCoupon;
 
-    const tokenData = {
-      id: decodedToken.id,
-      branch: decodedToken.branch,
-    };
-    const token = generateToken(tokenData, true);
-    const couponData = userData.refCoupon;
+  //   try {
+  //     let updateData = {
+  //       refFees: Math.round(Number(userData.refFees)),
+  //       refExDate: userData.refExDate,
+  //       refStartDate: userData.refStartDate,
+  //       refEndDate: userData.refEndDate,
+  //       refOfferValue: null,
+  //       refOfferName: null,
+  //     };
+  //     const getTotalMonths = (startDate: string, endDate: string): number => {
+  //       const formatDate = (dateStr: string) =>
+  //         dateStr.split("T")[0].slice(0, 7);
 
-    try {
-      let updateData = {
-        refToAmt: userData.refToAmt,
-        refGst: userData.refGst,
-        refFees: userData.refFees,
-        refExDate: userData.refExDate,
-        refStartDate: userData.refStartDate,
-        refEndDate: userData.refEndDate,
-        refOfferValue: null,
-        refOfferName: null,
-      };
+  //       const [startYear, startMonth] = formatDate(startDate)
+  //         .split("-")
+  //         .map(Number);
+  //       const [endYear, endMonth] = formatDate(endDate).split("-").map(Number);
 
-      // Utility function to calculate the difference in months between two dates
-      const getTotalMonths = (startDate: string, endDate: string): number => {
-        const formatDate = (dateStr: string) =>
-          dateStr.split("T")[0].slice(0, 7);
+  //       const totalMonths =
+  //         (endYear - startYear) * 12 + (endMonth - startMonth) + 1;
+  //       return totalMonths;
+  //     };
+  //     const monthCount = getTotalMonths(
+  //       updateData.refStartDate,
+  //       updateData.refEndDate
+  //     );
+  //     const couponDataResult = await executeQuery(verifyCoupon, [
+  //       String(couponData),
+  //       updateData.refFees,
+  //       monthCount,
+  //     ]);
+  //     console.log("couponDataResult", couponDataResult);
 
-        const [startYear, startMonth] = formatDate(startDate)
-          .split("-")
-          .map(Number);
-        const [endYear, endMonth] = formatDate(endDate).split("-").map(Number);
+  //     if (couponDataResult.length === 0) {
+  //       throw new Error("No coupon data found");
+  //     }
 
-        const totalMonths =
-          (endYear - startYear) * 12 + (endMonth - startMonth) + 1;
-        return totalMonths;
-      };
+  //     // Update offer details
+  //     updateData.refOfferName = couponDataResult[0].refOfferName;
 
-      const monthCount = getTotalMonths(
-        updateData.refStartDate,
-        updateData.refEndDate
-      );
-      const couponDataResult = await executeQuery(verifyCoupon, [
-        couponData,
-        updateData.refFees,
-        monthCount,
-      ]);
+  //     if (couponDataResult[0].isValid === true) {
+  //       switch (couponDataResult[0].refOfferId) {
+  //         case 1: // Percentage discount
+  //           const offerValue =
+  //             (updateData.refFees / 100) * couponDataResult[0].refOffer;
+  //           updateData.refFees = updateData.refFees - offerValue;
+  //           updateData.refOfferValue = couponDataResult[0].refOffer;
+  //           break;
 
-      if (couponDataResult.length === 0) {
-        throw new Error("No coupon data found");
-      }
+  //         case 2: // Fixed amount discount
+  //           updateData.refFees =
+  //             updateData.refFees - couponDataResult[0].refOffer;
+  //           updateData.refOfferValue = couponDataResult[0].refOffer;
+  //           break;
 
-      // Update offer details
-      updateData.refOfferName = couponDataResult[0].refOfferName;
+  //         case 3: // Additional months offer
+  //           const refOfferMonths = couponDataResult[0].refOffer;
+  //           const currentDate = new Date(updateData.refExDate);
+  //           currentDate.setMonth(currentDate.getMonth() + refOfferMonths);
+  //           const newYear = currentDate.getFullYear();
+  //           const newMonth = currentDate.getMonth() + 1;
+  //           updateData.refExDate = `${newYear}-${
+  //             newMonth < 10 ? "0" + newMonth : newMonth
+  //           }`;
+  //           updateData.refOfferValue = couponDataResult[0].refOffer;
+  //           break;
 
-      if (couponDataResult[0].isValid === true) {
-        switch (couponDataResult[0].refOfferId) {
-          case 1: // Percentage discount
-            const offerValue =
-              (updateData.refFees / 100) * couponDataResult[0].refOffer;
-            updateData.refFees = updateData.refFees - offerValue;
-            updateData.refOfferValue = couponDataResult[0].refOffer;
-            break;
+  //         default:
+  //           console.log("Coupon code may be expired or invalid");
+  //           break;
+  //       }
+  //     } else {
+  //       return encrypt(
+  //         {
+  //           success: false,
+  //           message: "Coupon is Expired or Invalid",
+  //           token: token,
+  //         },
+  //         true
+  //       );
+  //     }
 
-          case 2: // Fixed amount discount
-            updateData.refFees =
-              updateData.refFees - couponDataResult[0].refOffer;
-            updateData.refOfferValue = couponDataResult[0].refOffer;
-            break;
+  //     const refEndDate = new Date(updateData.refEndDate);
+  //     let newYear = refEndDate.getFullYear();
+  //     let newMonth = refEndDate.getMonth() + 1;
+  //     updateData.refEndDate = `${newYear}-${
+  //       newMonth < 10 ? "0" + newMonth : newMonth
+  //     }`;
+  //     const refStartDate = new Date(updateData.refStartDate);
+  //     newYear = refStartDate.getFullYear();
+  //     newMonth = refStartDate.getMonth() + 1;
+  //     updateData.refStartDate = `${newYear}-${
+  //       newMonth < 10 ? "0" + newMonth : newMonth
+  //     }`;
+  //     const refExDate = new Date(updateData.refExDate);
+  //     newYear = refExDate.getFullYear();
+  //     newMonth = refExDate.getMonth() + 1;
+  //     updateData.refExDate = `${newYear}-${
+  //       newMonth < 10 ? "0" + newMonth : newMonth
+  //     }`;
 
-          case 3: // Additional months offer
-            const refOfferMonths = couponDataResult[0].refOffer;
-            const currentDate = new Date(updateData.refExDate);
-
-            currentDate.setMonth(currentDate.getMonth() + refOfferMonths);
-
-            const newYear = currentDate.getFullYear();
-            const newMonth = currentDate.getMonth() + 1;
-
-            updateData.refExDate = `${newYear}-${
-              newMonth < 10 ? "0" + newMonth : newMonth
-            }`;
-            updateData.refOfferValue = couponDataResult[0].refOffer;
-            break;
-
-          default:
-            console.log("Coupon code may be expired or invalid");
-            break;
-        }
-      } else {
-        return encrypt(
-          {
-            success: false,
-            message: "Coupon is Expired or Invalid",
-            token: token,
-          },
-          true
-        );
-      }
-
-      const refEndDate = new Date(updateData.refEndDate);
-      let newYear = refEndDate.getFullYear();
-      let newMonth = refEndDate.getMonth() + 1;
-      updateData.refEndDate = `${newYear}-${
-        newMonth < 10 ? "0" + newMonth : newMonth
-      }`;
-      const refStartDate = new Date(updateData.refStartDate);
-      newYear = refStartDate.getFullYear();
-      newMonth = refStartDate.getMonth() + 1;
-      updateData.refStartDate = `${newYear}-${
-        newMonth < 10 ? "0" + newMonth : newMonth
-      }`;
-      const refExDate = new Date(updateData.refExDate);
-      newYear = refExDate.getFullYear();
-      newMonth = refExDate.getMonth() + 1;
-      updateData.refExDate = `${newYear}-${
-        newMonth < 10 ? "0" + newMonth : newMonth
-      }`;
-
-      return encrypt(
-        {
-          success: true,
-          message: "Coupon data is validated successfully",
-          token: token,
-          data: updateData,
-        },
-        true
-      );
-    } catch (error) {
-      console.error("Error verifying coupon:", error);
-      return encrypt(
-        {
-          success: false,
-          message: "Error in Validating Coupon Data",
-          token: token,
-        },
-        true
-      );
-    }
-  }
-  public async FeesPaidV1(
-    userData: any,
-    decodedToken: any,
-    
-  ): Promise<any> {
+  //     return encrypt(
+  //       {
+  //         success: true,
+  //         message: "Coupon data is validated successfully",
+  //         token: token,
+  //         data: updateData,
+  //       },
+  //       true
+  //     );
+  //   } catch (error) {
+  //     console.error("Error verifying coupon:", error);
+  //     return encrypt(
+  //       {
+  //         success: false,
+  //         message: "Error in Validating Coupon Data",
+  //         token: token,
+  //       },
+  //       true
+  //     );
+  //   }
+  // }
+  public async FeesPaidV1(userData: any, decodedToken: any): Promise<any> {
     const refStId = decodedToken.id;
 
     const tokenData = {
       id: decodedToken.id,
-        branch: decodedToken.branch,
+      branch: decodedToken.branch,
     };
     const token = generateToken(tokenData, true);
     const client: PoolClient = await getClient();
@@ -382,8 +361,6 @@ export class FinanceRepository {
       console.log("history", history);
       const updateHistory = await client.query(updateHistoryQuery, history);
 
-      console.log("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk");
-
       if (!storeFees && !updateHistory) {
         return encrypt(
           {
@@ -430,13 +407,11 @@ export class FinanceRepository {
   }
   public async invoiceDownloadV1(
     userData: any,
-    decodedToken: any,
-    
+    decodedToken: any
   ): Promise<any> {
-
     const tokenData = {
       id: decodedToken.id,
-        branch: decodedToken.branch,
+      branch: decodedToken.branch,
     };
     const token = generateToken(tokenData, true);
     const refOrderId = userData.refOrderId;
@@ -466,10 +441,8 @@ export class FinanceRepository {
   }
   public async userPaymentAuditPgV1(
     userData: any,
-    decodedToken: any,
-    
+    decodedToken: any
   ): Promise<any> {
-
     const tokenData = {
       id: decodedToken.id,
       branch: decodedToken.branch,

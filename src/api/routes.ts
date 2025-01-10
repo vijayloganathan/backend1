@@ -1150,7 +1150,7 @@ export class Attendance implements IRoute {
       const AttendancePage = new AttendanceController();
       server.route([
         {
-          method: "GET",
+          method: "POST",
           path: "/api/v1/attendance/overView",
           config: {
             pre: [{ method: validateToken, assign: "token" }],
@@ -1262,7 +1262,7 @@ export class UserPayment implements IRoute {
             auth: false,
           },
         },
-       
+
         {
           method: "POST",
           path: "/api/v1/userPayment/addPayment",

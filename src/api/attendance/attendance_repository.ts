@@ -93,7 +93,15 @@ export class AttendanceRepository {
     const token = generateToken(tokenData, true);
 
     try {
-      const todayDate = CurrentTime();
+      let todayDate;
+      console.log("userData", userData);
+      console.log("userData.date", userData.date);
+      if (userData.date.length > 0) {
+        todayDate = userData.date;
+      } else {
+        todayDate = CurrentTime();
+      }
+
       const packageList = await executeQuery(getTodayPackageList, [todayDate]);
       const refTimeIds = packageList.map((item: any) => item.refTimeId);
       const getUserCountResult = await executeQuery(getUserCount, [refTimeIds]);
@@ -105,14 +113,11 @@ export class AttendanceRepository {
       console.log("timeRanges line --------- 105", timeRanges);
       const attendanceCounts = await attendanceQuery(getOfflineCount, [
         todayDate,
-        JSON.stringify(timeRanges),
+        // JSON.stringify(timeRanges),
       ]);
-      console.log("attendanceCounts line ------- 110 \n\n", attendanceCounts[0].count);
 
-      const finalData = findNearestTimeRange(
-        attendanceCounts[0].count,
-        todayDate
-      );
+      const finalData = findNearestTimeRange(attendanceCounts, todayDate);
+      console.log("finalData", finalData);
       const results = {
         success: true,
         message: "OverView Attendance Count is passed successfully",

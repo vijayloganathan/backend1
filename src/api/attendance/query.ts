@@ -146,36 +146,129 @@ ORDER BY
 //     AND punch_time >= TO_TIMESTAMP(SPLIT_PART($1, ',', 1) || ' ' || SPLIT_PART($2, ' to ', 1), 'DD/MM/YYYY HH12:MI AM') - INTERVAL '30 minutes'
 //     AND punch_time <= TO_TIMESTAMP(SPLIT_PART($1, ',', 1) || ' ' || SPLIT_PART($2, ' to ', 1), 'DD/MM/YYYY HH12:MI AM') + INTERVAL '30 minutes';`;
 
-export const getOfflineCount = `
-SELECT JSON_AGG(
-    JSON_BUILD_OBJECT(
-        'refTimeId', time_data.refTimeId,
-        'refTime', time_data.refTime,
-        'usercount', time_data.usercount,
-        'attendancecount', (
-            SELECT COUNT(DISTINCT emp_code)
-            FROM public.iclock_transaction
-            WHERE 
-                -- Convert punch_time from UTC to the desired time zone and format
-                (punch_time AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Kolkata')::date = 
-                (TO_TIMESTAMP($1, 'DD/MM/YYYY, HH12:MI:SS AM') AT TIME ZONE 'Asia/Kolkata')::date
-                AND (punch_time AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Kolkata') >= 
-                    (TO_TIMESTAMP(SPLIT_PART($1, ',', 1) || ' ' || SPLIT_PART(time_data.refTime, ' to ', 1), 'DD/MM/YYYY HH12:MI AM') AT TIME ZONE 'Asia/Kolkata') - INTERVAL '30 minutes'
-                AND (punch_time AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Kolkata') <= 
-                    (TO_TIMESTAMP(SPLIT_PART($1, ',', 1) || ' ' || SPLIT_PART(time_data.refTime, ' to ', 2), 'DD/MM/YYYY HH12:MI AM') AT TIME ZONE 'Asia/Kolkata') + INTERVAL '30 minutes'
-                AND emp_code NOT LIKE '%S%'
-        )
-    )
-) AS count
-FROM (
-    SELECT 
-        (refTimeData->>'refTimeId')::INTEGER AS refTimeId,
-        refTimeData->>'refTime' AS refTime,
-        (refTimeData->>'usercount')::INTEGER AS usercount
-    FROM JSONB_ARRAY_ELEMENTS($2::JSONB) AS refTimeData
-) AS time_data;
+// export const getOfflineCount = `
+// SELECT JSON_AGG(
+//     JSON_BUILD_OBJECT(
+//         'refTimeId', time_data.refTimeId,
+//         'refTime', time_data.refTime,
+//         'usercount', time_data.usercount,
+//         'attendancecount', (
+//             SELECT COUNT(DISTINCT emp_code)
+//             FROM public.iclock_transaction
+//             WHERE
+//                 -- Convert punch_time from UTC to the desired time zone and format
+//                 (punch_time AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Kolkata')::date =
+//                 (TO_TIMESTAMP($1, 'DD/MM/YYYY, HH12:MI:SS AM') AT TIME ZONE 'Asia/Kolkata')::date
+//                 AND (punch_time AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Kolkata') >=
+//                     (TO_TIMESTAMP(SPLIT_PART($1, ',', 1) || ' ' || SPLIT_PART(time_data.refTime, ' to ', 1), 'DD/MM/YYYY HH12:MI AM') AT TIME ZONE 'Asia/Kolkata') - INTERVAL '30 minutes'
+//                 AND (punch_time AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Kolkata') <=
+//                     (TO_TIMESTAMP(SPLIT_PART($1, ',', 1) || ' ' || SPLIT_PART(time_data.refTime, ' to ', 2), 'DD/MM/YYYY HH12:MI AM') AT TIME ZONE 'Asia/Kolkata') + INTERVAL '30 minutes'
+//                 AND emp_code NOT LIKE '%S%'
+//         )
+//     )
+// ) AS count
+// FROM (
+//     SELECT
+//         (refTimeData->>'refTimeId')::INTEGER AS refTimeId,
+//         refTimeData->>'refTime' AS refTime,
+//         (refTimeData->>'usercount')::INTEGER AS usercount
+//     FROM JSONB_ARRAY_ELEMENTS($2::JSONB) AS refTimeData
+// ) AS time_data;
 
-`;
+// `;
+export const getOfflineCount = `WITH json_data AS (
+  SELECT 
+    jsonb_array_elements(
+      '[ 
+        { "refTimeId": 1, "refTime": "06:00 AM to 07:00 AM", "usercount": "2" },
+        { "refTimeId": 2, "refTime": "08:20 AM to 09:20 AM", "usercount": "3" },
+        { "refTimeId": 3, "refTime": "09:30 AM to 10:30 AM", "usercount": "2" },
+        { "refTimeId": 4, "refTime": "10:45 AM to 11:45 AM", "usercount": "2" },
+        { "refTimeId": 5, "refTime": "04:50 PM to 05:50 PM", "usercount": "3" },
+        { "refTimeId": 6, "refTime": "06:00 PM to 07:00 PM", "usercount": "2" },
+        { "refTimeId": 7, "refTime": "07:10 PM to 08:10 PM", "usercount": "2" },
+        { "refTimeId": 8, "refTime": "08:00 AM to 09:00 AM", "usercount": "2" },
+        { "refTimeId": 9, "refTime": "09:15 AM to 10:15 AM", "usercount": "3" }
+      ]'::jsonb
+    ) AS data
+),
+calculated_ranges AS (
+  SELECT 
+    data ->> 'refTimeId' AS refTimeId,
+    data ->> 'refTime' AS refTime,
+    data ->> 'usercount' AS usercount, -- Include usercount here
+    split_part(data ->> 'refTime', ' to ', 1) AS startTime,
+    to_char((split_part(data ->> 'refTime', ' to ', 1)::time - interval '30 minutes'), 'HH12:MI AM') AS rangeStartFormatted,
+    to_char((split_part(data ->> 'refTime', ' to ', 1)::time + interval '30 minutes'), 'HH12:MI AM') AS rangeEndFormatted,
+    (split_part(data ->> 'refTime', ' to ', 1)::time - interval '30 minutes')::time AS rangeStart,
+    (split_part(data ->> 'refTime', ' to ', 1)::time + interval '30 minutes')::time AS rangeEnd
+  FROM 
+    json_data
+),
+adjusted_ranges AS (
+  SELECT
+    refTimeId,
+    refTime,
+    usercount, -- Include usercount here
+    startTime,
+    rangeStartFormatted,
+    rangeEndFormatted,
+    rangeStart,
+    rangeEnd,
+    LAG(rangeEnd) OVER (ORDER BY refTimeId) AS prevRangeEnd,
+    CASE
+      WHEN LAG(rangeEnd) OVER (ORDER BY refTimeId) IS NULL THEN (rangeStart - interval '30 minutes')
+      ELSE LAG(rangeEnd) OVER (ORDER BY refTimeId)
+    END AS adjustedStartTime
+  FROM
+    calculated_ranges
+),
+filtered_entries AS (
+  SELECT 
+    ict.punch_time,
+    ict.emp_code,
+    TO_CHAR(ict.punch_time AT TIME ZONE 'Asia/Kolkata', 'DD/MM/YYYY, HH12:MI:SS AM') AS punch_time_ist,
+    ar.refTimeId,
+    ar.refTime,
+    ar.usercount, -- Include usercount here
+    ar.startTime,
+    ar.adjustedStartTime,
+    ar.rangeStartFormatted,
+    ar.rangeEndFormatted,
+    LAG(ict.punch_time) OVER (PARTITION BY ict.emp_code ORDER BY ict.punch_time) AS previous_punch_time
+  FROM 
+    public.iclock_transaction ict
+  LEFT JOIN 
+    adjusted_ranges ar
+  ON 
+    (ict.punch_time AT TIME ZONE 'Asia/Kolkata')::time 
+    BETWEEN ar.adjustedStartTime AND ar.rangeEnd
+  WHERE 
+    ict.emp_code NOT LIKE '%S%'
+    AND
+    TO_CHAR(ict.punch_time AT TIME ZONE 'Asia/Kolkata', 'DD/MM/YYYY') = TO_CHAR(TO_TIMESTAMP($1, 'DD/MM/YYYY, HH:MI:SS PM') AT TIME ZONE 'Asia/Kolkata', 'DD/MM/YYYY')
+),
+unique_entries AS (
+  SELECT 
+    *,
+    EXTRACT(EPOCH FROM (punch_time - previous_punch_time)) / 60 AS time_difference
+  FROM 
+    filtered_entries
+  WHERE 
+    previous_punch_time IS NULL OR 
+    EXTRACT(EPOCH FROM (punch_time - previous_punch_time)) / 60 > 20
+)
+SELECT 
+  refTimeId,
+  refTime,
+  usercount,
+  COUNT(*) AS attendancecount
+FROM 
+  unique_entries
+GROUP BY 
+  refTimeId, refTime, usercount
+ORDER BY 
+  refTimeId;`;
 
 // -----------  ATTENDANCE REWORK ----------------------------------
 

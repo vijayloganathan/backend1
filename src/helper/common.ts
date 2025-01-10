@@ -365,7 +365,7 @@ export function findNearestTimeRange(
   }
 
   const mappedData = attendanceCounts.map((item) => {
-    const [startTime] = item.refTime.split(" to ");
+    const [startTime] = item.reftime.split(" to ");
     return { ...item, startTime: parseTimeToToday(startTime) };
   });
 

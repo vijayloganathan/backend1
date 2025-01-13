@@ -21,25 +21,76 @@ export const getUserData = ``;
 //   ON CAST(u."refStId" AS INTEGER) = gh."refStId"
 // WHERE u."refStId" = $1;`;
 export const getDataForUserManagement = `
-SELECT DISTINCT ON (u."refSCustId") *
-FROM public.users u
-LEFT JOIN public."refUserCommunication" uc
-  ON CAST(u."refStId" AS INTEGER) = uc."refStId"
-LEFT JOIN public."refUserAddress" ad
-  ON CAST(u."refStId" AS INTEGER) = ad."refStId"
-LEFT JOIN public."refGeneralHealth" gh
-  ON CAST(u."refStId" AS INTEGER) = gh."refStId"
-  LEFT JOIN public.branch br ON CAST (u."refBranchId" AS INTEGER) =br."refbranchId"
-  LEFT JOIN public."refMembers" rm ON CAST (u."refSessionType" AS INTEGER) =rm."refTimeMembersID"
-  LEFT JOIN public."refPackage" rp ON CAST (u."refSessionMode" AS INTEGER) = rp."refPaId"
-INNER JOIN public."refPaTiming" pt ON CAST (u."refTimingId" AS INTEGER) = pt."refTimeId"
-WHERE u."refStId" = $1;`;
+SELECT DISTINCT
+  ON (u."refSCustId") u.*,
+  uc."refUcId",
+  uc."refCtId",
+  uc."refCtValue",
+  uc."refCtMobile",
+  uc."refCtEmail",
+  uc."refCtWhatsapp",
+  uc."refUcPreference",
+  uc."refEmerContact", 
+  ad."refAdId",
+  ad."refAdAdd1Type",
+  ad."refAdAdd1",
+  ad."refAdArea1",
+  ad."refAdCity1",
+  ad."refAdState1",
+  ad."refAdPincode1",
+  ad."refAdAdd2Type",
+  ad."refAdAdd2",
+  ad."refAdArea2",
+  ad."refAdCity2",
+  ad."refAdState2",
+  ad."refAdPincode2",
+  ad."refAdFlat1",
+  ad."refAdFlat2",
+  gh."refGenId",
+  gh."refHeight",
+  gh."refWeight",
+  gh."refBlood",
+  gh."refBMI",
+  gh."refBP",
+  gh."refRecentInjuries",
+  gh."refRecentInjuriesReason",
+  gh."refRecentFractures",
+  gh."refRecentFracturesReason",
+  gh."refOthers",
+  gh."refElse",
+  gh."refPerHealthId",
+  gh."refMedicalDetails",
+  gh."refUnderPhysCare",
+  gh."refDrName",
+  gh."refHospital",
+  gh."refBackpain",
+  gh."refProblem",
+  gh."refPastHistory",
+  gh."refFamilyHistory",
+  gh."refAnythingelse",
+  gh."refOtherActivities",
+  gh."refBackPainValue",
+  br.*,
+  rm.*, 
+  rp.*, 
+  pt.*
+FROM
+  public.users u
+  LEFT JOIN public."refUserCommunication" uc ON CAST(u."refStId" AS INTEGER) = uc."refStId"
+  LEFT JOIN public."refUserAddress" ad ON CAST(u."refStId" AS INTEGER) = ad."refStId"
+  LEFT JOIN public."refGeneralHealth" gh ON CAST(u."refStId" AS INTEGER) = gh."refStId"
+  LEFT JOIN public.branch br ON CAST(u."refBranchId" AS INTEGER) = br."refbranchId"
+  LEFT JOIN public."refMembers" rm ON CAST(u."refSessionType" AS INTEGER) = rm."refTimeMembersID"
+  LEFT JOIN public."refPackage" rp ON CAST(u."refSessionMode" AS INTEGER) = rp."refPaId"
+  INNER JOIN public."refPaTiming" pt ON CAST(u."refTimingId" AS INTEGER) = pt."refTimeId"
+WHERE
+  u."refStId" = $1;`;
 
 export const getUserTransaction = `
 SELECT * FROM public."refUserTxnHistory" WHERE "refStId"=$1
 ORDER BY "transTime"`;
 
-export const getUserTypeLabel = `SELECT * FROM public."refUserType" WHERE "refUtId" IN (4,7,8,10,11)`;
+export const getUserTypeLabel = `SELECT * FROM public."refUserType" WHERE "refUtId" IN (12,4,7,8,10,11)`;
 
 // export const getCustomerCount = `SELECT COUNT(*)
 // FROM public.users

@@ -18,6 +18,7 @@ import {
   getUserCount,
   getPackageList,
   petUserAttendCount,
+  getGenderCount,
 } from "./query";
 import {
   CurrentTime,
@@ -85,7 +86,6 @@ export class AttendanceRepository {
   //   }
   // }
   public async attendanceOverViewV1(userData: any, decodedToken: any) {
-    console.log("decodedToken", decodedToken);
     const tokenData = {
       id: decodedToken.id,
       branch: decodedToken.branch,
@@ -93,7 +93,13 @@ export class AttendanceRepository {
     const token = generateToken(tokenData, true);
 
     try {
-      const todayDate = CurrentTime();
+      let todayDate;
+      if (userData.date.length > 0) {
+        todayDate = userData.date;
+      } else {
+        todayDate = CurrentTime();
+      }
+
       const packageList = await executeQuery(getTodayPackageList, [todayDate]);
       const refTimeIds = packageList.map((item: any) => item.refTimeId);
       const getUserCountResult = await executeQuery(getUserCount, [refTimeIds]);
@@ -107,10 +113,11 @@ export class AttendanceRepository {
         JSON.stringify(timeRanges),
       ]);
 
-      const finalData = findNearestTimeRange(
-        attendanceCounts[0].count,
-        todayDate
-      );
+      const genderCount = await executeQuery(getGenderCount, [
+        JSON.stringify(attendanceCounts),
+      ]);
+
+      const finalData = findNearestTimeRange(genderCount, todayDate);
       const results = {
         success: true,
         message: "OverView Attendance Count is passed successfully",
@@ -176,7 +183,6 @@ export class AttendanceRepository {
     userData: any,
     decodedToken: any
   ): Promise<any> {
-    console.log("decodedToken", decodedToken);
     const tokenData = {
       id: decodedToken.id,
       branch: decodedToken.branch,
@@ -193,6 +199,7 @@ export class AttendanceRepository {
         date,
         JSON.stringify(registerCount),
       ]);
+      console.log("attendCount", attendCount);
       const results = {
         success: true,
         message: "Overall Attendance Count is passed successfully",
@@ -268,17 +275,12 @@ export class AttendanceRepository {
       branch: decodedToken.branch,
     };
     const token = generateToken(tokenData, true);
-    console.log("userData", userData);
     try {
       function formatMonthYear(dateString: string) {
-        console.log("dateString", dateString);
-
         // Manually parse the date string
         const [datePart, timePart] = dateString.split(", ");
         const [day, month, year] = datePart.split("/").map(Number);
         const date = new Date(year, month - 1, day);
-
-        console.log("date", date);
 
         const months = [
           "January",
@@ -296,9 +298,7 @@ export class AttendanceRepository {
         ];
 
         const monthName = months[date.getMonth()];
-        console.log("monthName", monthName);
         const yearValue = date.getFullYear();
-        console.log("year", yearValue);
         return `${monthName} ${yearValue}`;
       }
 
@@ -307,7 +307,6 @@ export class AttendanceRepository {
       let Month;
       if (userData.month == "") {
         Month = formatMonthYear(CurrentTime());
-        console.log("Month", Month);
       } else {
         Month = userData.month;
       }
@@ -315,8 +314,6 @@ export class AttendanceRepository {
         custId,
         Month,
       ]);
-      console.log("Month", Month);
-      console.log("attendanceResult", attendanceResult);
       const results = {
         success: true,
         message: "User Attendance is passed successfully",
@@ -338,7 +335,6 @@ export class AttendanceRepository {
     userData: any,
     decodedToken: any
   ): Promise<any> {
-    console.log("decodedToken", decodedToken);
     const tokenData = {
       id: decodedToken.id,
       branch: decodedToken.branch,
@@ -346,24 +342,18 @@ export class AttendanceRepository {
     const token = generateToken(tokenData, true);
     try {
       let attendanceOptions;
-      console.log("userData.reportType", userData.reportType);
       if (userData.reportType.code == 1) {
-        console.log("here 1");
         const mode =
           userData.mode.length > 1
             ? "'Online', 'Offline'"
             : userData.mode[0] == 1
             ? "Online"
             : "Offline";
-        console.log("mode", mode);
-        console.log("userData.date", userData.date);
         if (userData.date == "") {
-          console.log("Here 2");
           attendanceOptions = await executeQuery(packageOptionsMonth, [
             decodedToken.branch,
           ]);
         } else {
-          console.log("Here 3");
           attendanceOptions = await executeQuery(packageOptions, [
             mode,
             userData.date,
@@ -374,7 +364,6 @@ export class AttendanceRepository {
         attendanceOptions = await executeQuery(timingOptions, []);
       }
 
-      console.log("attendanceOptions", attendanceOptions);
       const results = {
         success: true,
         message: "Overall Attendance Options is passed successfully",
@@ -415,6 +404,7 @@ export class AttendanceRepository {
             ? "Online"
             : "Offline";
 
+        console.log("userData.refPackageId", userData.refPackageId);
         Data = await executeQuery(packageListData, [
           sessionMod,
           userData.refPackageId,
@@ -434,6 +424,7 @@ export class AttendanceRepository {
               refSCustId: item.refSCustId,
               refStFName: item.refStFName,
               refStLName: item.refStLName,
+              refCtMobile: item.refCtMobile,
             });
 
             allCustomerIds.push(item.refSCustId);
@@ -449,11 +440,16 @@ export class AttendanceRepository {
         }
 
         const params = [date[0], date[1], allCustomerIds];
+        console.log("allCustomerIds", allCustomerIds);
+        console.log("params", params);
         const attendance = await attendanceQuery(getAttendanceDatas, params);
+        console.log("attendance", attendance);
+        console.log("resultMap", resultMap);
         attendance.forEach((att: any) => {
           const { emp_code, attendance: empAttendance } = att;
 
           Object.values(resultMap).forEach((packageItem: any) => {
+            console.log("packageItem line ----- 451 \n", packageItem);
             const user = packageItem.users.find(
               (user: any) => user.refSCustId === emp_code
             );

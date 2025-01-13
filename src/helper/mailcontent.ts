@@ -398,3 +398,80 @@ export function sendOtpTemplate(clientName: string, otp: string) {
     </html>`;
   return mail;
 }
+
+export function welcomeVideoMail(firstName: string, lastName: string, videoLink: string) {
+  const mail = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Ublis Yoga</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            background-color: #ff7f50; /* Coral color */
+            padding: 20px;
+            text-align: center;
+            color: white;
+        }
+        .content {
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .footer {
+            padding: 10px;
+            text-align: center;
+            font-size: 0.9em;
+            color: #555555;
+        }
+        .button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #ff7f50; /* Coral color */
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>Welcome to Ublis Yoga!</h1>
+    </div>
+    <div class="content">
+        <p>Dear ${firstName} ${lastName},</p>
+        <p>We are excited to welcome you to your first yoga class at Ublis Yoga!</p>
+        <p>Before your class begins, it is mandatory to watch the introduction video provided in the link below:</p>
+        <a href="${videoLink}" class="button">Watch the Video</a>
+        <p><strong>Important:</strong> This link is valid for <strong>2 hours</strong> from the moment you click on it. Ensure you watch the video within this time frame.</p>
+        <p>Watching this video will help you prepare for your first session and understand the guidelines better.</p>
+    </div>
+    <div class="footer">
+        <p>Thank you,</p>
+        <p>The Ublis Yoga Team</p>
+    </div>
+</div>
+
+</body>
+</html>`;
+
+  return mail;
+}
+

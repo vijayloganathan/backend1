@@ -14,6 +14,8 @@ import {
   StudentFees,
   ForgotPassword,
   Attendance,
+  UserPayment,
+  trailVideo,
 } from "./api/routes";
 // import StaffRoutes from "./api/staff/routes";
 
@@ -32,6 +34,8 @@ export default class Router {
     await new StudentFees().register(server);
     await new ForgotPassword().register(server);
     await new Attendance().register(server);
+    await new trailVideo().register(server);
+    await new UserPayment().register(server);
     await new Testing().register(server);
   }
 }

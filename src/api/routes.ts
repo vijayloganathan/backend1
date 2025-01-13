@@ -10,13 +10,15 @@ import {
   userDashBoard,
   batchPrograms,
   financeController,
-  TestingController,
+  TrailVideoController,
   NotesController,
   SettingsController,
   FutureClientsController,
   StudentFeesController,
   ForgotPasswordController,
   AttendanceController,
+  UserPaymentController,
+  TestingController,
 } from "./controller";
 import { Logger } from "winston";
 import { decodeToken, validateToken } from "../helper/token";
@@ -102,7 +104,6 @@ export class UserRouters implements IRoute {
     });
   }
 }
-
 export class UserProfile implements IRoute {
   public async register(server: any): Promise<any> {
     return new Promise((resolve) => {
@@ -233,7 +234,6 @@ export class UserProfile implements IRoute {
     });
   }
 }
-
 export class StaffRoutes implements IRoute {
   public async register(server: any): Promise<any> {
     return new Promise((resolve) => {
@@ -351,7 +351,6 @@ export class StaffRoutes implements IRoute {
     });
   }
 }
-
 export class DirectorRoutes implements IRoute {
   public async register(server: any): Promise<any> {
     return new Promise((resolve) => {
@@ -609,7 +608,6 @@ export class DirectorRoutes implements IRoute {
     });
   }
 }
-
 export class UserPageRoutes implements IRoute {
   public async register(server: any): Promise<any> {
     return new Promise((resolve) => {
@@ -705,16 +703,16 @@ export class Finance implements IRoute {
             auth: false,
           },
         },
-        {
-          method: "POST",
-          path: "/api/v1/finance/verifyCoupon",
-          config: {
-            pre: [{ method: validateToken, assign: "token" }],
-            handler: UserPage.verifyCoupon,
-            description: "Verify coupon data",
-            auth: false,
-          },
-        },
+        // {
+        //   method: "POST",
+        //   path: "/api/v1/finance/verifyCoupon",
+        //   config: {
+        //     pre: [{ method: validateToken, assign: "token" }],
+        //     handler: UserPage.verifyCoupon,
+        //     description: "Verify coupon data",
+        //     auth: false,
+        //   },
+        // },
         {
           method: "POST",
           path: "/api/v1/finance/FeesPaid",
@@ -1149,7 +1147,7 @@ export class Attendance implements IRoute {
       const AttendancePage = new AttendanceController();
       server.route([
         {
-          method: "GET",
+          method: "POST",
           path: "/api/v1/attendance/overView",
           config: {
             pre: [{ method: validateToken, assign: "token" }],
@@ -1215,6 +1213,100 @@ export class Attendance implements IRoute {
             pre: [{ method: validateToken, assign: "token" }],
             handler: AttendancePage.attendanceReport,
             description: "To get the Attendance Report",
+            auth: false,
+          },
+        },
+      ]);
+      resolve(true);
+    });
+  }
+}
+
+export class UserPayment implements IRoute {
+  public async register(server: any): Promise<any> {
+    return new Promise((resolve) => {
+      const controller = new UserPaymentController();
+      server.route([
+        {
+          method: "POST",
+          path: "/api/v1/users/payment",
+          config: {
+            pre: [{ method: validateToken, assign: "token" }],
+            handler: controller.payment,
+            description: "Payment Paylload",
+            tags: ["api", "Users"],
+            auth: false,
+          },
+        },
+        {
+          method: "POST",
+          path: "/api/v1/users/otherPackage",
+          config: {
+            pre: [{ method: validateToken, assign: "token" }],
+            handler: controller.otherPackages,
+            description: "Payment Paylload",
+            tags: ["api", "Users"],
+            auth: false,
+          },
+        },
+        {
+          method: "POST",
+          path: "/api/v1/userPayment/verifyCoupon",
+          config: {
+            pre: [{ method: validateToken, assign: "token" }],
+            handler: controller.verifyCoupon,
+            description: "Verify coupon data",
+            auth: false,
+          },
+        },
+
+        {
+          method: "POST",
+          path: "/api/v1/userPayment/addPayment",
+          config: {
+            pre: [{ method: validateToken, assign: "token" }],
+            handler: controller.addPayment,
+            description: "Verify coupon data",
+            auth: false,
+          },
+        },
+        {
+          method: "POST",
+          path: "/api/v1/userPayment/invoiceAudit",
+          config: {
+            pre: [{ method: validateToken, assign: "token" }],
+            handler: controller.invoiceAudit,
+            description: "get the user Payment Audit ",
+            auth: false,
+          },
+        },
+        {
+          method: "POST",
+          path: "/api/v1/userPayment/downloadUserInvoice",
+          config: {
+            pre: [{ method: validateToken, assign: "token" }],
+            handler: controller.downloadInvoice,
+            description: "Downloading the User Invoice",
+            auth: false,
+          },
+        },
+      ]);
+      resolve(true);
+    });
+  }
+}
+export class trailVideo implements IRoute {
+  public async register(server: any): Promise<any> {
+    return new Promise((resolve) => {
+      const TrailVideo = new TrailVideoController();
+      server.route([
+        {
+          method: "GET",
+          path: "/api/v1/trailVideo/linkGeneration",
+          config: {
+            // pre: [{ method: validateToken, assign: "token" }],
+            handler: TrailVideo.shareLink,
+            description: "Generate and share trail video link",
             auth: false,
           },
         },

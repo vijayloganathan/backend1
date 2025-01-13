@@ -110,7 +110,11 @@ export class DirectorRepository {
     try {
       const userTypeLabel = await executeQuery(getUserStatusLabel, []);
       console.log("userTypeLabel", userTypeLabel);
+
+      console.log("line ----------------------- 114");
       const userData = await executeQuery(getDataForUserManagement, [Id]);
+
+      console.log("line ------------------------------------------117");
       console.log("userData", userData);
       const userTypeMap = new Map(
         userTypeLabel.map((item) => [item.refUtId, item.refUserType])
@@ -140,6 +144,7 @@ export class DirectorRepository {
         true
       );
     } catch (error) {
+      console.log('error', error)
       return encrypt(
         {
           success: false,

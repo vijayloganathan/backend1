@@ -19,8 +19,8 @@ const init = async () => {
             "http://3.111.31.152",
             "http://localhost:5173",
             "http://43.204.98.66",
-            "http://192.168.221.248:5173",
-            "http://192.168.221.248:5174",
+            "http://192.168.200.248:5173",
+            "http://192.168.200.248:5174",
             "http://192.168.43.248",
             "http://3.109.210.24",
             "http://13.201.189.174",
@@ -37,8 +37,6 @@ const init = async () => {
         },
       },
     });
-
-    //text
 
     // const server = Hapi.server({
     //   host: process.env.HOST || "localhost",

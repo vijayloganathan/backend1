@@ -11,6 +11,8 @@ import { FutureClientsRepository } from "./future_clients/future_clients-reposit
 import { StudentFeesRepository } from "./studentfees/studentfees-repository";
 import { ForgotPasswordRepository } from "./forgotpassword/forgot_password";
 import { AttendanceRepository } from "./attendance/attendance_repository";
+import { UserPaymentRepository } from "./userPayment/userPayment";
+import { TrailVideoRepository } from "./trailVideo/trailvideo_repository";
 
 export class Resolver {
   public userRepository: any;
@@ -433,9 +435,9 @@ export class FinanceResolver {
       token_data
     );
   }
-  public async verifyCouponV1(user_data: any, token_data: any): Promise<any> {
-    return await this.FinanceRepository.verifyCouponV1(user_data, token_data);
-  }
+  // public async verifyCouponV1(user_data: any, token_data: any): Promise<any> {
+  //   return await this.FinanceRepository.verifyCouponV1(user_data, token_data);
+  // }
   public async FeesPaidV1(user_data: any, token_data: any): Promise<any> {
     return await this.FinanceRepository.FeesPaidV1(user_data, token_data);
   }
@@ -769,6 +771,69 @@ export class AttendanceResolver {
     );
   }
 }
+export class TrailVideoResolver {
+  public TrailVideoRepository: any;
+  constructor() {
+    this.TrailVideoRepository = new TrailVideoRepository();
+  }
+  public async shareLinkV1(user_data: any, token_data: any): Promise<any> {
+    console.log("line ----------------------- 781");
+    return await this.TrailVideoRepository.shareLinkV1(user_data, token_data);
+  }
+}
+
+export class UserPaymentResolver {
+  public UserPaymentRepository: any;
+  constructor() {
+    this.UserPaymentRepository = new UserPaymentRepository();
+  }
+  public async userPaymentResolver(
+    user_data: any,
+    token_data: any
+  ): Promise<any> {
+    return await this.UserPaymentRepository.userPaymentV1(
+      user_data,
+      token_data
+    );
+  }
+  public async userPaymentPackageResolver(
+    user_data: any,
+    token_data: any
+  ): Promise<any> {
+    return await this.UserPaymentRepository.userOtherPaymentV1(
+      user_data,
+      token_data
+    );
+  }
+  public async verifyCouponV1(user_data: any, token_data: any): Promise<any> {
+    return await this.UserPaymentRepository.verifyCouponV1(
+      user_data,
+      token_data
+    );
+  }
+  public async addPaymentV1(user_data: any, token_data: any): Promise<any> {
+    return await this.UserPaymentRepository.addPaymentV1(user_data, token_data);
+  }
+  public async invoiceAuditDataV1(
+    user_data: any,
+    token_data: any
+  ): Promise<any> {
+    return await this.UserPaymentRepository.invoiceAuditDataV1(
+      user_data,
+      token_data
+    );
+  }
+  public async downloadInvoiceV1(
+    user_data: any,
+    token_data: any
+  ): Promise<any> {
+    return await this.UserPaymentRepository.downloadInvoiceV1(
+      user_data,
+      token_data
+    );
+  }
+}
+
 export class TestingResolver {
   public TestingRepository: any;
   constructor() {

@@ -19,6 +19,7 @@ import {
   AttendanceController,
   UserPaymentController,
   TestingController,
+
 } from "./controller";
 import { Logger } from "winston";
 import { decodeToken, validateToken } from "../helper/token";
@@ -1295,6 +1296,7 @@ export class UserPayment implements IRoute {
     });
   }
 }
+
 export class trailVideo implements IRoute {
   public async register(server: any): Promise<any> {
     return new Promise((resolve) => {
@@ -1315,6 +1317,7 @@ export class trailVideo implements IRoute {
     });
   }
 }
+
 export class Testing implements IRoute {
   public async register(server: any): Promise<any> {
     return new Promise((resolve) => {

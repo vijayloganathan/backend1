@@ -180,6 +180,7 @@ export const getOfflineCount = `WITH json_data AS (
   SELECT 
     jsonb_array_elements(
       $2::jsonb
+
     ) AS data
 ),
 calculated_ranges AS (
@@ -200,6 +201,7 @@ adjusted_ranges AS (
     refTimeId,
     refTime,
     usercount,
+
     startTime,
     rangeStartFormatted,
     rangeEndFormatted,
@@ -707,76 +709,134 @@ GROUP BY
 //   matching_transactions m ON r.refPaId = m.refPaId;
 
 // `;
-export const petUserAttendCount = `WITH
-  package_data AS (
-    SELECT
-      package ->> 'refPaId' AS refPaId,
-      package ->> 'refPackageName' AS refPackageName,
-      (package ->> 'usercount') AS usercount, -- Keep usercount as text
-      jsonb_array_elements_text(package -> 'staff_ids') AS staff_id
-    FROM
-      jsonb_array_elements(
-        $2::jsonb
-      ) AS package
-  ),
-  ranked_data AS (
-    SELECT
-      ict.punch_time,
-      ict.emp_code,
-      pd.refPaId,
-      pd.refPackageName,
-      pd.usercount,
-      TO_CHAR(
-        ict.punch_time AT TIME ZONE 'Asia/Kolkata',
-        'DD/MM/YYYY, HH12:MI:SS AM'
-      ) AS punch_time_ist,
-      LAG(ict.punch_time) OVER (
-        PARTITION BY
-          ict.emp_code
-        ORDER BY
-          ict.punch_time
-      ) AS previous_punch_time
-    FROM
-      public.iclock_transaction ict
-      JOIN package_data pd ON ict.emp_code = pd.staff_id
-    WHERE
-      ict.emp_code NOT LIKE '%S%'
-      AND TO_CHAR(
-        ict.punch_time AT TIME ZONE 'Asia/Kolkata',
-        'DD/MM/YYYY'
-      ) = TO_CHAR(
-        TO_TIMESTAMP(
-          $1,
-          'DD/MM/YYYY, HH:MI:SS PM'
-        ) AT TIME ZONE 'Asia/Kolkata',
-        'DD/MM/YYYY'
+
+// export const petUserAttendCount = `WITH
+//   package_data AS (
+//     SELECT
+//       package ->> 'refPaId' AS refPaId,
+//       package ->> 'refPackageName' AS refPackageName,
+//       (package ->> 'usercount') AS usercount, -- Keep usercount as text
+//       jsonb_array_elements_text(package -> 'staff_ids') AS staff_id
+//     FROM
+//       jsonb_array_elements(
+//         $2::jsonb
+//       ) AS package
+//   ),
+//   ranked_data AS (
+//     SELECT
+//       ict.punch_time,
+//       ict.emp_code,
+//       pd.refPaId,
+//       pd.refPackageName,
+//       pd.usercount,
+//       TO_CHAR(
+//         ict.punch_time AT TIME ZONE 'Asia/Kolkata',
+//         'DD/MM/YYYY, HH12:MI:SS AM'
+//       ) AS punch_time_ist,
+//       LAG(ict.punch_time) OVER (
+//         PARTITION BY
+//           ict.emp_code
+//         ORDER BY
+//           ict.punch_time
+//       ) AS previous_punch_time
+//     FROM
+//       public.iclock_transaction ict
+//       JOIN package_data pd ON ict.emp_code = pd.staff_id
+//     WHERE
+//       ict.emp_code NOT LIKE '%S%'
+//       AND TO_CHAR(
+//         ict.punch_time AT TIME ZONE 'Asia/Kolkata',
+//         'DD/MM/YYYY'
+//       ) = TO_CHAR(
+//         TO_TIMESTAMP(
+//           $1,
+//           'DD/MM/YYYY, HH:MI:SS PM'
+//         ) AT TIME ZONE 'Asia/Kolkata',
+//         'DD/MM/YYYY'
+//       )
+//   ),
+//   user_attendance_count AS (
+//     SELECT
+//       pd.refPaId,
+//       pd.refPackageName,
+//       pd.usercount,
+//       COUNT(DISTINCT rd.emp_code) AS attendcount
+//     FROM
+//       package_data pd
+//       LEFT JOIN ranked_data rd ON pd.refPaId = rd.refPaId
+//     WHERE
+//       rd.previous_punch_time IS NULL -- Include the first punch time for each user
+//       OR EXTRACT(
+//         EPOCH
+//         FROM
+//           (rd.punch_time - rd.previous_punch_time)
+//       ) > 1200 -- Time difference > 20 mins
+//     GROUP BY
+//       pd.refPaId,
+//       pd.refPackageName,
+//       pd.usercount
+//   )
+// SELECT
+//   refPaId,
+//   refPackageName,
+//   usercount,
+//   COALESCE(attendcount, 0) AS match_count
+// FROM
+//   user_attendance_count;`;
+
+export const petUserAttendCount = `WITH register_data AS (
+  SELECT
+    (package->>'refPaId')::INT AS refPaId,  -- Explicitly extract refPaId
+    package  -- Keep the full package for later use
+  FROM
+    jsonb_array_elements($2::jsonb) AS package
+),
+staff_list AS (
+  SELECT
+    s.refPaId,
+    UNNEST(
+      ARRAY(
+        SELECT jsonb_array_elements_text(s.package->'staff_ids')
       )
-  ),
-  user_attendance_count AS (
-    SELECT
-      pd.refPaId,
-      pd.refPackageName,
-      pd.usercount,
-      COUNT(DISTINCT rd.emp_code) AS attendcount
-    FROM
-      package_data pd
-      LEFT JOIN ranked_data rd ON pd.refPaId = rd.refPaId
-    WHERE
-      rd.previous_punch_time IS NULL -- Include the first punch time for each user
-      OR EXTRACT(
-        EPOCH
-        FROM
-          (rd.punch_time - rd.previous_punch_time)
-      ) > 1200 -- Time difference > 20 mins
-    GROUP BY
-      pd.refPaId,
-      pd.refPackageName,
-      pd.usercount
-  )
+    ) AS staff_id -- Extract all staff_ids with the associated refPaId
+  FROM
+    register_data s
+),
+filtered_transactions AS (
+  SELECT
+    *,
+    LAG(punch_time) OVER (PARTITION BY emp_code ORDER BY punch_time) AS prev_punch_time,
+    -- Convert punch_time to the desired format and time zone
+    (punch_time AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Kolkata')::timestamp AS local_punch_time
+  FROM
+    public.iclock_transaction
+  WHERE
+    emp_code NOT LIKE '%S%'
+    AND (punch_time AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Kolkata')::date = 
+        (TO_TIMESTAMP($1, 'DD/MM/YYYY, HH:MI:SS AM') AT TIME ZONE 'Asia/Kolkata')::date
+),
+matching_transactions AS (
+  SELECT
+    s.refPaId,
+    COUNT(DISTINCT t.emp_code) AS match_count
+  FROM
+    filtered_transactions t
+  JOIN
+    staff_list s ON t.emp_code = s.staff_id
+  WHERE
+    (t.prev_punch_time IS NULL OR EXTRACT(EPOCH FROM (t.punch_time - t.prev_punch_time)) >= 600)
+  GROUP BY
+    s.refPaId
+)
 SELECT
-  refPaId,
-  refPackageName,
-  usercount,
-  COALESCE(attendcount, 0) AS match_count
+  r.refPaId,
+  r.package->>'refPackageName' AS refPackageName,
+  r.package->>'usercount' AS usercount,
+  COALESCE(m.match_count, 0) AS match_count -- Handle cases with no matches
 FROM
-  user_attendance_count;`;
+  register_data r
+LEFT JOIN
+  matching_transactions m ON r.refPaId = m.refPaId;
+
+
+`;

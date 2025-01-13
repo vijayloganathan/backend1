@@ -131,6 +131,7 @@ FROM
 WHERE
   u."refStId" = $1`;
 
+
 export const getStudentCount = `SELECT COUNT(*)
 FROM public.users
 WHERE "refSCustId" NOT LIKE '%S%' 

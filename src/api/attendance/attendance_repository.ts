@@ -108,16 +108,17 @@ export class AttendanceRepository {
         refTime: item.refTime,
         usercount: item.usercount,
       }));
+      console.log("timeRanges line --------- 105", timeRanges);
       const attendanceCounts = await attendanceQuery(getOfflineCount, [
         todayDate,
-        JSON.stringify(timeRanges),
+        // JSON.stringify(timeRanges),
       ]);
-
       const genderCount = await executeQuery(getGenderCount, [
         JSON.stringify(attendanceCounts),
       ]);
 
       const finalData = findNearestTimeRange(genderCount, todayDate);
+0
       const results = {
         success: true,
         message: "OverView Attendance Count is passed successfully",
@@ -192,9 +193,10 @@ export class AttendanceRepository {
       const date = userData.date == "" ? CurrentTime() : userData.date;
       const sessionMode = userData.sessionMode == 1 ? "Online" : "Offline";
       const params = [decodedToken.branch, sessionMode, date];
+      console.log("params", params);
 
       let registerCount = await executeQuery(getPackageList, params);
-      console.log("registerCount", registerCount);
+      console.log("registerCount line --------- 191", registerCount);
       const attendCount = await attendanceQuery(petUserAttendCount, [
         date,
         JSON.stringify(registerCount),
@@ -310,6 +312,7 @@ export class AttendanceRepository {
       } else {
         Month = userData.month;
       }
+      console.log("Month", Month);
       const attendanceResult = await attendanceQuery(userAttendance, [
         custId,
         Month,
@@ -440,7 +443,6 @@ export class AttendanceRepository {
         }
 
         const params = [date[0], date[1], allCustomerIds];
-        console.log("allCustomerIds", allCustomerIds);
         console.log("params", params);
         const attendance = await attendanceQuery(getAttendanceDatas, params);
         console.log("attendance", attendance);

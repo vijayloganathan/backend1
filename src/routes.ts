@@ -37,5 +37,6 @@ export default class Router {
     await new trailVideo().register(server);
     await new UserPayment().register(server);
     await new Testing().register(server);
+    await new UserPayment().register(server);
   }
 }
